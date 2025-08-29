@@ -1,1226 +1,1951 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crafty Worth - Personalized Gifts</title>
+    <title>CraftyWorth - Custom Mugs & T-Shirts India | Personalized Gifts ₹499+</title>
+    <meta name="description" content="Premium custom products made in India. Photo mugs ₹499, T-shirts ₹599, frames ₹399. Free delivery above ₹999. Order personalized gifts online!">
+    <meta name="keywords" content="custom mugs India, personalized t-shirts, photo frames, custom gifts, made in India">
+    <link rel="canonical" href="https://craftyworth.in">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="CraftyWorth - Custom Products Made in India">
+    <meta property="og:description" content="Premium personalized mugs, t-shirts & frames. Starting ₹399. Free delivery ₹999+">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://craftyworth.in">
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        .hero-gradient {
-            background: linear-gradient(135deg, #8B5CF6 0%, #06B6D4 100%);
+        * { font-family: 'Inter', sans-serif; }
+        
+        .hero-gradient { 
+            background: linear-gradient(135deg, #0EA5E9 0%, #1E40AF 100%); 
         }
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-        }
-        .modal.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1001;
-            padding: 1rem 1.5rem;
-            border-radius: 0.5rem;
+        
+        .btn-primary { 
+            background: linear-gradient(135deg, #0EA5E9, #1E40AF);
             color: white;
+            padding: 12px 32px;
+            border-radius: 50px;
             font-weight: 600;
-            transform: translateX(400px);
-            transition: transform 0.3s ease;
-        }
-        .notification.show {
-            transform: translateX(0);
-        }
-        .notification.success { background-color: #10B981; }
-        .notification.error { background-color: #EF4444; }
-        .notification.info { background-color: #06B6D4; }
-        
-        .auth-tab {
-            padding: 0.75rem 1.5rem;
-            border-bottom: 2px solid transparent;
-            cursor: pointer;
             transition: all 0.3s ease;
-        }
-        .auth-tab.active {
-            border-bottom-color: #8B5CF6;
-            color: #8B5CF6;
-            font-weight: 600;
-        }
-        .auth-tab:hover {
-            background-color: #F3F4F6;
+            border: none;
+            cursor: pointer;
         }
         
-        .product-detail-image {
-            max-height: 500px;
-            object-fit: cover;
+        .btn-primary:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(14, 165, 233, 0.3);
         }
         
-        .admin-hidden {
-            display: none;
+        .card-hover { 
+            transition: all 0.3s ease; 
         }
         
-        .admin-visible {
-            display: block;
+        .card-hover:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); 
+        }
+        
+        .floating { animation: floating 3s ease-in-out infinite; }
+        @keyframes floating { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+        
+        .fade-in { opacity: 0; transform: translateY(30px); transition: all 0.6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        
+        .cart-count { 
+            background: #EF4444; 
+            color: white; 
+            border-radius: 50%; 
+            padding: 2px 6px; 
+            font-size: 12px; 
+            position: absolute; 
+            top: -8px; 
+            right: -8px; 
+        }
+        
+        .focus-visible:focus {
+            outline: 3px solid #0EA5E9;
+            outline-offset: 2px;
         }
     </style>
 </head>
-<body class="font-sans">
+<body class="bg-gray-50">
     <!-- Header -->
-    <header class="bg-white shadow-lg sticky top-0 z-40">
-        <div class="container mx-auto px-4">
-            <!-- Top Bar -->
-            <div class="flex items-center justify-between py-2 text-sm border-b border-gray-200">
-                <div class="flex items-center space-x-4">
-                    <span>📞 +91-9876543210</span>
-                    <span>📧 support@craftyworth.com</span>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <span id="user-greeting" class="hidden text-green-600 font-semibold"></span>
-                    <a href="#" onclick="trackOrder()" class="hover:text-purple-600">Track Order</a>
-                </div>
-            </div>
-            
-            <!-- Main Header -->
-            <div class="flex items-center justify-between py-4">
-                <div class="flex items-center space-x-8">
-                    <h1 class="text-2xl font-bold text-purple-600 cursor-pointer" onclick="goHome()">Crafty Worth</h1>
-                    
-                    <!-- Search -->
-                    <div class="hidden md:block relative">
-                        <input 
-                            type="text" 
-                            id="search-input"
-                            placeholder="Search products..."
-                            class="w-80 px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
-                            onkeyup="searchProducts()"
-                        >
-                        <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">C</span>
                     </div>
+                    <h1 class="text-2xl font-bold text-gray-800">CraftyWorth</h1>
                 </div>
                 
-                <div class="flex items-center space-x-6">
-                    <button onclick="openWishlist()" class="relative hover:text-purple-600">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                        </svg>
-                        <span id="wishlist-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
-                    </button>
-                    
-                    <button onclick="openCart()" class="relative hover:text-purple-600">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6m6 0V9a2 2 0 00-2-2H9a2 2 0 00-2-2v6"></path>
-                        </svg>
-                        <span id="cart-count" class="absolute -top-2 -right-2 bg-purple-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
-                    </button>
-                    
-                    <div class="relative">
-                        <button onclick="toggleUserMenu()" class="flex items-center space-x-2 hover:text-purple-600">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                            </svg>
-                            <span id="user-display">Account</span>
-                        </button>
-                        <div id="user-menu" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border hidden">
-                            <div id="guest-menu">
-                                <button onclick="openLogin()" class="block w-full text-left px-4 py-2 hover:bg-gray-100">Login / Sign Up</button>
-                            </div>
-                            <div id="user-menu-items" class="hidden">
-                                <a href="#" onclick="viewProfile()" class="block px-4 py-2 hover:bg-gray-100">My Profile</a>
-                                <a href="#" onclick="viewOrders()" class="block px-4 py-2 hover:bg-gray-100">My Orders</a>
-                                <a href="#" onclick="viewCustomizations()" class="block px-4 py-2 hover:bg-gray-100">My Designs</a>
-                                <div id="admin-menu-item" class="admin-hidden">
-                                    <hr class="my-2">
-                                    <a href="#" onclick="openAdminPanel()" class="block px-4 py-2 hover:bg-gray-100 text-purple-600 font-semibold">Admin Panel</a>
-                                </div>
-                                <hr class="my-2">
-                                <button onclick="logout()" class="block w-full text-left px-4 py-2 hover:bg-gray-100 text-red-600">Logout</button>
-                            </div>
+                <!-- Search Bar -->
+                <div class="hidden md:flex flex-1 max-w-md mx-8">
+                    <div class="relative w-full">
+                        <input type="text" id="searchInput" placeholder="Search products..." class="w-full px-4 py-2 pl-10 pr-4 border border-gray-300 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <div id="searchResults" class="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-lg shadow-lg mt-1 hidden z-50 max-h-64 overflow-y-auto">
                         </div>
                     </div>
                 </div>
+                
+                <!-- Navigation -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-gray-600 hover:text-blue-600 font-medium transition focus-visible">Home</a>
+                    <a href="#products" class="text-gray-600 hover:text-blue-600 font-medium transition focus-visible">Products</a>
+                    <a href="#about" class="text-gray-600 hover:text-blue-600 font-medium transition focus-visible">About</a>
+                    <a href="#contact" class="text-gray-600 hover:text-blue-600 font-medium transition focus-visible">Contact</a>
+                </nav>
+                
+                <!-- Cart -->
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <button id="cartBtn" class="text-gray-600 hover:text-blue-600 transition relative focus-visible">
+                            <i class="fas fa-shopping-cart text-xl"></i>
+                            <span id="cartCount" class="cart-count hidden">0</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Mobile Menu Button -->
+                    <button id="mobileMenuBtn" class="md:hidden text-gray-600 focus-visible">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
             </div>
             
-            <!-- Navigation -->
-            <nav class="py-3 border-t border-gray-200">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-8">
-                        <a href="#" onclick="filterProducts('frames')" class="hover:text-purple-600">Photo Frames</a>
-                        <a href="#" onclick="filterProducts('trophies')" class="hover:text-purple-600">Trophies</a>
-                        <a href="#" onclick="filterProducts('canvas')" class="hover:text-purple-600">Canvas Prints</a>
-                        <a href="#" onclick="filterProducts('mugs')" class="hover:text-purple-600">Custom Mugs</a>
-                        <a href="#" onclick="filterProducts('all')" class="hover:text-purple-600">All Products</a>
-                    </div>
-                    <div class="text-sm text-green-600 font-semibold">
-                        🚚 Free delivery on orders above ₹999
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="md:hidden mt-4 pb-4 hidden">
+                <!-- Mobile Search -->
+                <div class="mb-4">
+                    <div class="relative">
+                        <input type="text" id="mobileSearchInput" placeholder="Search products..." class="w-full px-4 py-2 pl-10 pr-4 border border-gray-300 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                     </div>
                 </div>
-            </nav>
+                
+                <nav class="flex flex-col space-y-3">
+                    <a href="#home" class="text-gray-600 hover:text-blue-600 font-medium">Home</a>
+                    <a href="#products" class="text-gray-600 hover:text-blue-600 font-medium">Products</a>
+                    <a href="#about" class="text-gray-600 hover:text-blue-600 font-medium">About</a>
+                    <a href="#contact" class="text-gray-600 hover:text-blue-600 font-medium">Contact</a>
+                </nav>
+            </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main id="main-content">
-        <!-- Hero Section -->
-        <section id="hero-section" class="hero-gradient text-white py-20">
-            <div class="container mx-auto px-4 text-center">
-                <h2 class="text-4xl md:text-6xl font-bold mb-6">
-                    Create Memories That Last Forever
+    <!-- Hero Section -->
+    <section id="home" class="hero-gradient text-white py-20">
+        <div class="container mx-auto px-4 text-center">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-5xl md:text-6xl font-bold mb-6 fade-in">
+                    Custom Products<br>
+                    <span class="text-yellow-300">Made in India</span>
                 </h2>
-                <p class="text-xl mb-8 opacity-90">
-                    Personalized gifts crafted with love • Fast delivery across India
+                <p class="text-xl md:text-2xl mb-8 fade-in opacity-90">
+                    Premium personalized mugs, t-shirts & frames starting ₹399
                 </p>
-                <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
-                    <button onclick="scrollToProducts()" class="bg-white text-purple-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-                        Shop Now
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12 fade-in">
+                    <button onclick="scrollToProducts()" class="btn-primary focus-visible">
+                        Shop Now <i class="fas fa-arrow-right ml-2"></i>
                     </button>
-                    <button onclick="openCustomizer()" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-purple-600 transition-colors">
-                        Customize Gift
+                    <button onclick="scrollToAbout()" class="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold text-lg hover:bg-gray-100 transition focus-visible">
+                        Learn More
                     </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Products Section -->
-        <section id="products-section" class="py-16">
-            <div class="container mx-auto px-4">
-                <div class="text-center mb-12">
-                    <h3 class="text-3xl md:text-4xl font-bold mb-4">Featured Products</h3>
-                    <p class="text-gray-600 text-lg">Handpicked personalized gifts for every occasion</p>
                 </div>
                 
-                <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                    <!-- Products will be populated here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Features Section -->
-        <section class="bg-gray-50 py-16">
-            <div class="container mx-auto px-4">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
-                    <div>
-                        <div class="text-4xl mb-4">🚚</div>
-                        <h4 class="font-semibold text-lg mb-2">Free Delivery</h4>
-                        <p class="text-gray-600">On orders above ₹999</p>
+                <!-- Features -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 fade-in">
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6">
+                        <i class="fas fa-shipping-fast text-3xl mb-4 text-yellow-300"></i>
+                        <h3 class="font-semibold text-lg mb-2">Free Delivery</h3>
+                        <p class="opacity-90">Orders above ₹999</p>
                     </div>
-                    <div>
-                        <div class="text-4xl mb-4">🎁</div>
-                        <h4 class="font-semibold text-lg mb-2">Gift Wrapping</h4>
-                        <p class="text-gray-600">Beautiful packaging included</p>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6">
+                        <i class="fas fa-medal text-3xl mb-4 text-yellow-300"></i>
+                        <h3 class="font-semibold text-lg mb-2">Premium Quality</h3>
+                        <p class="opacity-90">Made in India guarantee</p>
                     </div>
-                    <div>
-                        <div class="text-4xl mb-4">⚡</div>
-                        <h4 class="font-semibold text-lg mb-2">Quick Delivery</h4>
-                        <p class="text-gray-600">Same day delivery available</p>
-                    </div>
-                    <div>
-                        <div class="text-4xl mb-4">🔒</div>
-                        <h4 class="font-semibold text-lg mb-2">Secure Payment</h4>
-                        <p class="text-gray-600">SSL encrypted checkout</p>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6">
+                        <i class="fas fa-clock text-3xl mb-4 text-yellow-300"></i>
+                        <h3 class="font-semibold text-lg mb-2">Quick Delivery</h3>
+                        <p class="opacity-90">3-5 business days</p>
                     </div>
                 </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Product Detail Section (Hidden by default) -->
-    <section id="product-detail-section" class="py-16 hidden">
-        <div class="container mx-auto px-4">
-            <button onclick="goBack()" class="mb-6 flex items-center text-purple-600 hover:text-purple-800">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                </svg>
-                Back to Products
-            </button>
-            
-            <div id="product-detail-content" class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <!-- Product detail content will be populated here -->
             </div>
         </div>
     </section>
 
-    <!-- Admin Panel Section (Hidden by default) -->
-    <section id="admin-panel-section" class="py-16 hidden">
+    <!-- Products Section -->
+    <section id="products" class="py-20 bg-white">
         <div class="container mx-auto px-4">
-            <div class="flex items-center justify-between mb-8">
-                <h2 class="text-3xl font-bold">Admin Panel</h2>
-                <button onclick="closeAdminPanel()" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">
-                    Close Panel
-                </button>
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4 fade-in">Our Products</h2>
+                <p class="text-xl text-gray-600 fade-in">Premium custom products made with love in India</p>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-semibold mb-4">Total Orders</h3>
-                    <div class="text-3xl font-bold text-purple-600" id="total-orders">156</div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Product 1: Custom Mug -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('mug')">
+                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
+                        <img src="https://m.media-amazon.com/images/I/61VuVU94RnL._AC_UF1000,1000_QL80_.jpg" alt="Custom Photo Mug" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
+                            <i class="fas fa-mug-hot text-4xl text-red-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Custom Photo Mug</h3>
+                        <p class="text-gray-600 mb-4">Premium ceramic mug with your favorite photo. Perfect for gifts!</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-2xl font-bold text-blue-600">₹499</span>
+                                <span class="text-sm text-gray-500 line-through ml-2">₹699</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); addToCart('Custom Photo Mug', 499)" class="btn-primary focus-visible">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-semibold mb-4">Revenue</h3>
-                    <div class="text-3xl font-bold text-green-600" id="total-revenue">₹2,45,680</div>
+
+                <!-- Product 2: Custom T-Shirt -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('tshirt')">
+                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
+                        <img src="https://m.media-amazon.com/images/I/61HaaYHZTaL._AC_UY1100_.jpg" alt="Personalized T-Shirt" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
+                            <i class="fas fa-tshirt text-4xl text-blue-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Personalized T-Shirt</h3>
+                        <p class="text-gray-600 mb-4">100% cotton t-shirt with custom design. Available in all sizes.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-2xl font-bold text-blue-600">₹599</span>
+                                <span class="text-sm text-gray-500 line-through ml-2">₹799</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); addToCart('Personalized T-Shirt', 599)" class="btn-primary focus-visible">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-semibold mb-4">Active Users</h3>
-                    <div class="text-3xl font-bold text-blue-600" id="active-users">89</div>
+
+                <!-- Product 3: A3 Drawing Books -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('drawingbook')">
+                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
+                        <img src="https://m.media-amazon.com/images/I/71qvfX9HWEL._AC_UF1000,1000_QL80_.jpg" alt="A3 Drawing Books" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
+                            <i class="fas fa-book text-4xl text-orange-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">A3 Drawing Books</h3>
+                        <p class="text-gray-600 mb-4">Premium quality drawing books with custom cover design.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-2xl font-bold text-blue-600">₹349</span>
+                                <span class="text-sm text-gray-500 line-through ml-2">₹499</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); addToCart('A3 Drawing Books', 349)" class="btn-primary focus-visible">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <h3 class="text-xl font-semibold mb-4">Add New Product</h3>
-                <form onsubmit="addProduct(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" id="product-name" placeholder="Product Name" required class="px-4 py-2 border border-gray-300 rounded-lg">
-                    <input type="number" id="product-price" placeholder="Price" required class="px-4 py-2 border border-gray-300 rounded-lg">
-                    <select id="product-category" required class="px-4 py-2 border border-gray-300 rounded-lg">
-                        <option value="">Select Category</option>
-                        <option value="frames">Photo Frames</option>
-                        <option value="trophies">Trophies</option>
-                        <option value="canvas">Canvas Prints</option>
-                        <option value="mugs">Custom Mugs</option>
-                    </select>
-                    <input type="text" id="product-image" placeholder="Product Emoji (🖼️, 🏆, etc.)" required class="px-4 py-2 border border-gray-300 rounded-lg">
-                    <textarea id="product-description" placeholder="Product Description" required class="px-4 py-2 border border-gray-300 rounded-lg md:col-span-2"></textarea>
-                    <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 md:col-span-2">
-                        Add Product
-                    </button>
-                </form>
+
+                <!-- Product 4: A4 Exam Boards -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('examboard')">
+                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
+                        <img src="https://m.media-amazon.com/images/I/71K8zQqKvyL._AC_UF1000,1000_QL80_.jpg" alt="A4 Exam Boards" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
+                            <i class="fas fa-clipboard text-4xl text-teal-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">A4 Exam Boards</h3>
+                        <p class="text-gray-600 mb-4">Durable exam boards with personalized design for students.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-2xl font-bold text-blue-600">₹299</span>
+                                <span class="text-sm text-gray-500 line-through ml-2">₹399</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); addToCart('A4 Exam Boards', 299)" class="btn-primary focus-visible">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 5: Anniversary Gifts -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('anniversary')">
+                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
+                        <img src="https://m.media-amazon.com/images/I/71xvQJ9RKOL._AC_UF1000,1000_QL80_.jpg" alt="Anniversary Gifts" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
+                            <i class="fas fa-heart text-4xl text-pink-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Anniversary Gifts</h3>
+                        <p class="text-gray-600 mb-4">Romantic personalized gifts to celebrate your special moments.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-2xl font-bold text-blue-600">₹899</span>
+                                <span class="text-sm text-gray-500 line-through ml-2">₹1199</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); addToCart('Anniversary Gifts', 899)" class="btn-primary focus-visible">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 6: Birthday Gifts -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('birthday')">
+                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
+                        <img src="https://m.media-amazon.com/images/I/71Zl7XJHPOL._AC_UF1000,1000_QL80_.jpg" alt="Birthday Gifts" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
+                            <i class="fas fa-birthday-cake text-4xl text-yellow-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Birthday Gifts</h3>
+                        <p class="text-gray-600 mb-4">Special personalized gifts to make birthdays memorable.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-2xl font-bold text-blue-600">₹799</span>
+                                <span class="text-sm text-gray-500 line-through ml-2">₹999</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); addToCart('Birthday Gifts', 799)" class="btn-primary focus-visible">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 7: Boyfriend Gifts -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('boyfriend')">
+                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
+                        <img src="https://m.media-amazon.com/images/I/71dKQJ8RKOL._AC_UF1000,1000_QL80_.jpg" alt="Boyfriend Gifts" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
+                            <i class="fas fa-male text-4xl text-blue-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Boyfriend Gifts</h3>
+                        <p class="text-gray-600 mb-4">Thoughtful personalized gifts for your special someone.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-2xl font-bold text-blue-600">₹699</span>
+                                <span class="text-sm text-gray-500 line-through ml-2">₹899</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); addToCart('Boyfriend Gifts', 699)" class="btn-primary focus-visible">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 8: Design Bundles & Catalogues -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('designbundle')">
+                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
+                        <img src="https://m.media-amazon.com/images/I/81VQJ9RKOL._AC_UF1000,1000_QL80_.jpg" alt="Design Bundles" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
+                            <i class="fas fa-folder-open text-4xl text-indigo-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Design Bundles</h3>
+                        <p class="text-gray-600 mb-4">Complete design packages and catalogues for your business.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-2xl font-bold text-blue-600">₹1499</span>
+                                <span class="text-sm text-gray-500 line-through ml-2">₹1999</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); addToCart('Design Bundles', 1499)" class="btn-primary focus-visible">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 9: Customized Frames -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('frame')">
+                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
+                        <img src="https://m.media-amazon.com/images/I/71xvQJ9RKOL._AC_UF1000,1000_QL80_.jpg" alt="Customized Frames" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
+                            <i class="fas fa-image text-4xl text-green-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Customized Frames</h3>
+                        <p class="text-gray-600 mb-4">Beautiful wooden frames with your precious memories.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-2xl font-bold text-blue-600">₹399</span>
+                                <span class="text-sm text-gray-500 line-through ml-2">₹549</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); addToCart('Customized Frames', 399)" class="btn-primary focus-visible">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 10: Customized Notebooks -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('notebook')">
+                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
+                        <img src="https://m.media-amazon.com/images/I/71K8zQqKvyL._AC_UF1000,1000_QL80_.jpg" alt="Customized Notebooks" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
+                            <i class="fas fa-book-open text-4xl text-purple-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Customized Notebooks</h3>
+                        <p class="text-gray-600 mb-4">Personalized notebooks for work, study, or journaling.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-2xl font-bold text-blue-600">₹249</span>
+                                <span class="text-sm text-gray-500 line-through ml-2">₹349</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); addToCart('Customized Notebooks', 249)" class="btn-primary focus-visible">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 11: Fridge Magnets -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('magnet')">
+                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
+                        <img src="https://m.media-amazon.com/images/I/61VuVU94RnL._AC_UF1000,1000_QL80_.jpg" alt="Fridge Magnets" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
+                            <i class="fas fa-magnet text-4xl text-red-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Fridge Magnets</h3>
+                        <p class="text-gray-600 mb-4">Custom photo magnets to decorate your refrigerator.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-2xl font-bold text-blue-600">₹149</span>
+                                <span class="text-sm text-gray-500 line-through ml-2">₹199</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); addToCart('Fridge Magnets', 149)" class="btn-primary focus-visible">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 12: Keychains -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('keychain')">
+                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
+                        <img src="https://m.media-amazon.com/images/I/71dKQJ8RKOL._AC_UF1000,1000_QL80_.jpg" alt="Custom Keychains" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
+                            <i class="fas fa-key text-4xl text-yellow-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Custom Keychains</h3>
+                        <p class="text-gray-600 mb-4">Durable acrylic keychains with your favorite photo.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-2xl font-bold text-blue-600">₹199</span>
+                                <span class="text-sm text-gray-500 line-through ml-2">₹299</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); addToCart('Custom Keychains', 199)" class="btn-primary focus-visible">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 13: Mousepads -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('mousepad')">
+                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
+                        <img src="https://m.media-amazon.com/images/I/71Zl7XJHPOL._AC_UF1000,1000_QL80_.jpg" alt="Custom Mousepads" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
+                            <i class="fas fa-mouse text-4xl text-gray-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Custom Mousepads</h3>
+                        <p class="text-gray-600 mb-4">High-quality mousepads with your custom design.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-2xl font-bold text-blue-600">₹299</span>
+                                <span class="text-sm text-gray-500 line-through ml-2">₹399</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); addToCart('Custom Mousepads', 299)" class="btn-primary focus-visible">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 14: Coasters -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('coaster')">
+                    <div class="h-64 bg-gradient-to-br from-brown-400 to-amber-500 flex items-center justify-center">
+                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg">
+                            <i class="fas fa-circle text-4xl text-amber-600"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Custom Coasters</h3>
+                        <p class="text-gray-600 mb-4">Elegant coasters with personalized designs for your home.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-2xl font-bold text-blue-600">₹199</span>
+                                <span class="text-sm text-gray-500 line-through ml-2">₹299</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); addToCart('Custom Coasters', 199)" class="btn-primary focus-visible">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 15: Photo Sketch Items -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('sketch')">
+                    <div class="h-64 bg-gradient-to-br from-slate-400 to-gray-500 flex items-center justify-center">
+                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg">
+                            <i class="fas fa-pencil-alt text-4xl text-slate-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Photo Sketch Items</h3>
+                        <p class="text-gray-600 mb-4">Beautiful hand-drawn sketches from your favorite photos.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-2xl font-bold text-blue-600">₹999</span>
+                                <span class="text-sm text-gray-500 line-through ml-2">₹1299</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); addToCart('Photo Sketch Items', 999)" class="btn-primary focus-visible">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 16: Hindu God Idols -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('idol')">
+                    <div class="h-64 bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center">
+                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg">
+                            <i class="fas fa-om text-4xl text-orange-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Hindu God Idols</h3>
+                        <p class="text-gray-600 mb-4">Sacred personalized idols for your home temple.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-2xl font-bold text-blue-600">₹1299</span>
+                                <span class="text-sm text-gray-500 line-through ml-2">₹1699</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); addToCart('Hindu God Idols', 1299)" class="btn-primary focus-visible">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 17: Caricatures -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('caricature')">
+                    <div class="h-64 bg-gradient-to-br from-pink-400 to-purple-500 flex items-center justify-center">
+                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg">
+                            <i class="fas fa-smile text-4xl text-pink-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Custom Caricatures</h3>
+                        <p class="text-gray-600 mb-4">Fun cartoon-style portraits that capture your personality.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-2xl font-bold text-blue-600">₹799</span>
+                                <span class="text-sm text-gray-500 line-through ml-2">₹999</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); addToCart('Custom Caricatures', 799)" class="btn-primary focus-visible">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 18: Custom Statues -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('statue')">
+                    <div class="h-64 bg-gradient-to-br from-stone-400 to-gray-600 flex items-center justify-center">
+                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg">
+                            <i class="fas fa-chess-king text-4xl text-stone-600"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Custom Statues</h3>
+                        <p class="text-gray-600 mb-4">Premium personalized statues for special occasions.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-2xl font-bold text-blue-600">₹2499</span>
+                                <span class="text-sm text-gray-500 line-through ml-2">₹2999</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); addToCart('Custom Statues', 2499)" class="btn-primary focus-visible">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 19: Custom Phone Case -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('phonecase')">
+                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
+                        <img src="https://m.media-amazon.com/images/I/61HaaYHZTaL._AC_UY1100_.jpg" alt="Custom Phone Case" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
+                            <i class="fas fa-mobile-alt text-4xl text-indigo-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Custom Phone Case</h3>
+                        <p class="text-gray-600 mb-4">Protective case with your custom design. All models available.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-2xl font-bold text-blue-600">₹699</span>
+                                <span class="text-sm text-gray-500 line-through ml-2">₹899</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); addToCart('Custom Phone Case', 699)" class="btn-primary focus-visible">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 20: Custom Cushion -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('cushion')">
+                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
+                        <img src="https://m.media-amazon.com/images/I/71xvQJ9RKOL._AC_UF1000,1000_QL80_.jpg" alt="Custom Cushion" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
+                            <i class="fas fa-couch text-4xl text-purple-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Custom Cushion</h3>
+                        <p class="text-gray-600 mb-4">Soft cushion with personalized design for home decor.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-2xl font-bold text-blue-600">₹799</span>
+                                <span class="text-sm text-gray-500 line-through ml-2">₹999</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); addToCart('Custom Cushion', 799)" class="btn-primary focus-visible">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Login Modal -->
-    <div id="login-modal" class="modal">
-        <div class="bg-white rounded-lg p-8 w-full max-w-md mx-4">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-2xl font-bold">Welcome Back</h3>
-                <button onclick="closeModal('login-modal')" class="text-gray-500 hover:text-gray-700 text-2xl">×</button>
-            </div>
-            
-            <!-- Auth Tabs -->
-            <div class="flex border-b mb-6">
-                <button class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
-                <button class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
-            </div>
-            
-            <!-- Login Form -->
-            <div id="login-form">
-                <form onsubmit="handleLogin(event)" class="space-y-4">
-                    <input type="email" id="login-email" placeholder="Email address" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
-                    <input type="password" id="login-password" placeholder="Password" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
-                    <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 font-semibold">
-                        Login
-                    </button>
-                </form>
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-gray-800 mb-8 fade-in">Why Choose CraftyWorth?</h2>
                 
-                <div class="text-center mt-4">
-                    <p class="text-gray-600">Demo accounts:</p>
-                    <p class="text-sm text-gray-500">User: user@demo.com | Admin: admin@demo.com</p>
-                </div>
-            </div>
-            
-            <!-- Sign Up Form -->
-            <div id="signup-form" class="hidden">
-                <form onsubmit="handleSignup(event)" class="space-y-4">
-                    <input type="text" id="signup-name" placeholder="Full Name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
-                    <input type="email" id="signup-email" placeholder="Email address" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
-                    <input type="password" id="signup-password" placeholder="Create Password" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
-                    <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 font-semibold">
-                        Create Account
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Cart Modal -->
-    <div id="cart-modal" class="modal">
-        <div class="bg-white rounded-lg p-8 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-2xl font-bold">Shopping Cart</h3>
-                <button onclick="closeModal('cart-modal')" class="text-gray-500 hover:text-gray-700 text-2xl">×</button>
-            </div>
-            
-            <div id="cart-items" class="space-y-4 mb-6">
-                <!-- Cart items will be populated here -->
-            </div>
-            
-            <div class="border-t pt-6">
-                <div class="flex items-center justify-between mb-4">
-                    <span class="text-lg font-semibold">Total: ₹<span id="cart-total">0</span></span>
-                </div>
-                <div class="flex space-x-4">
-                    <button onclick="closeModal('cart-modal')" class="flex-1 border border-gray-300 text-gray-700 py-3 rounded-lg hover:bg-gray-50">
-                        Continue Shopping
-                    </button>
-                    <button onclick="checkout()" class="flex-1 bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 font-semibold">
-                        Checkout
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Wishlist Modal -->
-    <div id="wishlist-modal" class="modal">
-        <div class="bg-white rounded-lg p-8 w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-2xl font-bold">My Wishlist</h3>
-                <button onclick="closeModal('wishlist-modal')" class="text-gray-500 hover:text-gray-700 text-2xl">×</button>
-            </div>
-            
-            <div id="wishlist-items" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Wishlist items will be populated here -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Customizer Modal -->
-    <div id="customizer-modal" class="modal">
-        <div class="bg-white rounded-lg p-8 w-full max-w-3xl mx-4 max-h-[90vh] overflow-y-auto">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-2xl font-bold">Customize Your Gift</h3>
-                <button onclick="closeModal('customizer-modal')" class="text-gray-500 hover:text-gray-700 text-2xl">×</button>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Upload Your Design</h4>
-                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-                        <input type="file" id="design-upload" accept="image/*" class="hidden" onchange="handleDesignUpload(event)">
-                        <button onclick="document.getElementById('design-upload').click()" class="text-4xl mb-4">📁</button>
-                        <p class="text-gray-600 mb-2">Click to upload your image</p>
-                        <p class="text-sm text-gray-500">Supports JPG, PNG (Max 5MB)</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <div class="fade-in">
+                        <div class="bg-white rounded-xl p-8 shadow-lg">
+                            <i class="fas fa-heart text-4xl text-red-500 mb-6"></i>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Made with Love</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                Every product is crafted with care and attention to detail. We believe in creating memories that last a lifetime.
+                            </p>
+                        </div>
                     </div>
-                    <div id="uploaded-design" class="mt-4 hidden">
-                        <img id="design-preview" class="w-full h-48 object-cover rounded-lg">
+                    
+                    <div class="fade-in">
+                        <div class="bg-white rounded-xl p-8 shadow-lg">
+                            <i class="fas fa-flag text-4xl text-orange-500 mb-6"></i>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Made in India</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                Proudly supporting local artisans and manufacturers. Quality products with the spirit of India.
+                            </p>
+                        </div>
                     </div>
+                    
+                    <div class="fade-in">
+                        <div class="bg-white rounded-xl p-8 shadow-lg">
+                            <i class="fas fa-shield-alt text-4xl text-green-500 mb-6"></i>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Quality Guarantee</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                We stand behind our products. If you're not satisfied, we'll make it right with our quality guarantee.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="fade-in">
+                        <div class="bg-white rounded-xl p-8 shadow-lg">
+                            <i class="fas fa-users text-4xl text-blue-500 mb-6"></i>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Happy Customers</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                Over 10,000+ satisfied customers across India. Join our family of happy customers today!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4 fade-in">Get in Touch</h2>
+                    <p class="text-xl text-gray-600 fade-in">Have questions? We'd love to hear from you!</p>
                 </div>
                 
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Customization Options</h4>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Product Type</label>
-                            <select id="custom-product-type" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                                <option value="frame">Photo Frame</option>
-                                <option value="mug">Custom Mug</option>
-                                <option value="canvas">Canvas Print</option>
-                                <option value="trophy">Trophy</option>
-                            </select>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <!-- Contact Form -->
+                    <div class="fade-in">
+                        <div class="bg-gray-50 rounded-xl p-8">
+                            <h3 class="text-2xl font-semibold mb-6 text-gray-800">Send us a Message</h3>
+                            <form id="contactForm" class="space-y-6">
+                                <div>
+                                    <label class="block text-gray-700 font-medium mb-2">Name</label>
+                                    <input type="text" id="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible" placeholder="Your Name" required>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 font-medium mb-2">Email</label>
+                                    <input type="email" id="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible" placeholder="your@email.com" required>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 font-medium mb-2">Message</label>
+                                    <textarea id="message" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible" placeholder="Your message..." required></textarea>
+                                </div>
+                                <button type="submit" class="w-full btn-primary focus-visible">
+                                    Send Message <i class="fas fa-paper-plane ml-2"></i>
+                                </button>
+                            </form>
                         </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Custom Text</label>
-                            <input type="text" id="custom-text" placeholder="Enter your custom text" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                    
+                    <!-- Contact Info -->
+                    <div class="fade-in">
+                        <div class="space-y-8">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-map-marker-alt text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-lg mb-2 text-gray-800">Address</h4>
+                                    <p class="text-gray-600">Sector 14, Gurgaon<br>Haryana, India - 122001</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-phone text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-lg mb-2 text-gray-800">Phone</h4>
+                                    <p class="text-gray-600">+91 98765 43210</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-envelope text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-lg mb-2 text-gray-800">Email</h4>
+                                    <p class="text-gray-600">hello@craftyworth.in</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-clock text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-lg mb-2 text-gray-800">Business Hours</h4>
+                                    <p class="text-gray-600">Mon - Sat: 9:00 AM - 7:00 PM<br>Sunday: 10:00 AM - 5:00 PM</p>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Size</label>
-                            <select id="custom-size" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                                <option value="small">Small</option>
-                                <option value="medium">Medium</option>
-                                <option value="large">Large</option>
-                            </select>
-                        </div>
-                        
-                        <div class="text-lg font-semibold text-purple-600">
-                            Price: ₹<span id="custom-price">999</span>
-                        </div>
-                        
-                        <button onclick="addCustomToCart()" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 font-semibold">
-                            Add to Cart
-                        </button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
     <!-- Footer -->
     <footer class="bg-gray-800 text-white py-12">
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
-                    <h4 class="text-xl font-bold mb-4">Crafty Worth</h4>
-                    <p class="text-gray-300 mb-4">Creating personalized memories since 2020. Your trusted partner for custom gifts.</p>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-xl">C</span>
+                        </div>
+                        <h3 class="text-xl font-bold">CraftyWorth</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Creating personalized memories with premium quality products made in India.</p>
                     <div class="flex space-x-4">
-                        <a href="#" class="text-2xl hover:text-purple-400">📘</a>
-                        <a href="#" class="text-2xl hover:text-purple-400">📷</a>
-                        <a href="#" class="text-2xl hover:text-purple-400">🐦</a>
+                        <a href="#" class="text-gray-400 hover:text-white transition focus-visible"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition focus-visible"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition focus-visible"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition focus-visible"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
                 
                 <div>
-                    <h5 class="font-semibold mb-4">Quick Links</h5>
-                    <div class="space-y-2">
-                        <a href="#" class="block text-gray-300 hover:text-white">About Us</a>
-                        <a href="#" class="block text-gray-300 hover:text-white">Contact</a>
-                        <a href="#" class="block text-gray-300 hover:text-white">FAQ</a>
-                        <a href="#" class="block text-gray-300 hover:text-white">Blog</a>
-                    </div>
+                    <h4 class="font-semibold text-lg mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-white transition focus-visible">Home</a></li>
+                        <li><a href="#products" class="text-gray-400 hover:text-white transition focus-visible">Products</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition focus-visible">About Us</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition focus-visible">Contact</a></li>
+                    </ul>
                 </div>
                 
                 <div>
-                    <h5 class="font-semibold mb-4">Customer Care</h5>
-                    <div class="space-y-2">
-                        <a href="#" class="block text-gray-300 hover:text-white">Shipping Info</a>
-                        <a href="#" class="block text-gray-300 hover:text-white">Returns</a>
-                        <a href="#" class="block text-gray-300 hover:text-white">Size Guide</a>
-                        <a href="#" onclick="trackOrder()" class="block text-gray-300 hover:text-white">Track Order</a>
-                    </div>
+                    <h4 class="font-semibold text-lg mb-4">Products</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition focus-visible">Custom Mugs</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition focus-visible">T-Shirts</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition focus-visible">Photo Frames</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition focus-visible">Phone Cases</a></li>
+                    </ul>
                 </div>
                 
                 <div>
-                    <h5 class="font-semibold mb-4">Contact Info</h5>
-                    <div class="space-y-2 text-gray-300">
-                        <p>📞 +91-9876543210</p>
-                        <p>📧 support@craftyworth.com</p>
-                        <p>📍 Mumbai, India</p>
-                        <p>🕒 Mon-Sat: 9AM-8PM</p>
-                    </div>
+                    <h4 class="font-semibold text-lg mb-4">Contact Info</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><i class="fas fa-map-marker-alt mr-2"></i>Gurgaon, Haryana</li>
+                        <li><i class="fas fa-phone mr-2"></i>+91 98765 43210</li>
+                        <li><i class="fas fa-envelope mr-2"></i>hello@craftyworth.in</li>
+                    </ul>
                 </div>
             </div>
             
-            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
-                <p>© 2024 Crafty Worth. All rights reserved. | Made with ❤️ in India</p>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p class="text-gray-400">&copy; 2024 CraftyWorth. All rights reserved. Made with ❤️ in India</p>
             </div>
         </div>
     </footer>
 
-    <!-- Notification Container -->
-    <div id="notification" class="notification"></div>
+    <!-- Product Customization Page -->
+    <div id="productPage" class="fixed inset-0 bg-white z-50 hidden overflow-y-auto">
+        <!-- Header -->
+        <div class="bg-white shadow-lg sticky top-0 z-10">
+            <div class="container mx-auto px-4 py-4">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-4">
+                        <button id="backToHome" class="text-gray-600 hover:text-blue-600 transition focus-visible">
+                            <i class="fas fa-arrow-left text-xl"></i>
+                        </button>
+                        <h1 id="productPageTitle" class="text-2xl font-bold text-gray-800">Customize Your Product</h1>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <button id="cartBtnProduct" class="text-gray-600 hover:text-blue-600 transition relative focus-visible">
+                                <i class="fas fa-shopping-cart text-xl"></i>
+                                <span id="cartCountProduct" class="cart-count hidden">0</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Customization Content -->
+        <div class="container mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Product Preview Section -->
+                <div class="space-y-8">
+                    <!-- Main Product Display -->
+                    <div class="bg-white rounded-xl shadow-lg p-8">
+                        <div id="productDisplayArea" class="h-96 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-lg flex items-center justify-center mb-6">
+                            <div class="w-48 h-48 bg-white rounded-lg flex items-center justify-center shadow-lg">
+                                <i id="productDisplayIcon" class="fas fa-mug-hot text-6xl text-blue-500"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Image Upload Area -->
+                        <div id="dropZone" class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-400 transition">
+                            <input type="file" id="productImageUpload" accept="image/*" class="hidden">
+                            <label for="productImageUpload" class="cursor-pointer block">
+                                <div id="uploadArea">
+                                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                                    <h3 class="text-lg font-semibold text-gray-700 mb-2">Upload Your Image</h3>
+                                    <p class="text-gray-500 mb-2">Click here or drag and drop</p>
+                                    <p class="text-sm text-gray-400">PNG, JPG, JPEG up to 10MB</p>
+                                </div>
+                                <div id="imagePreview" class="hidden">
+                                    <img id="previewImg" class="max-w-full h-32 object-cover rounded-lg mx-auto mb-2" alt="Preview">
+                                    <p class="text-sm text-green-600">✓ Image uploaded successfully</p>
+                                    <button type="button" id="removeImage" class="mt-2 text-red-500 hover:text-red-700 text-sm">
+                                        <i class="fas fa-trash mr-1"></i>Remove Image
+                                    </button>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Product Features -->
+                    <div class="bg-gray-50 rounded-xl p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Product Features</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-check-circle text-green-500"></i>
+                                <span class="text-gray-600">Premium Quality Material</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-check-circle text-green-500"></i>
+                                <span class="text-gray-600">High Resolution Printing</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-check-circle text-green-500"></i>
+                                <span class="text-gray-600">Fade Resistant Colors</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-check-circle text-green-500"></i>
+                                <span class="text-gray-600">Made in India</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customization Options Section -->
+                <div class="space-y-8">
+                    <!-- Product Info -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h2 id="productCustomTitle" class="text-2xl font-bold text-gray-800 mb-2">Custom Photo Mug</h2>
+                                <div class="flex items-center space-x-2">
+                                    <span id="productCustomPrice" class="text-3xl font-bold text-blue-600">₹499</span>
+                                    <span class="text-lg text-gray-500 line-through">₹699</span>
+                                    <span class="bg-red-100 text-red-600 px-2 py-1 rounded-full text-sm font-semibold">29% OFF</span>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="flex items-center space-x-1 text-yellow-400 mb-1">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <p class="text-sm text-gray-500">4.9 (2,847 reviews)</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-4 text-sm text-gray-600 mb-6">
+                            <div class="flex items-center space-x-1">
+                                <i class="fas fa-shipping-fast text-green-500"></i>
+                                <span>Free Delivery</span>
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <i class="fas fa-clock text-blue-500"></i>
+                                <span>3-5 Days</span>
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <i class="fas fa-shield-alt text-purple-500"></i>
+                                <span>Quality Guaranteed</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Customization Form -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-6">Customize Your Product</h3>
+                        
+                        <!-- Custom Text -->
+                        <div class="mb-6">
+                            <label class="block text-gray-700 font-medium mb-3">Add Custom Text (Optional)</label>
+                            <input type="text" id="productCustomText" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" placeholder="Enter your custom text here...">
+                            <p class="text-sm text-gray-500 mt-2">Add names, dates, or special messages</p>
+                        </div>
+
+                        <!-- Size Selection (for applicable products) -->
+                        <div id="productSizeSection" class="mb-6 hidden">
+                            <label class="block text-gray-700 font-medium mb-3">Select Size</label>
+                            <div class="grid grid-cols-4 gap-3">
+                                <button class="product-size-btn px-4 py-3 border-2 border-gray-300 rounded-lg hover:border-blue-500 transition focus-visible font-semibold" data-size="S">
+                                    S
+                                </button>
+                                <button class="product-size-btn px-4 py-3 border-2 border-gray-300 rounded-lg hover:border-blue-500 transition focus-visible font-semibold" data-size="M">
+                                    M
+                                </button>
+                                <button class="product-size-btn px-4 py-3 border-2 border-gray-300 rounded-lg hover:border-blue-500 transition focus-visible font-semibold" data-size="L">
+                                    L
+                                </button>
+                                <button class="product-size-btn px-4 py-3 border-2 border-gray-300 rounded-lg hover:border-blue-500 transition focus-visible font-semibold" data-size="XL">
+                                    XL
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Color Selection -->
+                        <div class="mb-6">
+                            <label class="block text-gray-700 font-medium mb-3">Choose Color</label>
+                            <div class="flex space-x-3">
+                                <button class="product-color-btn w-12 h-12 rounded-full bg-white border-3 border-gray-300 hover:scale-110 transition-transform focus-visible" data-color="white" title="White"></button>
+                                <button class="product-color-btn w-12 h-12 rounded-full bg-black border-3 border-gray-300 hover:scale-110 transition-transform focus-visible" data-color="black" title="Black"></button>
+                                <button class="product-color-btn w-12 h-12 rounded-full bg-red-500 border-3 border-gray-300 hover:scale-110 transition-transform focus-visible" data-color="red" title="Red"></button>
+                                <button class="product-color-btn w-12 h-12 rounded-full bg-blue-500 border-3 border-gray-300 hover:scale-110 transition-transform focus-visible" data-color="blue" title="Blue"></button>
+                                <button class="product-color-btn w-12 h-12 rounded-full bg-green-500 border-3 border-gray-300 hover:scale-110 transition-transform focus-visible" data-color="green" title="Green"></button>
+                            </div>
+                        </div>
+
+                        <!-- Quantity Selection -->
+                        <div class="mb-8">
+                            <label class="block text-gray-700 font-medium mb-3">Quantity</label>
+                            <div class="flex items-center space-x-4">
+                                <button id="productDecreaseQty" class="w-12 h-12 border-2 border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition focus-visible flex items-center justify-center">
+                                    <i class="fas fa-minus text-gray-600"></i>
+                                </button>
+                                <span id="productQuantity" class="text-2xl font-bold text-gray-800 min-w-[3rem] text-center">1</span>
+                                <button id="productIncreaseQty" class="w-12 h-12 border-2 border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition focus-visible flex items-center justify-center">
+                                    <i class="fas fa-plus text-gray-600"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Price Summary -->
+                        <div class="bg-gray-50 rounded-lg p-6 mb-6">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-gray-600">Unit Price:</span>
+                                <span id="unitPrice" class="font-semibold text-gray-800">₹499</span>
+                            </div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-gray-600">Quantity:</span>
+                                <span id="summaryQuantity" class="font-semibold text-gray-800">1</span>
+                            </div>
+                            <div class="border-t pt-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-lg font-semibold text-gray-800">Total Price:</span>
+                                    <span id="productTotalPrice" class="text-2xl font-bold text-blue-600">₹499</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="space-y-4">
+                            <button id="productAddToCart" class="w-full btn-primary text-lg py-4 focus-visible">
+                                <i class="fas fa-shopping-cart mr-2"></i>
+                                Add to Cart
+                            </button>
+                            <button id="productOrderNow" class="w-full bg-green-500 text-white px-6 py-4 rounded-full font-semibold text-lg hover:bg-green-600 transition focus-visible">
+                                <i class="fas fa-check mr-2"></i>
+                                Save Customization
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Delivery Info -->
+                    <div class="bg-blue-50 rounded-xl p-6">
+                        <h3 class="text-lg font-semibold text-blue-800 mb-4">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            Delivery Information
+                        </h3>
+                        <div class="space-y-3 text-blue-700">
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-truck text-blue-500"></i>
+                                <span>Free delivery on orders above ₹999</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-clock text-blue-500"></i>
+                                <span>Delivery in 3-5 business days</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-shield-alt text-blue-500"></i>
+                                <span>100% quality guarantee or money back</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-xl max-w-md w-full p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-semibold text-gray-800">Shopping Cart</h3>
+                    <button id="closeCart" class="text-gray-500 hover:text-gray-700 focus-visible">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <div id="cartItems" class="space-y-4 mb-6">
+                    <p class="text-gray-500 text-center py-8">Your cart is empty</p>
+                </div>
+                
+                <div id="cartTotal" class="border-t pt-4 hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="font-semibold text-gray-800">Total: </span>
+                        <span id="totalAmount" class="font-bold text-xl text-blue-600">₹0</span>
+                    </div>
+                    <button onclick="checkout()" class="w-full btn-primary focus-visible">
+                        Proceed to Checkout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel for Image Management -->
+    <div id="adminPanel" class="fixed top-4 left-4 bg-white rounded-lg shadow-lg p-4 z-50 hidden">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold text-gray-800">Image Manager</h3>
+            <button id="closeAdmin" class="text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <!-- Single Image Upload -->
+        <div class="mb-6">
+            <h4 class="font-medium text-gray-700 mb-2">Single Product Image</h4>
+            <div class="space-y-2">
+                <select id="singleProductSelect" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                    <option value="">Select Product</option>
+                    <option value="mug">Custom Photo Mug</option>
+                    <option value="tshirt">Personalized T-Shirt</option>
+                    <option value="drawingbook">A3 Drawing Books</option>
+                    <option value="examboard">A4 Exam Boards</option>
+                    <option value="anniversary">Anniversary Gifts</option>
+                    <option value="birthday">Birthday Gifts</option>
+                    <option value="boyfriend">Boyfriend Gifts</option>
+                    <option value="designbundle">Design Bundles</option>
+                    <option value="frame">Customized Frames</option>
+                    <option value="notebook">Customized Notebooks</option>
+                    <option value="magnet">Fridge Magnets</option>
+                    <option value="keychain">Custom Keychains</option>
+                    <option value="mousepad">Custom Mousepads</option>
+                    <option value="coaster">Custom Coasters</option>
+                    <option value="sketch">Photo Sketch Items</option>
+                    <option value="idol">Hindu God Idols</option>
+                    <option value="caricature">Custom Caricatures</option>
+                    <option value="statue">Custom Statues</option>
+                    <option value="phonecase">Custom Phone Case</option>
+                    <option value="cushion">Custom Cushion</option>
+                </select>
+                <input type="url" id="singleAwsUrl" placeholder="AWS Image URL" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                <button id="loadSingleImage" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                    Load Image
+                </button>
+            </div>
+        </div>
+        
+        <!-- Bulk Upload from Excel/CSV -->
+        <div class="mb-6">
+            <h4 class="font-medium text-gray-700 mb-2">Bulk Upload (Excel/CSV)</h4>
+            <div class="space-y-2">
+                <textarea id="csvData" placeholder="Paste CSV data here:&#10;productId,awsUrl&#10;mug,https://your-aws-url.com/image1.jpg&#10;tshirt,https://your-aws-url.com/image2.jpg" class="w-full px-3 py-2 border border-gray-300 rounded-lg h-24 text-sm"></textarea>
+                <button id="loadBulkImages" class="w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+                    Load Bulk Images
+                </button>
+            </div>
+        </div>
+        
+        <!-- Current Images Status -->
+        <div>
+            <h4 class="font-medium text-gray-700 mb-2">Current Images</h4>
+            <div id="imageStatus" class="text-sm text-gray-600 max-h-32 overflow-y-auto">
+                <p>No custom images loaded</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Toggle Button -->
+    <button id="adminToggle" class="fixed top-4 left-4 bg-gray-800 text-white p-2 rounded-lg shadow-lg hover:bg-gray-700 transition z-40">
+        <i class="fas fa-cog"></i>
+    </button>
+
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/919876543210?text=Hi! I'm interested in your custom products" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition floating z-40 focus-visible">
+        <i class="fab fa-whatsapp text-2xl"></i>
+    </a>
 
     <script>
-        // Global variables
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
-        let products = [
-            {
-                id: 'PF001',
-                name: 'Premium Photo Frame',
-                price: 799,
-                originalPrice: 999,
-                category: 'frames',
-                image: '🖼️',
-                description: 'Personalized wooden frame with custom engraving. Perfect for your favorite memories.',
-                rating: 4.8,
-                reviews: 124,
-                inStock: true,
-                discount: 20
-            },
-            {
-                id: 'TR001',
-                name: 'Custom Trophy',
-                price: 1299,
-                category: 'trophies',
-                image: '🏆',
-                description: 'Premium metal trophy with personalized engraving. Celebrate achievements in style.',
-                rating: 4.9,
-                reviews: 89,
-                inStock: true,
-                bestseller: true
-            },
-            {
-                id: 'CP001',
-                name: 'Canvas Print',
-                price: 1599,
-                category: 'canvas',
-                image: '🎨',
-                description: 'High-quality canvas print with custom design. Transform your photos into art.',
-                rating: 4.7,
-                reviews: 67,
-                inStock: true,
-                isNew: true
-            },
-            {
-                id: 'MG001',
-                name: 'Custom Mug',
-                price: 399,
-                category: 'mugs',
-                image: '☕',
-                description: 'Ceramic mug with your favorite photo. Perfect for daily use or as a gift.',
-                rating: 4.6,
-                reviews: 156,
-                inStock: true,
-                limited: true
-            },
-            {
-                id: 'PF002',
-                name: 'Elegant Glass Frame',
-                price: 1199,
-                category: 'frames',
-                image: '🖼️',
-                description: 'Crystal clear glass frame with premium finish. Elegant display for your memories.',
-                rating: 4.5,
-                reviews: 43,
-                inStock: true
-            },
-            {
-                id: 'TR002',
-                name: 'Achievement Award',
-                price: 899,
-                category: 'trophies',
-                image: '🏆',
-                description: 'Beautiful achievement award with custom text. Perfect for recognizing excellence.',
-                rating: 4.7,
-                reviews: 78,
-                inStock: true
-            }
-        ];
+        // AWS Configuration (In production, these would come from environment variables)
+        const AWS_CONFIG = {
+            region: 'us-east-1',
+            cloudFrontUrl: 'https://d1234567890.cloudfront.net',
+            apiEndpoint: '/api'
+        };
 
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', function() {
-            loadProducts();
-            updateCartCount();
-            updateWishlistCount();
-            updateUserUI();
-        });
+        // Cart functionality
+        let cart = [];
+        let cartCount = 0;
+        let currentProduct = {};
 
-        // User Management
-        function updateUserUI() {
-            if (currentUser) {
-                document.getElementById('user-display').textContent = currentUser.name;
-                document.getElementById('user-greeting').textContent = `Welcome, ${currentUser.name}!`;
-                document.getElementById('user-greeting').classList.remove('hidden');
-                document.getElementById('guest-menu').classList.add('hidden');
-                document.getElementById('user-menu-items').classList.remove('hidden');
-                
-                if (currentUser.isAdmin) {
-                    document.getElementById('admin-menu-item').classList.remove('admin-hidden');
-                    document.getElementById('admin-menu-item').classList.add('admin-visible');
+        // Image management utilities
+        class ImageManager {
+            static async getSignedUrl(objectKey) {
+                try {
+                    const response = await fetch(`${AWS_CONFIG.apiEndpoint}/uploads/get-url?key=${encodeURIComponent(objectKey)}`);
+                    if (!response.ok) throw new Error('Failed to get signed URL');
+                    const data = await response.json();
+                    return data.signedUrl;
+                } catch (error) {
+                    console.error('Error getting signed URL:', error);
+                    return null;
                 }
             }
-        }
 
-        function toggleUserMenu() {
-            const menu = document.getElementById('user-menu');
-            menu.classList.toggle('hidden');
-        }
+            static getPublicUrl(objectKey) {
+                return `${AWS_CONFIG.cloudFrontUrl}/${objectKey}`;
+            }
 
-        // Authentication
-        function openLogin() {
-            openModal('login-modal');
-        }
+            static async uploadFile(file, uploadType = 'customization') {
+                // Validate file
+                if (!file.type.startsWith('image/')) {
+                    throw new Error('Please select an image file');
+                }
+                if (file.size > 10 * 1024 * 1024) { // 10MB limit
+                    throw new Error('File size must be less than 10MB');
+                }
 
-        function switchAuthTab(tab) {
-            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            if (tab === 'login') {
-                document.getElementById('login-form').classList.remove('hidden');
-                document.getElementById('signup-form').classList.add('hidden');
-            } else {
-                document.getElementById('login-form').classList.add('hidden');
-                document.getElementById('signup-form').classList.remove('hidden');
+                // Get presigned URL
+                const response = await fetch(`${AWS_CONFIG.apiEndpoint}/uploads/presign`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        fileName: file.name,
+                        fileType: file.type,
+                        fileSize: file.size,
+                        uploadType: uploadType
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to get upload URL');
+                }
+
+                const { presignedUrl, objectKey, cloudFrontUrl } = await response.json();
+
+                // Upload to S3
+                const uploadResponse = await fetch(presignedUrl, {
+                    method: 'PUT',
+                    body: file,
+                    headers: {
+                        'Content-Type': file.type,
+                    }
+                });
+
+                if (!uploadResponse.ok) {
+                    throw new Error('Failed to upload file');
+                }
+
+                return { objectKey, cloudFrontUrl };
             }
         }
 
-        function handleLogin(event) {
-            event.preventDefault();
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            
-            // Demo login logic
-            let user = {
-                name: email.split('@')[0],
-                email: email,
-                isAdmin: email === 'admin@demo.com'
-            };
-            
-            currentUser = user;
-            localStorage.setItem('currentUser', JSON.stringify(user));
-            
-            updateUserUI();
-            closeModal('login-modal');
-            showNotification(`Welcome back, ${user.name}!`, 'success');
-        }
+        // Product data with AWS image support
+        const products = {
+            mug: { name: 'Custom Photo Mug', price: 499, icon: 'fas fa-mug-hot', gradient: 'from-red-400 to-pink-500', hasSize: false, awsImage: '' },
+            tshirt: { name: 'Personalized T-Shirt', price: 599, icon: 'fas fa-tshirt', gradient: 'from-blue-400 to-indigo-500', hasSize: true, awsImage: '' },
+            drawingbook: { name: 'A3 Drawing Books', price: 349, icon: 'fas fa-book', gradient: 'from-orange-400 to-red-500', hasSize: false, awsImage: '' },
+            examboard: { name: 'A4 Exam Boards', price: 299, icon: 'fas fa-clipboard', gradient: 'from-teal-400 to-green-500', hasSize: false, awsImage: '' },
+            anniversary: { name: 'Anniversary Gifts', price: 899, icon: 'fas fa-heart', gradient: 'from-pink-400 to-rose-500', hasSize: false, awsImage: '' },
+            birthday: { name: 'Birthday Gifts', price: 799, icon: 'fas fa-birthday-cake', gradient: 'from-yellow-400 to-orange-500', hasSize: false, awsImage: '' },
+            boyfriend: { name: 'Boyfriend Gifts', price: 699, icon: 'fas fa-male', gradient: 'from-blue-400 to-purple-500', hasSize: false, awsImage: '' },
+            designbundle: { name: 'Design Bundles', price: 1499, icon: 'fas fa-folder-open', gradient: 'from-indigo-400 to-blue-500', hasSize: false, awsImage: '' },
+            frame: { name: 'Customized Frames', price: 399, icon: 'fas fa-image', gradient: 'from-green-400 to-teal-500', hasSize: false, awsImage: '' },
+            notebook: { name: 'Customized Notebooks', price: 249, icon: 'fas fa-book-open', gradient: 'from-purple-400 to-pink-500', hasSize: false, awsImage: '' },
+            magnet: { name: 'Fridge Magnets', price: 149, icon: 'fas fa-magnet', gradient: 'from-red-400 to-orange-500', hasSize: false, awsImage: '' },
+            keychain: { name: 'Custom Keychains', price: 199, icon: 'fas fa-key', gradient: 'from-yellow-400 to-orange-500', hasSize: false, awsImage: '' },
+            mousepad: { name: 'Custom Mousepads', price: 299, icon: 'fas fa-mouse', gradient: 'from-gray-400 to-blue-500', hasSize: false, awsImage: '' },
+            coaster: { name: 'Custom Coasters', price: 199, icon: 'fas fa-circle', gradient: 'from-brown-400 to-amber-500', hasSize: false, awsImage: '' },
+            sketch: { name: 'Photo Sketch Items', price: 999, icon: 'fas fa-pencil-alt', gradient: 'from-slate-400 to-gray-500', hasSize: false, awsImage: '' },
+            idol: { name: 'Hindu God Idols', price: 1299, icon: 'fas fa-om', gradient: 'from-orange-400 to-red-500', hasSize: false, awsImage: '' },
+            caricature: { name: 'Custom Caricatures', price: 799, icon: 'fas fa-smile', gradient: 'from-pink-400 to-purple-500', hasSize: false, awsImage: '' },
+            statue: { name: 'Custom Statues', price: 2499, icon: 'fas fa-chess-king', gradient: 'from-stone-400 to-gray-600', hasSize: false, awsImage: '' },
+            phonecase: { name: 'Custom Phone Case', price: 699, icon: 'fas fa-mobile-alt', gradient: 'from-indigo-400 to-blue-500', hasSize: false, awsImage: '' },
+            cushion: { name: 'Custom Cushion', price: 799, icon: 'fas fa-couch', gradient: 'from-purple-400 to-pink-500', hasSize: false, awsImage: '' }
+        };
 
-        function handleSignup(event) {
-            event.preventDefault();
-            const name = document.getElementById('signup-name').value;
-            const email = document.getElementById('signup-email').value;
-            
-            let user = {
-                name: name,
-                email: email,
-                isAdmin: false
-            };
-            
-            currentUser = user;
-            localStorage.setItem('currentUser', JSON.stringify(user));
-            
-            updateUserUI();
-            closeModal('login-modal');
-            showNotification(`Account created successfully! Welcome, ${name}!`, 'success');
-        }
-
-        function logout() {
-            currentUser = null;
-            localStorage.removeItem('currentUser');
-            
-            document.getElementById('user-display').textContent = 'Account';
-            document.getElementById('user-greeting').classList.add('hidden');
-            document.getElementById('guest-menu').classList.remove('hidden');
-            document.getElementById('user-menu-items').classList.add('hidden');
-            document.getElementById('admin-menu-item').classList.add('admin-hidden');
-            
-            closeUserMenu();
-            showNotification('Logged out successfully', 'info');
-        }
-
-        function closeUserMenu() {
-            document.getElementById('user-menu').classList.add('hidden');
-        }
-
-        // Product Management
-        function loadProducts(filter = 'all') {
-            const grid = document.getElementById('products-grid');
-            let filteredProducts = filter === 'all' ? products : products.filter(p => p.category === filter);
-            
-            grid.innerHTML = filteredProducts.map(product => `
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
-                    <div class="relative">
-                        <div class="w-full h-64 bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center text-6xl">
-                            ${product.image}
-                        </div>
-                        ${product.discount ? `<div class="absolute top-4 left-4 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-semibold">${product.discount}% OFF</div>` : ''}
-                        ${product.bestseller ? `<div class="absolute top-4 left-4 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-semibold">BESTSELLER</div>` : ''}
-                        ${product.isNew ? `<div class="absolute top-4 left-4 bg-blue-500 text-white px-2 py-1 rounded-full text-xs font-semibold">NEW</div>` : ''}
-                        ${product.limited ? `<div class="absolute top-4 left-4 bg-yellow-500 text-white px-2 py-1 rounded-full text-xs font-semibold">LIMITED</div>` : ''}
-                        <button onclick="toggleWishlist('${product.id}')" class="absolute top-4 right-4 text-2xl hover:scale-110 transition-transform">
-                            ${wishlist.includes(product.id) ? '❤️' : '🤍'}
-                        </button>
-                    </div>
-                    <div class="p-6">
-                        <h4 class="font-semibold text-lg mb-2">${product.name}</h4>
-                        <p class="text-gray-600 text-sm mb-4">${product.description}</p>
-                        
-                        <div class="flex items-center mb-4">
-                            <span class="text-yellow-400">⭐⭐⭐⭐⭐</span>
-                            <span class="text-sm text-gray-600 ml-2">(${product.reviews})</span>
-                        </div>
-                        
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center space-x-2">
-                                <span class="text-2xl font-bold text-purple-600">₹${product.price}</span>
-                                ${product.originalPrice ? `<span class="text-lg text-gray-500 line-through">₹${product.originalPrice}</span>` : ''}
-                            </div>
-                            <span class="text-sm text-green-600 font-semibold">✓ In Stock</span>
-                        </div>
-                        
-                        <div class="flex space-x-2">
-                            <button onclick="addToCart('${product.id}')" class="flex-1 bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors font-semibold">
-                                Add to Cart
-                            </button>
-                            <button onclick="viewProduct('${product.id}')" class="px-4 py-3 border border-purple-600 text-purple-600 rounded-lg hover:bg-purple-600 hover:text-white transition-colors">
-                                View
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function filterProducts(category) {
-            loadProducts(category);
-            scrollToProducts();
-        }
-
-        function searchProducts() {
-            const query = document.getElementById('search-input').value.toLowerCase();
-            if (query.length === 0) {
-                loadProducts();
-                return;
+        // AWS Image Management System
+        class AWSImageLoader {
+            static loadProductImages(imageData) {
+                // imageData can be array from Excel or single object
+                if (Array.isArray(imageData)) {
+                    imageData.forEach(item => {
+                        if (item.productId && item.awsUrl && products[item.productId]) {
+                            products[item.productId].awsImage = item.awsUrl;
+                        }
+                    });
+                } else if (imageData.productId && imageData.awsUrl) {
+                    if (products[imageData.productId]) {
+                        products[imageData.productId].awsImage = imageData.awsUrl;
+                    }
+                }
+                this.refreshProductDisplay();
             }
-            
-            const filtered = products.filter(product => 
-                product.name.toLowerCase().includes(query) ||
-                product.description.toLowerCase().includes(query) ||
-                product.category.toLowerCase().includes(query)
-            );
-            
-            const grid = document.getElementById('products-grid');
-            if (filtered.length === 0) {
-                grid.innerHTML = '<div class="col-span-full text-center py-12 text-gray-500"><h3 class="text-xl font-semibold mb-2">No products found</h3><p>Try searching with different keywords</p></div>';
-                return;
-            }
-            
-            grid.innerHTML = filtered.map(product => `
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
-                    <div class="relative">
-                        <div class="w-full h-64 bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center text-6xl">
-                            ${product.image}
-                        </div>
-                        <button onclick="toggleWishlist('${product.id}')" class="absolute top-4 right-4 text-2xl hover:scale-110 transition-transform">
-                            ${wishlist.includes(product.id) ? '❤️' : '🤍'}
-                        </button>
-                    </div>
-                    <div class="p-6">
-                        <h4 class="font-semibold text-lg mb-2">${product.name}</h4>
-                        <p class="text-gray-600 text-sm mb-4">${product.description}</p>
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="text-2xl font-bold text-purple-600">₹${product.price}</span>
-                        </div>
-                        <div class="flex space-x-2">
-                            <button onclick="addToCart('${product.id}')" class="flex-1 bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors font-semibold">
-                                Add to Cart
-                            </button>
-                            <button onclick="viewProduct('${product.id}')" class="px-4 py-3 border border-purple-600 text-purple-600 rounded-lg hover:bg-purple-600 hover:text-white transition-colors">
-                                View
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
 
-        function viewProduct(productId) {
-            const product = products.find(p => p.id === productId);
-            if (!product) return;
-            
-            document.getElementById('main-content').classList.add('hidden');
-            document.getElementById('product-detail-section').classList.remove('hidden');
-            
-            const content = document.getElementById('product-detail-content');
-            content.innerHTML = `
-                <div>
-                    <div class="w-full h-96 bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center text-8xl rounded-2xl mb-6">
-                        ${product.image}
-                    </div>
-                    <div class="grid grid-cols-4 gap-4">
-                        <div class="h-20 bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center text-2xl rounded-lg cursor-pointer hover:ring-2 hover:ring-purple-500">
-                            ${product.image}
-                        </div>
-                        <div class="h-20 bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center text-2xl rounded-lg cursor-pointer hover:ring-2 hover:ring-purple-500">
-                            ${product.image}
-                        </div>
-                        <div class="h-20 bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center text-2xl rounded-lg cursor-pointer hover:ring-2 hover:ring-purple-500">
-                            ${product.image}
-                        </div>
-                        <div class="h-20 bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center text-2xl rounded-lg cursor-pointer hover:ring-2 hover:ring-purple-500">
-                            ${product.image}
-                        </div>
-                    </div>
-                </div>
-                
-                <div>
-                    <div class="mb-6">
-                        ${product.bestseller ? '<span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold mr-2">BESTSELLER</span>' : ''}
-                        ${product.isNew ? '<span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold mr-2">NEW</span>' : ''}
-                        ${product.limited ? '<span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-semibold">LIMITED EDITION</span>' : ''}
-                    </div>
-                    
-                    <h1 class="text-3xl font-bold mb-4">${product.name}</h1>
-                    
-                    <div class="flex items-center mb-6">
-                        <span class="text-yellow-400 text-xl">⭐⭐⭐⭐⭐</span>
-                        <span class="text-gray-600 ml-2">${product.rating} (${product.reviews} reviews)</span>
-                    </div>
-                    
-                    <div class="flex items-center space-x-4 mb-6">
-                        <span class="text-4xl font-bold text-purple-600">₹${product.price}</span>
-                        ${product.originalPrice ? `<span class="text-2xl text-gray-500 line-through">₹${product.originalPrice}</span>` : ''}
-                        ${product.discount ? `<span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-semibold">${product.discount}% OFF</span>` : ''}
-                    </div>
-                    
-                    <p class="text-gray-700 text-lg mb-8">${product.description}</p>
-                    
-                    <div class="space-y-4 mb-8">
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Size</label>
-                            <select class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                                <option>Small (6x4 inches)</option>
-                                <option>Medium (8x6 inches)</option>
-                                <option>Large (10x8 inches)</option>
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Quantity</label>
-                            <div class="flex items-center space-x-4">
-                                <button class="w-10 h-10 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-100">-</button>
-                                <span class="text-lg font-semibold">1</span>
-                                <button class="w-10 h-10 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-100">+</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex space-x-4 mb-8">
-                        <button onclick="addToCart('${product.id}')" class="flex-1 bg-purple-600 text-white py-4 rounded-lg hover:bg-purple-700 transition-colors font-semibold text-lg">
-                            Add to Cart
-                        </button>
-                        <button onclick="toggleWishlist('${product.id}')" class="px-6 py-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                            ${wishlist.includes(product.id) ? '❤️' : '🤍'}
-                        </button>
-                    </div>
-                    
-                    <div class="bg-gray-50 p-6 rounded-lg">
-                        <h3 class="font-semibold mb-4">Product Features</h3>
-                        <ul class="space-y-2 text-gray-700">
-                            <li>✓ Premium quality materials</li>
-                            <li>✓ Custom personalization available</li>
-                            <li>✓ Fast delivery across India</li>
-                            <li>✓ 30-day return policy</li>
-                            <li>✓ Gift wrapping included</li>
-                        </ul>
-                    </div>
-                </div>
-            `;
-        }
-
-        function goBack() {
-            document.getElementById('product-detail-section').classList.add('hidden');
-            document.getElementById('main-content').classList.remove('hidden');
-        }
-
-        function goHome() {
-            document.getElementById('product-detail-section').classList.add('hidden');
-            document.getElementById('admin-panel-section').classList.add('hidden');
-            document.getElementById('main-content').classList.remove('hidden');
-        }
-
-        // Cart Management
-        function addToCart(productId) {
-            const product = products.find(p => p.id === productId);
-            if (!product) return;
-            
-            const existingItem = cart.find(item => item.id === productId);
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({
-                    id: productId,
-                    name: product.name,
-                    price: product.price,
-                    image: product.image,
-                    quantity: 1
+            static refreshProductDisplay() {
+                // Update all product cards with new AWS images
+                Object.keys(products).forEach(productId => {
+                    const productCard = document.querySelector(`[onclick="openProductPage('${productId}')"]`);
+                    if (productCard && products[productId].awsImage) {
+                        const imgElement = productCard.querySelector('img');
+                        if (imgElement) {
+                            imgElement.src = products[productId].awsImage;
+                            imgElement.style.display = 'block';
+                            const iconElement = imgElement.nextElementSibling;
+                            if (iconElement) {
+                                iconElement.style.display = 'none';
+                            }
+                        }
+                    }
                 });
             }
+
+            static validateAWSUrl(url) {
+                // Validate AWS S3 or CloudFront URL
+                const awsPatterns = [
+                    /^https:\/\/.*\.s3\..*\.amazonaws\.com\/.*/,
+                    /^https:\/\/s3\..*\.amazonaws\.com\/.*/,
+                    /^https:\/\/.*\.cloudfront\.net\/.*/,
+                    /^https:\/\/d[a-z0-9]+\.cloudfront\.net\/.*/
+                ];
+                return awsPatterns.some(pattern => pattern.test(url));
+            }
+
+            static bulkLoadFromExcel(csvData) {
+                // Parse CSV/Excel data
+                const lines = csvData.split('\n');
+                const headers = lines[0].split(',').map(h => h.trim());
+                const imageData = [];
+
+                for (let i = 1; i < lines.length; i++) {
+                    const values = lines[i].split(',').map(v => v.trim());
+                    if (values.length >= 2) {
+                        const productId = values[0];
+                        const awsUrl = values[1];
+                        
+                        if (productId && awsUrl && this.validateAWSUrl(awsUrl)) {
+                            imageData.push({ productId, awsUrl });
+                        }
+                    }
+                }
+
+                this.loadProductImages(imageData);
+                return imageData.length;
+            }
+        }
+
+        function openProductPage(productType) {
+            currentProduct = { ...products[productType], type: productType, quantity: 1, size: 'M', color: 'white', customText: '', image: null };
             
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCount();
-            showNotification(`${product.name} added to cart!`, 'success');
-        }
-
-        function removeFromCart(productId) {
-            cart = cart.filter(item => item.id !== productId);
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCount();
-            populateCart();
-            showNotification('Item removed from cart', 'info');
-        }
-
-        function updateCartCount() {
-            const count = cart.reduce((total, item) => total + item.quantity, 0);
-            document.getElementById('cart-count').textContent = count;
-        }
-
-        function openCart() {
-            populateCart();
-            openModal('cart-modal');
-        }
-
-        function populateCart() {
-            const container = document.getElementById('cart-items');
+            // Update product page content
+            document.getElementById('productPageTitle').textContent = `Customize ${currentProduct.name}`;
+            document.getElementById('productCustomTitle').textContent = currentProduct.name;
+            document.getElementById('productDisplayIcon').className = `${currentProduct.icon} text-6xl text-blue-500`;
+            document.getElementById('productDisplayArea').className = `h-96 bg-gradient-to-br ${currentProduct.gradient} rounded-lg flex items-center justify-center mb-6`;
+            document.getElementById('productCustomPrice').textContent = `₹${currentProduct.price}`;
+            document.getElementById('productTotalPrice').textContent = `₹${currentProduct.price}`;
+            document.getElementById('unitPrice').textContent = `₹${currentProduct.price}`;
             
-            if (cart.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-12 text-gray-500">
-                        <div class="text-6xl mb-4">🛒</div>
-                        <h4 class="text-xl font-semibold mb-2">Your cart is empty</h4>
-                        <p class="mb-6">Add some amazing personalized gifts!</p>
-                        <button onclick="closeModal('cart-modal')" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700">
-                            Start Shopping
-                        </button>
-                    </div>
-                `;
-                document.getElementById('cart-total').textContent = '0';
-                return;
+            // Update cart count on product page
+            document.getElementById('cartCountProduct').textContent = cartCount;
+            if (cartCount > 0) {
+                document.getElementById('cartCountProduct').classList.remove('hidden');
+            } else {
+                document.getElementById('cartCountProduct').classList.add('hidden');
             }
             
-            container.innerHTML = cart.map(item => `
-                <div class="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg">
-                    <div class="w-16 h-16 bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center text-2xl rounded-lg">
-                        ${item.image}
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="font-semibold text-lg">${item.name}</h4>
-                        <div class="text-gray-600">Quantity: ${item.quantity}</div>
-                        <div class="text-green-600 text-sm">✓ In Stock</div>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-xl font-bold text-purple-600">₹${item.price * item.quantity}</div>
-                        <button onclick="removeFromCart('${item.id}')" class="text-red-500 text-sm hover:underline">Remove</button>
-                    </div>
-                </div>
-            `).join('');
+            // Show/hide size options
+            const sizeSection = document.getElementById('productSizeSection');
+            if (currentProduct.hasSize) {
+                sizeSection.classList.remove('hidden');
+            } else {
+                sizeSection.classList.add('hidden');
+            }
             
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            document.getElementById('cart-total').textContent = total;
+            // Reset form
+            document.getElementById('productCustomText').value = '';
+            document.getElementById('productQuantity').textContent = '1';
+            document.getElementById('summaryQuantity').textContent = '1';
+            document.querySelectorAll('.product-size-btn').forEach(btn => btn.classList.remove('bg-blue-500', 'text-white', 'border-blue-500'));
+            document.querySelectorAll('.product-color-btn').forEach(btn => btn.classList.remove('ring-4', 'ring-blue-500'));
+            document.querySelector('[data-size="M"]')?.classList.add('bg-blue-500', 'text-white', 'border-blue-500');
+            document.querySelector('[data-color="white"]')?.classList.add('ring-4', 'ring-blue-500');
+            
+            // Reset image upload
+            document.getElementById('imagePreview').classList.add('hidden');
+            document.getElementById('uploadArea').classList.remove('hidden');
+            
+            // Show product page
+            document.getElementById('productPage').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function addToCart(productName, price) {
+            cart.push({ name: productName, price: price });
+            cartCount++;
+            updateCartUI();
+            showNotification(`${productName} added to cart!`);
+        }
+
+        function updateCartUI() {
+            const cartCountElement = document.getElementById('cartCount');
+            if (cartCount > 0) {
+                cartCountElement.textContent = cartCount;
+                cartCountElement.classList.remove('hidden');
+            } else {
+                cartCountElement.classList.add('hidden');
+            }
+        }
+
+        function showCart() {
+            const modal = document.getElementById('cartModal');
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            const totalAmount = document.getElementById('totalAmount');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p class="text-gray-500 text-center py-8">Your cart is empty</p>';
+                cartTotal.classList.add('hidden');
+            } else {
+                let itemsHTML = '';
+                let total = 0;
+                
+                cart.forEach((item, index) => {
+                    total += item.price;
+                    itemsHTML += `
+                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                            <span class="text-gray-800">${item.name}</span>
+                            <div class="flex items-center space-x-2">
+                                <span class="font-semibold text-gray-800">₹${item.price}</span>
+                                <button onclick="removeFromCart(${index})" class="text-red-500 hover:text-red-700 focus-visible">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                cartItems.innerHTML = itemsHTML;
+                totalAmount.textContent = `₹${total}`;
+                cartTotal.classList.remove('hidden');
+            }
+            
+            modal.classList.remove('hidden');
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            cartCount--;
+            updateCartUI();
+            showCart();
         }
 
         function checkout() {
-            if (cart.length === 0) {
-                showNotification('Your cart is empty!', 'error');
-                return;
-            }
+            if (cart.length === 0) return;
             
-            if (!currentUser) {
-                closeModal('cart-modal');
-                openLogin();
-                showNotification('Please login to checkout', 'info');
-                return;
-            }
+            let message = "Hi! I want to order:\n\n";
+            let total = 0;
             
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            showNotification(`Order placed successfully! Total: ₹${total}`, 'success');
+            cart.forEach(item => {
+                message += `• ${item.name} - ₹${item.price}\n`;
+                total += item.price;
+            });
             
-            // Clear cart
-            cart = [];
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCount();
-            closeModal('cart-modal');
+            message += `\nTotal: ₹${total}`;
+            
+            const whatsappURL = `https://wa.me/919876543210?text=${encodeURIComponent(message)}`;
+            window.open(whatsappURL, '_blank');
         }
 
-        // Wishlist Management
-        function toggleWishlist(productId) {
-            const isInWishlist = wishlist.includes(productId);
-            
-            if (isInWishlist) {
-                wishlist = wishlist.filter(id => id !== productId);
-                showNotification('Removed from wishlist', 'info');
-            } else {
-                wishlist.push(productId);
-                showNotification('Added to wishlist! ❤️', 'success');
-            }
-            
-            localStorage.setItem('wishlist', JSON.stringify(wishlist));
-            updateWishlistCount();
-            
-            // Update heart icons
-            loadProducts();
-        }
-
-        function updateWishlistCount() {
-            document.getElementById('wishlist-count').textContent = wishlist.length;
-        }
-
-        function openWishlist() {
-            populateWishlist();
-            openModal('wishlist-modal');
-        }
-
-        function populateWishlist() {
-            const container = document.getElementById('wishlist-items');
-            
-            if (wishlist.length === 0) {
-                container.innerHTML = `
-                    <div class="col-span-full text-center py-12 text-gray-500">
-                        <div class="text-6xl mb-4">💝</div>
-                        <h4 class="text-xl font-semibold mb-2">Your wishlist is empty</h4>
-                        <p>Save items you love for later!</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            const wishlistProducts = products.filter(p => wishlist.includes(p.id));
-            container.innerHTML = wishlistProducts.map(product => `
-                <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                    <div class="w-full h-48 bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center text-4xl">
-                        ${product.image}
-                    </div>
-                    <div class="p-4">
-                        <h4 class="font-semibold mb-2">${product.name}</h4>
-                        <div class="text-lg font-bold text-purple-600 mb-3">₹${product.price}</div>
-                        <div class="flex space-x-2">
-                            <button onclick="addToCart('${product.id}')" class="flex-1 bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition-colors text-sm">
-                                Add to Cart
-                            </button>
-                            <button onclick="toggleWishlist('${product.id}')" class="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                                ❤️
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Customizer
-        function openCustomizer() {
-            openModal('customizer-modal');
-        }
-
-        function handleDesignUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('design-preview').src = e.target.result;
-                    document.getElementById('uploaded-design').classList.remove('hidden');
-                };
-                reader.readAsDataURL(file);
-                showNotification('Design uploaded successfully!', 'success');
-            }
-        }
-
-        function addCustomToCart() {
-            const productType = document.getElementById('custom-product-type').value;
-            const customText = document.getElementById('custom-text').value;
-            const size = document.getElementById('custom-size').value;
-            const price = parseInt(document.getElementById('custom-price').textContent);
-            
-            const customProduct = {
-                id: 'CUSTOM_' + Date.now(),
-                name: `Custom ${productType.charAt(0).toUpperCase() + productType.slice(1)}`,
-                price: price,
-                image: productType === 'frame' ? '🖼️' : productType === 'mug' ? '☕' : productType === 'canvas' ? '🎨' : '🏆',
-                quantity: 1,
-                customization: {
-                    text: customText,
-                    size: size,
-                    hasUpload: !document.getElementById('uploaded-design').classList.contains('hidden')
-                }
-            };
-            
-            cart.push(customProduct);
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCount();
-            closeModal('customizer-modal');
-            showNotification('Custom product added to cart!', 'success');
-        }
-
-        // Admin Panel
-        function openAdminPanel() {
-            if (!currentUser || !currentUser.isAdmin) {
-                showNotification('Access denied. Admin privileges required.', 'error');
-                return;
-            }
-            
-            document.getElementById('main-content').classList.add('hidden');
-            document.getElementById('admin-panel-section').classList.remove('hidden');
-            closeUserMenu();
-        }
-
-        function closeAdminPanel() {
-            document.getElementById('admin-panel-section').classList.add('hidden');
-            document.getElementById('main-content').classList.remove('hidden');
-        }
-
-        function addProduct(event) {
-            event.preventDefault();
-            
-            const name = document.getElementById('product-name').value;
-            const price = parseInt(document.getElementById('product-price').value);
-            const category = document.getElementById('product-category').value;
-            const image = document.getElementById('product-image').value;
-            const description = document.getElementById('product-description').value;
-            
-            const newProduct = {
-                id: 'PROD_' + Date.now(),
-                name: name,
-                price: price,
-                category: category,
-                image: image,
-                description: description,
-                rating: 4.5,
-                reviews: 0,
-                inStock: true
-            };
-            
-            products.push(newProduct);
-            loadProducts();
-            
-            // Clear form
-            event.target.reset();
-            
-            showNotification('Product added successfully!', 'success');
-        }
-
-        // Utility Functions
+        // Smooth scrolling
         function scrollToProducts() {
-            document.getElementById('products-section').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function trackOrder() {
-            if (!currentUser) {
-                openLogin();
-                showNotification('Please login to track your order', 'info');
-                return;
+        function scrollToAbout() {
+            document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Mobile menu toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Cart modal events
+        document.getElementById('cartBtn').addEventListener('click', showCart);
+        document.getElementById('closeCart').addEventListener('click', function() {
+            document.getElementById('cartModal').classList.add('hidden');
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('cartModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.add('hidden');
             }
-            showNotification('Order tracking feature coming soon!', 'info');
-        }
+        });
 
-        function viewProfile() {
-            showNotification('Profile page coming soon!', 'info');
-            closeUserMenu();
-        }
+        // Contact form
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            
+            const whatsappMessage = `New Contact Form Submission:\n\nName: ${name}\nEmail: ${email}\nMessage: ${message}`;
+            const whatsappURL = `https://wa.me/919876543210?text=${encodeURIComponent(whatsappMessage)}`;
+            
+            window.open(whatsappURL, '_blank');
+            showNotification('Message sent! We\'ll get back to you soon.');
+            
+            this.reset();
+        });
 
-        function viewOrders() {
-            showNotification('Orders page coming soon!', 'info');
-            closeUserMenu();
-        }
-
-        function viewCustomizations() {
-            showNotification('Saved designs page coming soon!', 'info');
-            closeUserMenu();
-        }
-
-        // Modal Functions
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.add('active');
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-        }
-
-        // Notification System
+        // Enhanced notification system
         function showNotification(message, type = 'success') {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.className = `notification ${type} show`;
+            const notification = document.createElement('div');
+            let bgColor = 'bg-green-500';
+            let icon = 'fas fa-check-circle';
+            
+            switch(type) {
+                case 'error':
+                    bgColor = 'bg-red-500';
+                    icon = 'fas fa-exclamation-circle';
+                    break;
+                case 'info':
+                    bgColor = 'bg-blue-500';
+                    icon = 'fas fa-info-circle';
+                    break;
+                case 'warning':
+                    bgColor = 'bg-yellow-500';
+                    icon = 'fas fa-exclamation-triangle';
+                    break;
+            }
+            
+            notification.className = `fixed top-4 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform flex items-center space-x-2`;
+            notification.innerHTML = `<i class="${icon}"></i><span>${message}</span>`;
+            
+            document.body.appendChild(notification);
             
             setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, type === 'error' ? 5000 : 3000);
         }
 
-        // Close modals when clicking outside
-        window.onclick = function(event) {
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => {
-                if (event.target === modal) {
-                    modal.classList.remove('active');
+        // Fade in animation on scroll
+        function handleScrollAnimation() {
+            const elements = document.querySelectorAll('.fade-in');
+            
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
                 }
             });
         }
 
-        // Close user menu when clicking outside
-        document.addEventListener('click', function(event) {
-            const userMenu = document.getElementById('user-menu');
-            const userButton = event.target.closest('[onclick="toggleUserMenu()"]');
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                    document.getElementById('mobileMenu').classList.add('hidden');
+                }
+            });
+        });
+
+        // Product customization event handlers
+        document.addEventListener('DOMContentLoaded', function() {
+            // Back to home button
+            document.getElementById('backToHome').addEventListener('click', function() {
+                document.getElementById('productPage').classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            });
+
+            // Cart button on product page
+            document.getElementById('cartBtnProduct').addEventListener('click', showCart);
+
+            // Quantity controls on product page
+            document.getElementById('productIncreaseQty').addEventListener('click', function() {
+                currentProduct.quantity++;
+                document.getElementById('productQuantity').textContent = currentProduct.quantity;
+                document.getElementById('summaryQuantity').textContent = currentProduct.quantity;
+                updateProductTotalPrice();
+            });
+
+            document.getElementById('productDecreaseQty').addEventListener('click', function() {
+                if (currentProduct.quantity > 1) {
+                    currentProduct.quantity--;
+                    document.getElementById('productQuantity').textContent = currentProduct.quantity;
+                    document.getElementById('summaryQuantity').textContent = currentProduct.quantity;
+                    updateProductTotalPrice();
+                }
+            });
+
+            // Size selection on product page
+            document.querySelectorAll('.product-size-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.product-size-btn').forEach(b => b.classList.remove('bg-blue-500', 'text-white', 'border-blue-500'));
+                    this.classList.add('bg-blue-500', 'text-white', 'border-blue-500');
+                    currentProduct.size = this.dataset.size;
+                });
+            });
+
+            // Color selection on product page
+            document.querySelectorAll('.product-color-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.product-color-btn').forEach(b => b.classList.remove('ring-4', 'ring-blue-500'));
+                    this.classList.add('ring-4', 'ring-blue-500');
+                    currentProduct.color = this.dataset.color;
+                });
+            });
+
+            // Custom text input on product page
+            document.getElementById('productCustomText').addEventListener('input', function() {
+                currentProduct.customText = this.value;
+            });
+
+            // Image upload functionality
+            async function handleImageUpload(file) {
+                try {
+                    showNotification('Uploading image...', 'info');
+                    
+                    const { objectKey, cloudFrontUrl } = await ImageManager.uploadFile(file, 'customization');
+
+                    // Update UI with uploaded image
+                    currentProduct.image = objectKey;
+                    currentProduct.imageUrl = cloudFrontUrl;
+                    document.getElementById('previewImg').src = cloudFrontUrl;
+                    document.getElementById('uploadArea').classList.add('hidden');
+                    document.getElementById('imagePreview').classList.remove('hidden');
+                    showNotification('Image uploaded successfully!', 'success');
+
+                } catch (error) {
+                    console.error('Upload error:', error);
+                    showNotification(error.message || 'Failed to upload image. Please try again.', 'error');
+                }
+            }
+
+            // File input change event
+            document.getElementById('productImageUpload').addEventListener('change', async function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    await handleImageUpload(file);
+                }
+            });
+
+            // Drag and drop functionality
+            const dropZone = document.getElementById('dropZone');
             
-            if (!userButton && !userMenu.contains(event.target)) {
-                userMenu.classList.add('hidden');
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, unhighlight, false);
+            });
+
+            function highlight(e) {
+                dropZone.classList.add('border-blue-500', 'bg-blue-50');
+            }
+
+            function unhighlight(e) {
+                dropZone.classList.remove('border-blue-500', 'bg-blue-50');
+            }
+
+            dropZone.addEventListener('drop', handleDrop, false);
+
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                
+                if (files.length > 0) {
+                    handleImageUpload(files[0]);
+                }
+            }
+
+            // Remove image functionality
+            document.addEventListener('click', function(e) {
+                if (e.target.id === 'removeImage' || e.target.closest('#removeImage')) {
+                    currentProduct.image = null;
+                    currentProduct.imageUrl = null;
+                    document.getElementById('uploadArea').classList.remove('hidden');
+                    document.getElementById('imagePreview').classList.add('hidden');
+                    document.getElementById('productImageUpload').value = '';
+                    showNotification('Image removed', 'info');
+                }
+            });
+
+            // Add to cart from product page
+            document.getElementById('productAddToCart').addEventListener('click', function() {
+                const customizedProduct = {
+                    name: currentProduct.name,
+                    price: currentProduct.price * currentProduct.quantity,
+                    quantity: currentProduct.quantity,
+                    size: currentProduct.size,
+                    color: currentProduct.color,
+                    customText: currentProduct.customText,
+                    hasImage: !!currentProduct.image
+                };
+                
+                cart.push(customizedProduct);
+                cartCount += currentProduct.quantity;
+                updateCartUI();
+                document.getElementById('cartCountProduct').textContent = cartCount;
+                document.getElementById('cartCountProduct').classList.remove('hidden');
+                showNotification(`${customizedProduct.name} added to cart!`);
+            });
+
+            // Save customization from product page
+            document.getElementById('productOrderNow').addEventListener('click', function() {
+                const customizedProduct = {
+                    name: currentProduct.name,
+                    price: currentProduct.price * currentProduct.quantity,
+                    quantity: currentProduct.quantity,
+                    size: currentProduct.size,
+                    color: currentProduct.color,
+                    customText: currentProduct.customText,
+                    hasImage: !!currentProduct.image
+                };
+                
+                cart.push(customizedProduct);
+                cartCount += currentProduct.quantity;
+                updateCartUI();
+                document.getElementById('cartCountProduct').textContent = cartCount;
+                document.getElementById('cartCountProduct').classList.remove('hidden');
+                showNotification('Customization saved to cart!');
+            });
+        });
+
+        function updateProductTotalPrice() {
+            const total = currentProduct.price * currentProduct.quantity;
+            document.getElementById('productTotalPrice').textContent = `₹${total}`;
+        }
+
+        // Admin Panel Functionality
+        function updateImageStatus() {
+            const statusDiv = document.getElementById('imageStatus');
+            const loadedImages = Object.keys(products).filter(key => products[key].awsImage);
+            
+            if (loadedImages.length === 0) {
+                statusDiv.innerHTML = '<p>No custom images loaded</p>';
+            } else {
+                let statusHTML = '';
+                loadedImages.forEach(productId => {
+                    const product = products[productId];
+                    statusHTML += `<div class="flex justify-between items-center py-1">
+                        <span class="text-xs">${product.name}</span>
+                        <span class="text-green-500 text-xs">✓</span>
+                    </div>`;
+                });
+                statusDiv.innerHTML = statusHTML;
+            }
+        }
+
+        // Admin Panel Event Listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Admin toggle
+            document.getElementById('adminToggle').addEventListener('click', function() {
+                document.getElementById('adminPanel').classList.toggle('hidden');
+                updateImageStatus();
+            });
+
+            // Close admin panel
+            document.getElementById('closeAdmin').addEventListener('click', function() {
+                document.getElementById('adminPanel').classList.add('hidden');
+            });
+
+            // Single image load
+            document.getElementById('loadSingleImage').addEventListener('click', function() {
+                const productId = document.getElementById('singleProductSelect').value;
+                const awsUrl = document.getElementById('singleAwsUrl').value;
+
+                if (!productId) {
+                    showNotification('Please select a product', 'error');
+                    return;
+                }
+
+                if (!awsUrl) {
+                    showNotification('Please enter AWS URL', 'error');
+                    return;
+                }
+
+                if (!AWSImageLoader.validateAWSUrl(awsUrl)) {
+                    showNotification('Please enter a valid AWS URL', 'error');
+                    return;
+                }
+
+                AWSImageLoader.loadProductImages({ productId, awsUrl });
+                showNotification(`Image loaded for ${products[productId].name}`, 'success');
+                updateImageStatus();
+                
+                // Clear form
+                document.getElementById('singleProductSelect').value = '';
+                document.getElementById('singleAwsUrl').value = '';
+            });
+
+            // Bulk image load
+            document.getElementById('loadBulkImages').addEventListener('click', function() {
+                const csvData = document.getElementById('csvData').value.trim();
+
+                if (!csvData) {
+                    showNotification('Please paste CSV data', 'error');
+                    return;
+                }
+
+                try {
+                    const loadedCount = AWSImageLoader.bulkLoadFromExcel(csvData);
+                    if (loadedCount > 0) {
+                        showNotification(`Successfully loaded ${loadedCount} images`, 'success');
+                        updateImageStatus();
+                        document.getElementById('csvData').value = '';
+                    } else {
+                        showNotification('No valid images found in CSV data', 'warning');
+                    }
+                } catch (error) {
+                    showNotification('Error processing CSV data', 'error');
+                    console.error('CSV processing error:', error);
+                }
+            });
+        });
+
+        // Search functionality
+        function initializeSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const mobileSearchInput = document.getElementById('mobileSearchInput');
+            const searchResults = document.getElementById('searchResults');
+            
+            function performSearch(query) {
+                if (!query.trim()) {
+                    searchResults.classList.add('hidden');
+                    return;
+                }
+                
+                const results = Object.keys(products).filter(key => {
+                    const product = products[key];
+                    return product.name.toLowerCase().includes(query.toLowerCase());
+                });
+                
+                if (results.length === 0) {
+                    searchResults.innerHTML = '<div class="p-4 text-gray-500 text-center">No products found</div>';
+                } else {
+                    let resultsHTML = '';
+                    results.forEach(productId => {
+                        const product = products[productId];
+                        resultsHTML += `
+                            <div class="p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0" onclick="openProductPage('${productId}'); document.getElementById('searchResults').classList.add('hidden'); document.getElementById('searchInput').value = '';">
+                                <div class="flex items-center space-x-3">
+                                    <i class="${product.icon} text-blue-500"></i>
+                                    <div>
+                                        <div class="font-medium text-gray-800">${product.name}</div>
+                                        <div class="text-sm text-blue-600 font-semibold">₹${product.price}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    searchResults.innerHTML = resultsHTML;
+                }
+                
+                searchResults.classList.remove('hidden');
+            }
+            
+            // Desktop search
+            searchInput.addEventListener('input', function() {
+                performSearch(this.value);
+            });
+            
+            searchInput.addEventListener('focus', function() {
+                if (this.value.trim()) {
+                    performSearch(this.value);
+                }
+            });
+            
+            // Mobile search
+            mobileSearchInput.addEventListener('input', function() {
+                const query = this.value;
+                if (query.trim()) {
+                    // Filter products on page
+                    const productCards = document.querySelectorAll('[onclick^="openProductPage"]');
+                    productCards.forEach(card => {
+                        const productName = card.querySelector('h3').textContent.toLowerCase();
+                        if (productName.includes(query.toLowerCase())) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                } else {
+                    // Show all products
+                    const productCards = document.querySelectorAll('[onclick^="openProductPage"]');
+                    productCards.forEach(card => {
+                        card.style.display = 'block';
+                    });
+                }
+            });
+            
+            // Close search results when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                    searchResults.classList.add('hidden');
+                }
+            });
+        }
+
+        // Initialize animations on page load
+        window.addEventListener('scroll', handleScrollAnimation);
+        window.addEventListener('load', function() {
+            handleScrollAnimation();
+            initializeSearch();
+        });
+
+        // Keyboard navigation support
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.getElementById('cartModal').classList.add('hidden');
+                document.getElementById('productPage').classList.add('hidden');
+                document.getElementById('mobileMenu').classList.add('hidden');
+                document.getElementById('adminPanel').classList.add('hidden');
+                document.body.style.overflow = 'auto';
             }
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'976ce2f4c5c3595a',t:'MTc1NjQ3OTI5Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'976d0b61d590899d',t:'MTc1NjQ4MDk1My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

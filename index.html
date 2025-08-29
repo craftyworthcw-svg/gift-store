@@ -3,75 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CraftyWorth - Premium Custom Products | Made in India</title>
+    <title>CraftyWorth - Custom Products</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        * {
-            font-family: 'Poppins', sans-serif;
+        .page-section {
+            display: none;
+        }
+        .page-section.active {
+            display: block;
         }
         
-        .hero-gradient {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-        
-        .card-hover:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-        
-        .floating-animation {
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-        
-        .pulse-animation {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-        
-        .slide-in {
-            animation: slideIn 0.8s ease-out;
-        }
-        
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .cart-item {
-            transition: all 0.3s ease;
-        }
-        
-        .cart-item:hover {
-            background-color: #f8fafc;
-        }
-        
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            transform: translateX(400px);
+        .product-card {
             transition: transform 0.3s ease;
         }
-        
-        .notification.show {
-            transform: translateX(0);
+        .product-card:hover {
+            transform: translateY(-5px);
         }
         
         .modal {
@@ -84,67 +32,41 @@
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 1000;
         }
-        
         .modal.show {
             display: flex;
             align-items: center;
             justify-content: center;
         }
         
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            overflow: hidden;
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+        .notification.show {
+            transform: translateX(0);
         }
         
-        .quantity-btn {
-            background: #f9fafb;
-            border: none;
-            padding: 8px 12px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        
-        .quantity-btn:hover {
-            background: #e5e7eb;
-        }
-        
-        .quantity-input {
-            border: none;
-            text-align: center;
-            width: 60px;
-            padding: 8px 4px;
-            outline: none;
-        }
-        
-        .testimonial-card {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        }
-        
-        .feature-icon {
+        .hero-bg {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
         
-        .price-tag {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-        }
-        
-        .indian-flag {
-            background: linear-gradient(to bottom, #ff9933 33%, #ffffff 33%, #ffffff 66%, #138808 66%);
-        }
-        
-        .rupee-symbol {
-            color: #138808;
-            font-weight: bold;
-        }
-        
-        .made-in-india {
-            background: linear-gradient(135deg, #ff9933 0%, #ffffff 50%, #138808 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     </style>
 </head>
@@ -154,794 +76,186 @@
         <span id="notificationText">Success!</span>
     </div>
 
-    <!-- Header -->
-    <header class="bg-white shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto px-4">
-            <div class="flex items-center justify-between py-4">
-                <div class="flex items-center space-x-2">
-                    <div class="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center">
-                        <i class="fas fa-palette text-white text-xl"></i>
-                    </div>
-                    <div>
-                        <h1 class="text-2xl font-bold text-gray-800">CraftyWorth</h1>
-                        <p class="text-xs text-gray-500 made-in-india font-semibold">Made in India 🇮🇳</p>
-                    </div>
-                </div>
-                
-                <nav class="hidden md:flex space-x-8">
-                    <a href="#home" class="text-gray-700 hover:text-purple-600 font-medium transition">Home</a>
-                    <a href="#products" class="text-gray-700 hover:text-purple-600 font-medium transition">Products</a>
-                    <a href="#about" class="text-gray-700 hover:text-purple-600 font-medium transition">About</a>
-                    <a href="#contact" class="text-gray-700 hover:text-purple-600 font-medium transition">Contact</a>
-                </nav>
-                
-                <div class="flex items-center space-x-4">
-                    <div class="relative">
-                        <button onclick="toggleCart()" class="relative p-2 text-gray-700 hover:text-purple-600 transition">
-                            <i class="fas fa-shopping-cart text-xl"></i>
-                            <span id="cartCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
-                        </button>
-                    </div>
-                    
-                    <button class="md:hidden" onclick="toggleMobileMenu()">
-                        <i class="fas fa-bars text-xl text-gray-700"></i>
-                    </button>
-                </div>
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="bg-white rounded-lg shadow-xl p-8 max-w-md w-full mx-4">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Sign In</h2>
+                <p class="text-gray-600 mt-2">Welcome back!</p>
             </div>
             
-            <!-- Mobile Menu -->
-            <div id="mobileMenu" class="hidden md:hidden pb-4">
-                <nav class="flex flex-col space-y-2">
-                    <a href="#home" class="text-gray-700 hover:text-purple-600 py-2">Home</a>
-                    <a href="#products" class="text-gray-700 hover:text-purple-600 py-2">Products</a>
-                    <a href="#about" class="text-gray-700 hover:text-purple-600 py-2">About</a>
-                    <a href="#contact" class="text-gray-700 hover:text-purple-600 py-2">Contact</a>
-                </nav>
-            </div>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section id="home" class="hero-gradient text-white py-20">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div class="slide-in">
-                    <div class="flex items-center mb-4">
-                        <span class="indian-flag w-8 h-6 rounded mr-3"></span>
-                        <span class="bg-white/20 text-white px-3 py-1 rounded-full text-sm font-medium">
-                            🇮🇳 Proudly Made in India
-                        </span>
-                    </div>
-                    <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-                        Create <span class="text-yellow-300">Memories</span><br>
-                        That Last Forever
-                    </h1>
-                    <p class="text-xl mb-8 text-white/90">
-                        Premium custom products crafted with love in India. From personalized mugs to custom apparel - bring your ideas to life with our expert craftsmanship.
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <button onclick="scrollToProducts()" class="bg-white text-purple-600 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition transform hover:scale-105">
-                            <i class="fas fa-shopping-bag mr-2"></i>Shop Now
-                        </button>
-                        <button onclick="scrollToAbout()" class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-purple-600 transition">
-                            <i class="fas fa-play mr-2"></i>Learn More
-                        </button>
-                    </div>
-                    
-                    <!-- Indian Features -->
-                    <div class="grid grid-cols-3 gap-4 mt-12">
-                        <div class="text-center">
-                            <div class="text-2xl font-bold">₹299+</div>
-                            <div class="text-sm text-white/80">Starting Price</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-2xl font-bold">24-48hrs</div>
-                            <div class="text-sm text-white/80">Quick Delivery</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-2xl font-bold">100%</div>
-                            <div class="text-sm text-white/80">Indian Made</div>
-                        </div>
-                    </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Email</label>
+                    <input type="email" id="loginEmail" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter your email">
                 </div>
-                
-                <div class="floating-animation">
-                    <div class="relative">
-                        <div class="absolute inset-0 bg-white/20 rounded-3xl transform rotate-6"></div>
-                        <div class="relative bg-white rounded-3xl p-8 shadow-2xl">
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl p-4 text-white">
-                                    <i class="fas fa-mug-hot text-3xl mb-2"></i>
-                                    <p class="font-semibold">Custom Mugs</p>
-                                    <p class="text-sm opacity-90">From ₹499</p>
-                                </div>
-                                <div class="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl p-4 text-white">
-                                    <i class="fas fa-tshirt text-3xl mb-2"></i>
-                                    <p class="font-semibold">T-Shirts</p>
-                                    <p class="text-sm opacity-90">From ₹599</p>
-                                </div>
-                                <div class="bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl p-4 text-white">
-                                    <i class="fas fa-image text-3xl mb-2"></i>
-                                    <p class="font-semibold">Photo Frames</p>
-                                    <p class="text-sm opacity-90">From ₹399</p>
-                                </div>
-                                <div class="bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl p-4 text-white">
-                                    <i class="fas fa-key text-3xl mb-2"></i>
-                                    <p class="font-semibold">Keychains</p>
-                                    <p class="text-sm opacity-90">From ₹199</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Password</label>
+                    <input type="password" id="loginPassword" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter your password">
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">Why Choose CraftyWorth?</h2>
-                <p class="text-xl text-gray-600">Experience the best of Indian craftsmanship with modern technology</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="text-center card-hover">
-                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-shipping-fast text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Fast Delivery</h3>
-                    <p class="text-gray-600">Quick delivery across India within 24-48 hours via trusted courier partners</p>
-                </div>
-                
-                <div class="text-center card-hover">
-                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-award text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Premium Quality</h3>
-                    <p class="text-gray-600">High-quality materials and printing technology for long-lasting products</p>
-                </div>
-                
-                <div class="text-center card-hover">
-                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-rupee-sign text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Best Prices</h3>
-                    <p class="text-gray-600">Competitive pricing with no hidden charges. Pay in INR with multiple payment options</p>
-                </div>
-                
-                <div class="text-center card-hover">
-                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-heart text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Made with Love</h3>
-                    <p class="text-gray-600">Every product is crafted with care by skilled Indian artisans</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Products Section -->
-    <section id="products" class="py-20 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">Our Premium Products</h2>
-                <p class="text-xl text-gray-600">Discover our range of customizable products, all made in India</p>
-            </div>
-            
-            <!-- Product Categories -->
-            <div class="flex flex-wrap justify-center gap-4 mb-12">
-                <button onclick="filterProducts('all')" class="filter-btn bg-purple-600 text-white px-6 py-2 rounded-full font-medium hover:bg-purple-700 transition">
-                    All Products
-                </button>
-                <button onclick="filterProducts('mugs')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-300 transition">
-                    Mugs & Drinkware
-                </button>
-                <button onclick="filterProducts('apparel')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-300 transition">
-                    Apparel
-                </button>
-                <button onclick="filterProducts('decor')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-300 transition">
-                    Home Decor
-                </button>
-                <button onclick="filterProducts('accessories')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-300 transition">
-                    Accessories
+                <button onclick="handleLogin()" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition font-semibold">
+                    Sign In
                 </button>
             </div>
             
-            <!-- Products Grid -->
-            <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                <!-- Products will be loaded here -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">What Our Indian Customers Say</h2>
-                <p class="text-xl text-gray-600">Real reviews from satisfied customers across India</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="testimonial-card text-white rounded-2xl p-8 card-hover">
-                    <div class="flex items-center mb-4">
-                        <img src="https://via.placeholder.com/60x60/7c3aed/ffffff?text=R" alt="Rahul" class="w-12 h-12 rounded-full mr-4">
-                        <div>
-                            <h4 class="font-semibold">Rahul Sharma</h4>
-                            <p class="text-sm opacity-90">Mumbai, Maharashtra</p>
-                        </div>
-                    </div>
-                    <div class="flex mb-4">
-                        <i class="fas fa-star text-yellow-300"></i>
-                        <i class="fas fa-star text-yellow-300"></i>
-                        <i class="fas fa-star text-yellow-300"></i>
-                        <i class="fas fa-star text-yellow-300"></i>
-                        <i class="fas fa-star text-yellow-300"></i>
-                    </div>
-                    <p class="text-white/90">"Excellent quality custom mug! The print quality is amazing and delivery was super fast. Highly recommend CraftyWorth for personalized gifts."</p>
-                </div>
-                
-                <div class="bg-gradient-to-br from-blue-500 to-purple-600 text-white rounded-2xl p-8 card-hover">
-                    <div class="flex items-center mb-4">
-                        <img src="https://via.placeholder.com/60x60/3b82f6/ffffff?text=P" alt="Priya" class="w-12 h-12 rounded-full mr-4">
-                        <div>
-                            <h4 class="font-semibold">Priya Singh</h4>
-                            <p class="text-sm opacity-90">Delhi, NCR</p>
-                        </div>
-                    </div>
-                    <div class="flex mb-4">
-                        <i class="fas fa-star text-yellow-300"></i>
-                        <i class="fas fa-star text-yellow-300"></i>
-                        <i class="fas fa-star text-yellow-300"></i>
-                        <i class="fas fa-star text-yellow-300"></i>
-                        <i class="fas fa-star text-yellow-300"></i>
-                    </div>
-                    <p class="text-white/90">"Ordered custom t-shirts for my family. The fabric quality is great and the printing is perfect. Great value for money!"</p>
-                </div>
-                
-                <div class="bg-gradient-to-br from-green-500 to-blue-500 text-white rounded-2xl p-8 card-hover">
-                    <div class="flex items-center mb-4">
-                        <img src="https://via.placeholder.com/60x60/10b981/ffffff?text=A" alt="Amit" class="w-12 h-12 rounded-full mr-4">
-                        <div>
-                            <h4 class="font-semibold">Amit Kumar</h4>
-                            <p class="text-sm opacity-90">Bangalore, Karnataka</p>
-                        </div>
-                    </div>
-                    <div class="flex mb-4">
-                        <i class="fas fa-star text-yellow-300"></i>
-                        <i class="fas fa-star text-yellow-300"></i>
-                        <i class="fas fa-star text-yellow-300"></i>
-                        <i class="fas fa-star text-yellow-300"></i>
-                        <i class="fas fa-star text-yellow-300"></i>
-                    </div>
-                    <p class="text-white/90">"Amazing photo frame with custom engraving. Perfect gift for my parents' anniversary. The craftsmanship is top-notch!"</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="py-20 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div>
-                    <div class="flex items-center mb-6">
-                        <span class="indian-flag w-8 h-6 rounded mr-3"></span>
-                        <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">
-                            🇮🇳 Made in India
-                        </span>
-                    </div>
-                    <h2 class="text-4xl font-bold text-gray-800 mb-6">Crafting Dreams Since 2020</h2>
-                    <p class="text-lg text-gray-600 mb-6">
-                        CraftyWorth is a proud Indian company dedicated to creating premium custom products that celebrate your special moments. Based in the heart of India, we combine traditional craftsmanship with modern technology to deliver exceptional quality.
-                    </p>
-                    <div class="space-y-4">
-                        <div class="flex items-center">
-                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
-                            <span>100% Made in India with local materials</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
-                            <span>Supporting local artisans and craftsmen</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
-                            <span>Eco-friendly packaging and processes</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
-                            <span>Quick delivery across all Indian cities</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="relative">
-                    <div class="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 rounded-3xl transform rotate-3"></div>
-                    <div class="relative bg-white rounded-3xl p-8 shadow-2xl">
-                        <div class="text-center">
-                            <div class="w-20 h-20 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <i class="fas fa-heart text-white text-3xl"></i>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-4">Our Mission</h3>
-                            <p class="text-gray-600 mb-6">
-                                To make personalized gifting accessible and affordable for every Indian family, while supporting local businesses and artisans.
-                            </p>
-                            <div class="grid grid-cols-2 gap-4 text-center">
-                                <div>
-                                    <div class="text-2xl font-bold text-purple-600">50,000+</div>
-                                    <div class="text-sm text-gray-500">Happy Customers</div>
-                                </div>
-                                <div>
-                                    <div class="text-2xl font-bold text-purple-600">100+</div>
-                                    <div class="text-sm text-gray-500">Cities Served</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">Get in Touch</h2>
-                <p class="text-xl text-gray-600">We're here to help you create something amazing</p>
-            </div>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <div>
-                    <div class="space-y-8">
-                        <div class="flex items-start">
-                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4 mt-1">
-                                <i class="fas fa-map-marker-alt text-purple-600"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-semibold mb-2">Our Address</h3>
-                                <p class="text-gray-600">
-                                    CraftyWorth India Pvt. Ltd.<br>
-                                    123 Business Park, Sector 18<br>
-                                    Gurgaon, Haryana 122015<br>
-                                    India
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-start">
-                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4 mt-1">
-                                <i class="fas fa-phone text-purple-600"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-semibold mb-2">Phone Numbers</h3>
-                                <p class="text-gray-600">
-                                    Customer Care: <a href="tel:+919876543210" class="text-purple-600 hover:underline">+91 98765 43210</a><br>
-                                    WhatsApp: <a href="https://wa.me/919876543210" class="text-purple-600 hover:underline">+91 98765 43210</a><br>
-                                    Toll Free: <a href="tel:18001234567" class="text-purple-600 hover:underline">1800-123-4567</a>
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-start">
-                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4 mt-1">
-                                <i class="fas fa-envelope text-purple-600"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-semibold mb-2">Email Addresses</h3>
-                                <p class="text-gray-600">
-                                    General: <a href="mailto:hello@craftyworth.in" class="text-purple-600 hover:underline">hello@craftyworth.in</a><br>
-                                    Support: <a href="mailto:support@craftyworth.in" class="text-purple-600 hover:underline">support@craftyworth.in</a><br>
-                                    Orders: <a href="mailto:orders@craftyworth.in" class="text-purple-600 hover:underline">orders@craftyworth.in</a>
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-start">
-                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4 mt-1">
-                                <i class="fas fa-clock text-purple-600"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-semibold mb-2">Business Hours</h3>
-                                <p class="text-gray-600">
-                                    Monday - Saturday: 9:00 AM - 7:00 PM IST<br>
-                                    Sunday: 10:00 AM - 6:00 PM IST<br>
-                                    <span class="text-sm text-purple-600">We respond within 2 hours!</span>
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="bg-gradient-to-r from-orange-100 to-green-100 p-6 rounded-lg">
-                            <div class="flex items-center mb-3">
-                                <span class="indian-flag w-6 h-4 rounded mr-2"></span>
-                                <h3 class="text-lg font-semibold">GST Information</h3>
-                            </div>
-                            <p class="text-gray-700">
-                                <strong>GST Number:</strong> 27AABCU9603R1ZX<br>
-                                <strong>PAN:</strong> AABCU9603R<br>
-                                <strong>CIN:</strong> U74999HR2020PTC089123
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-gray-50 rounded-2xl p-8">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Send us a Message</h3>
-                    <form class="space-y-6" onsubmit="handleContactForm(event)">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
-                                <input type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter your full name">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
-                                <input type="tel" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="+91 98765 43210">
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
-                            <input type="email" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="your.email@gmail.com">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">City</label>
-                            <select class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500">
-                                <option value="">Select your city</option>
-                                <option value="Mumbai">Mumbai</option>
-                                <option value="Delhi">Delhi</option>
-                                <option value="Bangalore">Bangalore</option>
-                                <option value="Chennai">Chennai</option>
-                                <option value="Kolkata">Kolkata</option>
-                                <option value="Hyderabad">Hyderabad</option>
-                                <option value="Pune">Pune</option>
-                                <option value="Ahmedabad">Ahmedabad</option>
-                                <option value="Jaipur">Jaipur</option>
-                                <option value="Lucknow">Lucknow</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Message *</label>
-                            <textarea required rows="4" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Tell us about your custom product requirements..."></textarea>
-                        </div>
-                        
-                        <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-4 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition transform hover:scale-105">
-                            <i class="fas fa-paper-plane mr-2"></i>Send Message
-                        </button>
-                        
-                        <p class="text-sm text-gray-500 text-center">
-                            We'll get back to you within 2 hours during business hours
-                        </p>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-16">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div>
-                    <div class="flex items-center space-x-2 mb-6">
-                        <div class="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center">
-                            <i class="fas fa-palette text-white"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-bold">CraftyWorth</h3>
-                            <p class="text-xs text-gray-400 made-in-india">Made in India 🇮🇳</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-400 mb-4">
-                        Creating premium custom products with love and care. Proudly serving customers across India since 2020.
-                    </p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-white transition">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition">
-                            <i class="fab fa-whatsapp"></i>
-                        </a>
-                    </div>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-6">Quick Links</h4>
-                    <ul class="space-y-3">
-                        <li><a href="#home" class="text-gray-400 hover:text-white transition">Home</a></li>
-                        <li><a href="#products" class="text-gray-400 hover:text-white transition">Products</a></li>
-                        <li><a href="#about" class="text-gray-400 hover:text-white transition">About Us</a></li>
-                        <li><a href="#contact" class="text-gray-400 hover:text-white transition">Contact</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Track Order</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Bulk Orders</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-6">Customer Care</h4>
-                    <ul class="space-y-3">
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Help Center</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Shipping Info</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Returns & Refunds</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Size Guide</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Privacy Policy</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Terms of Service</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-6">Contact Info</h4>
-                    <div class="space-y-3">
-                        <div class="flex items-center">
-                            <i class="fas fa-phone text-purple-400 mr-3"></i>
-                            <span class="text-gray-400">+91 98765 43210</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-envelope text-purple-400 mr-3"></i>
-                            <span class="text-gray-400">hello@craftyworth.in</span>
-                        </div>
-                        <div class="flex items-start">
-                            <i class="fas fa-map-marker-alt text-purple-400 mr-3 mt-1"></i>
-                            <span class="text-gray-400">Gurgaon, Haryana, India</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-id-card text-purple-400 mr-3"></i>
-                            <span class="text-gray-400 text-sm">GST: 27AABCU9603R1ZX</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="border-t border-gray-800 mt-12 pt-8">
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <p class="text-gray-400 text-sm">
-                        © 2024 CraftyWorth India Pvt. Ltd. All rights reserved. | Made with ❤️ in India
-                    </p>
-                    <div class="flex items-center space-x-4 mt-4 md:mt-0">
-                        <span class="text-gray-400 text-sm">We accept:</span>
-                        <div class="flex space-x-2">
-                            <span class="bg-blue-600 text-white px-2 py-1 rounded text-xs">UPI</span>
-                            <span class="bg-green-600 text-white px-2 py-1 rounded text-xs">Cards</span>
-                            <span class="bg-purple-600 text-white px-2 py-1 rounded text-xs">Wallets</span>
-                            <span class="bg-orange-600 text-white px-2 py-1 rounded text-xs">COD</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Shopping Cart Sidebar -->
-    <div id="cartSidebar" class="fixed right-0 top-0 h-full w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50">
-        <div class="p-6 border-b">
-            <div class="flex items-center justify-between">
-                <h2 class="text-xl font-bold">Shopping Cart</h2>
-                <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-times text-xl"></i>
+            <div class="mt-6 flex justify-end">
+                <button onclick="closeLoginModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
                 </button>
             </div>
-        </div>
-        
-        <div id="cartItems" class="flex-1 overflow-y-auto p-6">
-            <!-- Cart items will be loaded here -->
-        </div>
-        
-        <div class="border-t p-6">
-            <div class="flex justify-between items-center mb-4">
-                <span class="text-lg font-semibold">Total:</span>
-                <span id="cartTotal" class="text-2xl font-bold text-purple-600 rupee-symbol">₹0.00</span>
-            </div>
-            <button onclick="proceedToCheckout()" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition">
-                <i class="fas fa-credit-card mr-2"></i>Proceed to Checkout
-            </button>
-            <p class="text-sm text-gray-500 text-center mt-2">
-                Free delivery on orders above ₹999
-            </p>
         </div>
     </div>
 
-    <!-- Cart Overlay -->
-    <div id="cartOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden" onclick="toggleCart()"></div>
-
-    <!-- Product Modal -->
-    <div id="productModal" class="modal">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <div class="p-8">
-                <div class="flex justify-between items-start mb-6">
-                    <h2 id="modalProductName" class="text-3xl font-bold text-gray-800"></h2>
-                    <button onclick="closeProductModal()" class="text-gray-500 hover:text-gray-700">
-                        <i class="fas fa-times text-2xl"></i>
-                    </button>
-                </div>
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <h1 class="text-2xl font-bold text-purple-600 cursor-pointer" onclick="showPage('home')">
+                    🎨 CraftyWorth
+                </h1>
                 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div>
-                        <img id="modalProductImage" src="" alt="" class="w-full h-96 object-cover rounded-xl">
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" onclick="showPage('home')" class="text-gray-700 hover:text-purple-600 transition">Home</a>
+                    <a href="#" onclick="showPage('products')" class="text-gray-700 hover:text-purple-600 transition">Products</a>
+                    <a href="#" onclick="showPage('orders')" class="text-gray-700 hover:text-purple-600 transition">Orders</a>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <input type="text" id="searchInput" placeholder="Search products..." class="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" onkeyup="handleSearch(event)">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    
+                    <button onclick="showPage('cart')" class="relative bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cartCount" class="cart-badge">0</span>
+                    </button>
+                    
+                    <div id="loginButton" class="flex items-center space-x-2 bg-gray-100 px-4 py-2 rounded-lg hover:bg-gray-200 transition cursor-pointer" onclick="showLoginModal()">
+                        <i class="fas fa-user text-gray-600"></i>
+                        <span class="text-gray-700">Sign In</span>
                     </div>
                     
-                    <div>
-                        <div class="mb-6">
-                            <span id="modalProductCategory" class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium"></span>
-                        </div>
-                        
-                        <div class="price-tag text-white px-4 py-2 rounded-lg inline-block mb-6">
-                            <span class="text-2xl font-bold rupee-symbol" id="modalProductPrice">₹0</span>
-                        </div>
-                        
-                        <p id="modalProductDescription" class="text-gray-600 mb-6 text-lg"></p>
-                        
-                        <div class="space-y-4 mb-8">
-                            <div class="flex items-center">
-                                <i class="fas fa-shipping-fast text-green-500 mr-3"></i>
-                                <span>Free delivery on orders above ₹999</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-undo text-blue-500 mr-3"></i>
-                                <span>7-day return policy</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-award text-purple-500 mr-3"></i>
-                                <span>Premium quality guarantee</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-heart text-red-500 mr-3"></i>
-                                <span>Made with love in India</span>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-center space-x-4 mb-6">
-                            <label class="font-medium">Quantity:</label>
-                            <div class="quantity-controls">
-                                <button class="quantity-btn" onclick="decreaseModalQuantity()">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <input type="number" id="modalQuantity" value="1" min="1" class="quantity-input">
-                                <button class="quantity-btn" onclick="increaseModalQuantity()">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <button onclick="addToCartFromModal()" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-4 rounded-xl font-semibold text-lg hover:from-purple-700 hover:to-blue-700 transition transform hover:scale-105">
-                            <i class="fas fa-cart-plus mr-2"></i>Add to Cart
+                    <div id="userMenu" class="hidden flex items-center space-x-2 bg-purple-100 px-4 py-2 rounded-lg cursor-pointer">
+                        <span id="userName" class="text-purple-700 font-medium">User</span>
+                        <button onclick="handleLogout()" class="text-red-600 ml-2">
+                            <i class="fas fa-sign-out-alt"></i>
                         </button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Homepage -->
+    <div id="home" class="page-section active">
+        <section class="hero-bg text-white py-20">
+            <div class="max-w-7xl mx-auto px-4 text-center">
+                <h2 class="text-5xl font-bold mb-6">Create Personalized Gifts</h2>
+                <p class="text-xl mb-8 max-w-2xl mx-auto">
+                    Custom mugs, frames, t-shirts and more. Free shipping on orders over $35!
+                </p>
+                <button onclick="showPage('products')" class="bg-yellow-400 text-gray-900 px-8 py-4 rounded-lg font-bold text-lg hover:bg-yellow-300 transition">
+                    Shop Now
+                </button>
+            </div>
+        </section>
+
+        <section class="py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-4">
+                <h3 class="text-3xl font-bold text-center mb-12">Popular Products</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="featuredProducts">
+                    <!-- Featured products will load here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Products Page -->
+    <div id="products" class="page-section">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <h1 class="text-3xl font-bold mb-8">All Products</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="productsGrid">
+                <!-- Products will load here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Page -->
+    <div id="cart" class="page-section">
+        <div class="max-w-4xl mx-auto px-4 py-8">
+            <h2 class="text-3xl font-bold mb-8">Shopping Cart</h2>
+            <div id="cartItems" class="space-y-4">
+                <!-- Cart items will load here -->
+            </div>
+            <div id="cartEmpty" class="text-center py-16 hidden">
+                <i class="fas fa-shopping-cart text-gray-300 text-6xl mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-600 mb-2">Your cart is empty</h3>
+                <button onclick="showPage('products')" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition">
+                    Continue Shopping
+                </button>
+            </div>
+            <div id="cartSummary" class="mt-8 bg-white p-6 rounded-lg shadow-lg hidden">
+                <div class="flex justify-between items-center text-xl font-semibold mb-4">
+                    <span>Total:</span>
+                    <span id="cartTotal">$0.00</span>
+                </div>
+                <button onclick="checkout()" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition font-semibold">
+                    Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Orders Page -->
+    <div id="orders" class="page-section">
+        <div class="max-w-6xl mx-auto px-4 py-8">
+            <h2 class="text-3xl font-bold mb-8">My Orders</h2>
+            <div id="ordersContent">
+                <!-- Orders will load here -->
             </div>
         </div>
     </div>
 
     <script>
         // Global variables
+        let currentUser = null;
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let currentProduct = null;
+        let orders = JSON.parse(localStorage.getItem('orders')) || [];
         
-        // Indian products data with INR pricing
         const products = [
             {
                 id: 1,
                 name: "Custom Photo Mug",
-                price: 499,
-                category: "mugs",
-                description: "Premium ceramic mug with your favorite photo. Perfect for gifting or personal use. High-quality printing that won't fade.",
-                image: "https://via.placeholder.com/400x400/7c3aed/ffffff?text=Custom+Mug",
-                inStock: true
+                price: 24.99,
+                image: "https://via.placeholder.com/300x300/7c3aed/ffffff?text=Custom+Mug",
+                description: "Personalize with your favorite photo"
             },
             {
                 id: 2,
-                name: "Personalized T-Shirt",
-                price: 599,
-                category: "apparel",
-                description: "100% cotton t-shirt with custom design. Available in multiple sizes and colors. Comfortable and durable.",
-                image: "https://via.placeholder.com/400x400/10b981/ffffff?text=Custom+Tee",
-                inStock: true
+                name: "Photo Frame",
+                price: 19.99,
+                image: "https://via.placeholder.com/300x300/10b981/ffffff?text=Photo+Frame",
+                description: "Beautiful wooden frame with custom engraving"
             },
             {
                 id: 3,
-                name: "Custom Photo Frame",
-                price: 399,
-                category: "decor",
-                description: "Beautiful wooden frame with custom engraving. Perfect for displaying your precious memories.",
-                image: "https://via.placeholder.com/400x400/f59e0b/ffffff?text=Photo+Frame",
-                inStock: true
+                name: "Custom T-Shirt",
+                price: 29.99,
+                image: "https://via.placeholder.com/300x300/f59e0b/ffffff?text=Custom+Tee",
+                description: "High-quality cotton with your design"
             },
             {
                 id: 4,
-                name: "Personalized Keychain",
-                price: 199,
-                category: "accessories",
-                description: "Metal keychain with custom text or design. Durable and stylish accessory for your keys.",
-                image: "https://via.placeholder.com/400x400/ef4444/ffffff?text=Keychain",
-                inStock: true
-            },
-            {
-                id: 5,
-                name: "Custom Coffee Mug Set",
-                price: 899,
-                category: "mugs",
-                description: "Set of 2 premium coffee mugs with matching designs. Perfect for couples or best friends.",
-                image: "https://via.placeholder.com/400x400/8b5cf6/ffffff?text=Mug+Set",
-                inStock: true
-            },
-            {
-                id: 6,
-                name: "Personalized Hoodie",
-                price: 1299,
-                category: "apparel",
-                description: "Cozy hoodie with custom print. Perfect for winter season. Available in various sizes.",
-                image: "https://via.placeholder.com/400x400/06b6d4/ffffff?text=Custom+Hoodie",
-                inStock: true
-            },
-            {
-                id: 7,
-                name: "Custom Wall Clock",
-                price: 799,
-                category: "decor",
-                description: "Unique wall clock with your photo or design. Silent movement, perfect for any room.",
-                image: "https://via.placeholder.com/400x400/f97316/ffffff?text=Wall+Clock",
-                inStock: true
-            },
-            {
-                id: 8,
-                name: "Personalized Phone Case",
-                price: 349,
-                category: "accessories",
-                description: "Protective phone case with custom design. Available for all popular phone models.",
-                image: "https://via.placeholder.com/400x400/ec4899/ffffff?text=Phone+Case",
-                inStock: true
-            },
-            {
-                id: 9,
-                name: "Custom Cushion Cover",
-                price: 449,
-                category: "decor",
-                description: "Soft cushion cover with your favorite photo or text. Machine washable and durable.",
-                image: "https://via.placeholder.com/400x400/84cc16/ffffff?text=Cushion",
-                inStock: true
-            },
-            {
-                id: 10,
-                name: "Personalized Water Bottle",
-                price: 549,
-                category: "accessories",
-                description: "Stainless steel water bottle with custom engraving. Keeps drinks hot/cold for hours.",
-                image: "https://via.placeholder.com/400x400/3b82f6/ffffff?text=Water+Bottle",
-                inStock: true
-            },
-            {
-                id: 11,
-                name: "Custom Laptop Sleeve",
-                price: 699,
-                category: "accessories",
-                description: "Protective laptop sleeve with custom design. Available for 13, 15, and 17 inch laptops.",
-                image: "https://via.placeholder.com/400x400/6366f1/ffffff?text=Laptop+Sleeve",
-                inStock: true
-            },
-            {
-                id: 12,
-                name: "Personalized Calendar",
-                price: 299,
-                category: "decor",
-                description: "12-month calendar with your photos. High-quality paper and printing. Perfect for gifting.",
-                image: "https://via.placeholder.com/400x400/dc2626/ffffff?text=Calendar",
-                inStock: true
+                name: "Keychain",
+                price: 12.99,
+                image: "https://via.placeholder.com/300x300/ef4444/ffffff?text=Keychain",
+                description: "Metal keychain with custom text"
             }
         ];
 
         // Initialize
         function init() {
-            loadProducts();
-            updateCartUI();
+            updateCartCount();
+            loadFeaturedProducts();
         }
 
         // Show notification
@@ -957,174 +271,119 @@
             }, 3000);
         }
 
-        // Toggle mobile menu
-        function toggleMobileMenu() {
-            const mobileMenu = document.getElementById('mobileMenu');
-            mobileMenu.classList.toggle('hidden');
-        }
-
-        // Scroll functions
-        function scrollToProducts() {
-            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function scrollToAbout() {
-            document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Load products
-        function loadProducts(filter = 'all') {
-            const productsGrid = document.getElementById('productsGrid');
-            const filteredProducts = filter === 'all' ? products : products.filter(p => p.category === filter);
+        // Page navigation
+        function showPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
             
-            productsGrid.innerHTML = filteredProducts.map(product => `
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
-                    <div class="relative">
-                        <img src="${product.image}" alt="${product.name}" class="w-full h-64 object-cover" onerror="this.src='https://via.placeholder.com/400x400/7c3aed/ffffff?text=No+Image'; this.alt='Image not found';">
-                        <div class="absolute top-4 left-4">
-                            <span class="bg-white/90 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">
-                                ${getCategoryName(product.category)}
-                            </span>
-                        </div>
-                        ${product.inStock ? '' : '<div class="absolute inset-0 bg-black/50 flex items-center justify-center"><span class="bg-red-500 text-white px-4 py-2 rounded-full font-semibold">Out of Stock</span></div>'}
-                    </div>
-                    
+            if (pageId === 'products') loadProducts();
+            if (pageId === 'cart') loadCart();
+            if (pageId === 'orders') loadOrders();
+        }
+
+        // Load featured products
+        function loadFeaturedProducts() {
+            const featuredProducts = document.getElementById('featuredProducts');
+            featuredProducts.innerHTML = products.slice(0, 4).map(product => createProductCard(product)).join('');
+        }
+
+        // Load all products
+        function loadProducts() {
+            const productsGrid = document.getElementById('productsGrid');
+            productsGrid.innerHTML = products.map(product => createProductCard(product)).join('');
+        }
+
+        // Create product card
+        function createProductCard(product) {
+            return `
+                <div class="product-card bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">${product.name}</h3>
-                        <p class="text-gray-600 mb-4 line-clamp-2">${product.description}</p>
-                        
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="price-tag text-white px-3 py-1 rounded-lg">
-                                <span class="text-xl font-bold rupee-symbol">₹${product.price}</span>
-                            </div>
-                            <div class="flex items-center text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span class="text-gray-500 text-sm ml-1">(4.9)</span>
-                            </div>
-                        </div>
-                        
-                        <div class="flex space-x-2">
-                            <button onclick="openProductModal(${product.id})" class="flex-1 bg-gray-100 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-200 transition font-medium">
-                                <i class="fas fa-eye mr-2"></i>View Details
-                            </button>
-                            <button onclick="addToCart(${product.id})" class="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 px-4 rounded-lg hover:from-purple-700 hover:to-blue-700 transition font-medium ${!product.inStock ? 'opacity-50 cursor-not-allowed' : ''}" ${!product.inStock ? 'disabled' : ''}>
-                                <i class="fas fa-cart-plus mr-2"></i>Add to Cart
+                        <h3 class="text-lg font-semibold mb-2">${product.name}</h3>
+                        <p class="text-gray-600 text-sm mb-3">${product.description}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xl font-bold text-purple-600">$${product.price}</span>
+                            <button onclick="addToCart(${product.id})" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
+                                Add to Cart
                             </button>
                         </div>
                     </div>
                 </div>
-            `).join('');
-        }
-
-        // Get category name
-        function getCategoryName(category) {
-            const categoryNames = {
-                'mugs': 'Mugs & Drinkware',
-                'apparel': 'Apparel',
-                'decor': 'Home Decor',
-                'accessories': 'Accessories'
-            };
-            return categoryNames[category] || 'Other';
-        }
-
-        // Filter products
-        function filterProducts(category) {
-            // Update filter buttons
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('bg-purple-600', 'text-white');
-                btn.classList.add('bg-gray-200', 'text-gray-700');
-            });
-            
-            event.target.classList.remove('bg-gray-200', 'text-gray-700');
-            event.target.classList.add('bg-purple-600', 'text-white');
-            
-            loadProducts(category);
-        }
-
-        // Open product modal
-        function openProductModal(productId) {
-            const product = products.find(p => p.id === productId);
-            if (!product) return;
-            
-            currentProduct = product;
-            
-            document.getElementById('modalProductName').textContent = product.name;
-            document.getElementById('modalProductImage').src = product.image;
-            document.getElementById('modalProductImage').alt = product.name;
-            document.getElementById('modalProductCategory').textContent = getCategoryName(product.category);
-            document.getElementById('modalProductPrice').textContent = `₹${product.price}`;
-            document.getElementById('modalProductDescription').textContent = product.description;
-            document.getElementById('modalQuantity').value = 1;
-            
-            document.getElementById('productModal').classList.add('show');
-        }
-
-        // Close product modal
-        function closeProductModal() {
-            document.getElementById('productModal').classList.remove('show');
-            currentProduct = null;
-        }
-
-        // Modal quantity controls
-        function increaseModalQuantity() {
-            const quantityInput = document.getElementById('modalQuantity');
-            quantityInput.value = parseInt(quantityInput.value) + 1;
-        }
-
-        function decreaseModalQuantity() {
-            const quantityInput = document.getElementById('modalQuantity');
-            if (parseInt(quantityInput.value) > 1) {
-                quantityInput.value = parseInt(quantityInput.value) - 1;
-            }
-        }
-
-        // Add to cart from modal
-        function addToCartFromModal() {
-            if (!currentProduct) return;
-            
-            const quantity = parseInt(document.getElementById('modalQuantity').value);
-            addToCart(currentProduct.id, quantity);
-            closeProductModal();
+            `;
         }
 
         // Add to cart
-        function addToCart(productId, quantity = 1) {
+        function addToCart(productId) {
             const product = products.find(p => p.id === productId);
-            if (!product || !product.inStock) return;
+            if (!product) return;
             
             const existingItem = cart.find(item => item.id === productId);
-            
             if (existingItem) {
-                existingItem.quantity += quantity;
+                existingItem.quantity += 1;
             } else {
                 cart.push({
-                    id: product.id,
+                    id: productId,
                     name: product.name,
                     price: product.price,
                     image: product.image,
-                    quantity: quantity
+                    quantity: 1
                 });
             }
             
             localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartUI();
+            updateCartCount();
             showNotification(`${product.name} added to cart!`);
         }
 
-        // Remove from cart
-        function removeFromCart(productId) {
-            cart = cart.filter(item => item.id !== productId);
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartUI();
-            showNotification('Item removed from cart');
+        // Update cart count
+        function updateCartCount() {
+            const count = cart.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cartCount').textContent = count;
         }
 
-        // Update cart quantity
-        function updateCartQuantity(productId, newQuantity) {
+        // Load cart
+        function loadCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartEmpty = document.getElementById('cartEmpty');
+            const cartSummary = document.getElementById('cartSummary');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '';
+                cartEmpty.classList.remove('hidden');
+                cartSummary.classList.add('hidden');
+                return;
+            }
+            
+            cartEmpty.classList.add('hidden');
+            cartSummary.classList.remove('hidden');
+            
+            cartItems.innerHTML = cart.map(item => `
+                <div class="bg-white rounded-lg shadow-lg p-6 flex items-center space-x-4">
+                    <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-lg">
+                    <div class="flex-1">
+                        <h3 class="text-lg font-semibold">${item.name}</h3>
+                        <p class="text-gray-600">$${item.price} each</p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button onclick="updateQuantity(${item.id}, ${item.quantity - 1})" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">-</button>
+                        <span class="font-semibold">${item.quantity}</span>
+                        <button onclick="updateQuantity(${item.id}, ${item.quantity + 1})" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">+</button>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-lg font-semibold">$${(item.price * item.quantity).toFixed(2)}</div>
+                        <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-700 text-sm">Remove</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            document.getElementById('cartTotal').textContent = `$${total.toFixed(2)}`;
+        }
+
+        // Update quantity
+        function updateQuantity(productId, newQuantity) {
             if (newQuantity <= 0) {
                 removeFromCart(productId);
                 return;
@@ -1134,91 +393,1029 @@
             if (item) {
                 item.quantity = newQuantity;
                 localStorage.setItem('cart', JSON.stringify(cart));
-                updateCartUI();
+                updateCartCount();
+                loadCart();
             }
         }
 
-        // Toggle cart
-        function toggleCart() {
-            const cartSidebar = document.getElementById('cartSidebar');
-            const cartOverlay = document.getElementById('cartOverlay');
-            
-            if (cartSidebar.classList.contains('translate-x-full')) {
-                cartSidebar.classList.remove('translate-x-full');
-                cartOverlay.classList.remove('hidden');
-            } else {
-                cartSidebar.classList.add('translate-x-full');
-                cartOverlay.classList.add('hidden');
-            }
+        // Remove from cart
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            loadCart();
+            showNotification('Item removed from cart');
         }
 
-        // Update cart UI
-        function updateCartUI() {
-            const cartCount = document.getElementById('cartCount');
-            const cartItems = document.getElementById('cartItems');
-            const cartTotal = document.getElementById('cartTotal');
+        // Checkout
+        function checkout() {
+            if (cart.length === 0) return;
             
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const newOrder = {
+                id: `ORD-${Date.now()}`,
+                date: new Date().toLocaleDateString(),
+                status: 'Processing',
+                total: total,
+                items: [...cart]
+            };
             
-            cartCount.textContent = totalItems;
-            cartTotal.textContent = `₹${totalPrice.toFixed(2)}`;
+            orders.push(newOrder);
+            localStorage.setItem('orders', JSON.stringify(orders));
             
-            if (cart.length === 0) {
-                cartItems.innerHTML = `
-                    <div class="text-center py-12">
-                        <i class="fas fa-shopping-cart text-6xl text-gray-300 mb-4"></i>
-                        <p class="text-gray-500 text-lg">Your cart is empty</p>
-                        <p class="text-gray-400 text-sm">Add some products to get started</p>
-                    </div>
-                `;
-            } else {
-                cartItems.innerHTML = cart.map(item => `
-                    <div class="cart-item flex items-center space-x-4 p-4 border-b">
-                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded-lg" onerror="this.src='https://via.placeholder.com/64x64/7c3aed/ffffff?text=No+Image'; this.alt='Image not found';">
-                        <div class="flex-1">
-                            <h4 class="font-semibold text-gray-800">${item.name}</h4>
-                            <p class="text-purple-600 font-bold rupee-symbol">₹${item.price}</p>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <button onclick="updateCartQuantity(${item.id}, ${item.quantity - 1})" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200">
-                                <i class="fas fa-minus text-xs"></i>
-                            </button>
-                            <span class="w-8 text-center font-semibold">${item.quantity}</span>
-                            <button onclick="updateCartQuantity(${item.id}, ${item.quantity + 1})" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200">
-                                <i class="fas fa-plus text-xs"></i>
-                            </button>
-                        </div>
-                        <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-700">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `).join('');
-            }
+            cart = [];
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            
+            showNotification('Order placed successfully!');
+            showPage('orders');
         }
 
-        // Proceed to checkout
-        function proceedToCheckout() {
-            if (cart.length === 0) {
-                showNotification('Your cart is empty!', 'error');
+        // Load orders
+        function loadOrders() {
+            const ordersContent = document.getElementById('ordersContent');
+            
+            if (orders.length === 0) {
+                ordersContent.innerHTML = '<p class="text-gray-500 text-center py-16">No orders found.</p>';
                 return;
             }
             
-            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const orderSummary = cart.map(item => `${item.name} x${item.quantity} = ₹${(item.price * item.quantity).toFixed(2)}`).join('\n');
-            
-            alert(`Order Summary:\n\n${orderSummary}\n\nTotal: ₹${totalPrice.toFixed(2)}\n\nThis is a demo. In a real application, you would be redirected to a secure payment gateway.\n\nPayment options available:\n• UPI (PhonePe, Google Pay, Paytm)\n• Credit/Debit Cards\n• Net Banking\n• Cash on Delivery\n\nFree delivery on orders above ₹999!`);
+            ordersContent.innerHTML = orders.map(order => `
+                <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold">Order ${order.id}</h3>
+                            <p class="text-gray-600">Date: ${order.date}</p>
+                            <p class="text-gray-600">Status: <span class="font-semibold text-blue-600">${order.status}</span></p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-xl font-bold">$${order.total.toFixed(2)}</div>
+                        </div>
+                    </div>
+                    <div class="border-t pt-4">
+                        <h4 class="font-semibold mb-2">Items:</h4>
+                        ${order.items.map(item => `
+                            <div class="flex justify-between items-center py-2">
+                                <span>${item.name} x ${item.quantity}</span>
+                                <span>$${(item.price * item.quantity).toFixed(2)}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
         }
 
-        // Handle contact form
-        function handleContactForm(event) {
-            event.preventDefault();
-            showNotification('Thank you for your message! We\'ll get back to you within 2 hours during business hours.');
-            event.target.reset();
+        // Search
+        function handleSearch(event) {
+            if (event.key === 'Enter') {
+                const query = event.target.value.toLowerCase();
+                const filteredProducts = products.filter(product => 
+                    product.name.toLowerCase().includes(query) || 
+                    product.description.toLowerCase().includes(query)
+                );
+                
+                showPage('products');
+                const productsGrid = document.getElementById('productsGrid');
+                productsGrid.innerHTML = filteredProducts.map(product => createProductCard(product)).join('');
+            }
+        }
+
+        // Login
+        function showLoginModal() {
+            document.getElementById('loginModal').classList.add('show');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('show');
+        }
+
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (email && password) {
+                currentUser = { email: email, name: email.split('@')[0] };
+                
+                document.getElementById('loginButton').classList.add('hidden');
+                document.getElementById('userMenu').classList.remove('hidden');
+                document.getElementById('userName').textContent = currentUser.name;
+                
+                closeLoginModal();
+                showNotification('Login successful!');
+            } else {
+                showNotification('Please enter email and password', 'error');
+            }
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            document.getElementById('loginButton').classList.remove('hidden');
+            document.getElementById('userMenu').classList.add('hidden');
+            showNotification('Logged out successfully');
         }
 
         // Initialize on page load
         init();
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'976d128da26e899d',t:'MTc1NjQ4MTI0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CraftyWorth - Custom Products</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        .page-section {
+            display: none;
+        }
+        .page-section.active {
+            display: block;
+        }
+        
+        .product-card {
+            transition: transform 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Notification -->
+    <div id="notification" class="notification bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg">
+        <span id="notificationText">Success!</span>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="bg-white rounded-lg shadow-xl p-8 max-w-md w-full mx-4">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Sign In</h2>
+                <p class="text-gray-600 mt-2">Welcome back!</p>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Email</label>
+                    <input type="email" id="loginEmail" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter your email">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Password</label>
+                    <input type="password" id="loginPassword" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter your password">
+                </div>
+                <button onclick="handleLogin()" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition font-semibold">
+                    Sign In
+                </button>
+            </div>
+            
+            <div class="mt-6 flex justify-end">
+                <button onclick="closeLoginModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <h1 class="text-2xl font-bold text-purple-600 cursor-pointer" onclick="showPage('home')">
+                    🎨 CraftyWorth
+                </h1>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" onclick="showPage('home')" class="text-gray-700 hover:text-purple-600 transition">Home</a>
+                    <a href="#" onclick="showPage('products')" class="text-gray-700 hover:text-purple-600 transition">Products</a>
+                    <a href="#" onclick="showPage('orders')" class="text-gray-700 hover:text-purple-600 transition">Orders</a>
+                    <a href="#" onclick="showPage('admin')" class="text-gray-700 hover:text-purple-600 transition">Admin</a>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <input type="text" id="searchInput" placeholder="Search products..." class="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" onkeyup="handleSearch(event)">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    
+                    <button onclick="showPage('cart')" class="relative bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cartCount" class="cart-badge">0</span>
+                    </button>
+                    
+                    <div id="loginButton" class="flex items-center space-x-2 bg-gray-100 px-4 py-2 rounded-lg hover:bg-gray-200 transition cursor-pointer" onclick="showLoginModal()">
+                        <i class="fas fa-user text-gray-600"></i>
+                        <span class="text-gray-700">Sign In</span>
+                    </div>
+                    
+                    <div id="userMenu" class="hidden flex items-center space-x-2 bg-purple-100 px-4 py-2 rounded-lg cursor-pointer">
+                        <span id="userName" class="text-purple-700 font-medium">User</span>
+                        <button onclick="handleLogout()" class="text-red-600 ml-2">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Homepage -->
+    <div id="home" class="page-section active">
+        <section class="hero-bg text-white py-20">
+            <div class="max-w-7xl mx-auto px-4 text-center">
+                <h2 class="text-5xl font-bold mb-6">Create Personalized Gifts</h2>
+                <p class="text-xl mb-8 max-w-2xl mx-auto">
+                    Custom mugs, frames, t-shirts and more. Free shipping on orders over $35!
+                </p>
+                <button onclick="showPage('products')" class="bg-yellow-400 text-gray-900 px-8 py-4 rounded-lg font-bold text-lg hover:bg-yellow-300 transition">
+                    Shop Now
+                </button>
+            </div>
+        </section>
+
+        <section class="py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-4">
+                <h3 class="text-3xl font-bold text-center mb-12">Popular Products</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="featuredProducts">
+                    <!-- Featured products will load here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Products Page -->
+    <div id="products" class="page-section">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <h1 class="text-3xl font-bold mb-8">All Products</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="productsGrid">
+                <!-- Products will load here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Page -->
+    <div id="cart" class="page-section">
+        <div class="max-w-4xl mx-auto px-4 py-8">
+            <h2 class="text-3xl font-bold mb-8">Shopping Cart</h2>
+            <div id="cartItems" class="space-y-4">
+                <!-- Cart items will load here -->
+            </div>
+            <div id="cartEmpty" class="text-center py-16 hidden">
+                <i class="fas fa-shopping-cart text-gray-300 text-6xl mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-600 mb-2">Your cart is empty</h3>
+                <button onclick="showPage('products')" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition">
+                    Continue Shopping
+                </button>
+            </div>
+            <div id="cartSummary" class="mt-8 bg-white p-6 rounded-lg shadow-lg hidden">
+                <div class="flex justify-between items-center text-xl font-semibold mb-4">
+                    <span>Total:</span>
+                    <span id="cartTotal">$0.00</span>
+                </div>
+                <button onclick="checkout()" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition font-semibold">
+                    Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Orders Page -->
+    <div id="orders" class="page-section">
+        <div class="max-w-6xl mx-auto px-4 py-8">
+            <h2 class="text-3xl font-bold mb-8">My Orders</h2>
+            <div id="ordersContent">
+                <!-- Orders will load here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="admin" class="page-section">
+        <div class="min-h-screen bg-gray-900 text-white">
+            <!-- Admin Login -->
+            <div id="adminLogin" class="flex items-center justify-center min-h-screen">
+                <div class="bg-white text-gray-800 rounded-lg shadow-xl p-8 max-w-md w-full mx-4">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-shield-alt text-white text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold">Admin Login</h2>
+                        <p class="text-gray-600 mt-2">Secure access required</p>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Username</label>
+                            <input type="text" id="adminUsername" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter admin username">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Password</label>
+                            <input type="password" id="adminPassword" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter admin password">
+                        </div>
+                        <button onclick="handleAdminLogin()" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition font-semibold">
+                            Login to Admin Panel
+                        </button>
+                    </div>
+                    
+                    <div class="mt-4 text-center text-sm text-gray-500">
+                        <p>Demo: admin / admin123</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Admin Dashboard -->
+            <div id="adminDashboard" class="hidden">
+                <div class="p-8">
+                    <div class="flex justify-between items-center mb-8">
+                        <h1 class="text-3xl font-bold">🎛️ Admin Dashboard</h1>
+                        <button onclick="handleAdminLogout()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">
+                            <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                        </button>
+                    </div>
+                    
+                    <!-- Stats Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-blue-600 rounded-lg p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-blue-100">Total Orders</p>
+                                    <p class="text-3xl font-bold" id="totalOrders">0</p>
+                                </div>
+                                <i class="fas fa-shopping-cart text-4xl text-blue-200"></i>
+                            </div>
+                        </div>
+                        <div class="bg-green-600 rounded-lg p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-green-100">Total Revenue</p>
+                                    <p class="text-3xl font-bold" id="totalRevenue">$0</p>
+                                </div>
+                                <i class="fas fa-dollar-sign text-4xl text-green-200"></i>
+                            </div>
+                        </div>
+                        <div class="bg-purple-600 rounded-lg p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-purple-100">Products</p>
+                                    <p class="text-3xl font-bold" id="totalProducts">4</p>
+                                </div>
+                                <i class="fas fa-box text-4xl text-purple-200"></i>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-600 rounded-lg p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-yellow-100">Users</p>
+                                    <p class="text-3xl font-bold" id="totalUsers">1</p>
+                                </div>
+                                <i class="fas fa-users text-4xl text-yellow-200"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Admin Tabs -->
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <div class="flex space-x-4 mb-6">
+                            <button onclick="showAdminTab('orders')" class="admin-tab-btn bg-purple-600 text-white px-4 py-2 rounded-lg">Orders</button>
+                            <button onclick="showAdminTab('products')" class="admin-tab-btn bg-gray-600 text-white px-4 py-2 rounded-lg">Products</button>
+                            <button onclick="showAdminTab('users')" class="admin-tab-btn bg-gray-600 text-white px-4 py-2 rounded-lg">Users</button>
+                        </div>
+                        
+                        <!-- Orders Tab -->
+                        <div id="adminOrdersTab" class="admin-tab-content">
+                            <h3 class="text-xl font-semibold mb-4">All Orders</h3>
+                            <div id="adminOrdersList">
+                                <!-- Orders will load here -->
+                            </div>
+                        </div>
+                        
+                        <!-- Products Tab -->
+                        <div id="adminProductsTab" class="admin-tab-content hidden">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-xl font-semibold">Manage Products</h3>
+                                <button onclick="showAddProductForm()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+                                    <i class="fas fa-plus mr-2"></i>Add Product
+                                </button>
+                            </div>
+                            <div id="adminProductsList">
+                                <!-- Products will load here -->
+                            </div>
+                        </div>
+                        
+                        <!-- Users Tab -->
+                        <div id="adminUsersTab" class="admin-tab-content hidden">
+                            <h3 class="text-xl font-semibold mb-4">Registered Users</h3>
+                            <div id="adminUsersList">
+                                <!-- Users will load here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div id="addProductModal" class="modal">
+        <div class="bg-white rounded-lg shadow-xl p-8 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Add New Product</h2>
+                <button onclick="closeAddProductModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Product Name</label>
+                    <input type="text" id="newProductName" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter product name">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Price</label>
+                    <input type="number" id="newProductPrice" step="0.01" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="0.00">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Description</label>
+                    <textarea id="newProductDescription" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter product description"></textarea>
+                </div>
+                <button onclick="addNewProduct()" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition font-semibold">
+                    Add Product
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentUser = null;
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let orders = JSON.parse(localStorage.getItem('orders')) || [];
+        
+        const products = [
+            {
+                id: 1,
+                name: "Custom Photo Mug",
+                price: 24.99,
+                image: "https://via.placeholder.com/300x300/7c3aed/ffffff?text=Custom+Mug",
+                description: "Personalize with your favorite photo"
+            },
+            {
+                id: 2,
+                name: "Photo Frame",
+                price: 19.99,
+                image: "https://via.placeholder.com/300x300/10b981/ffffff?text=Photo+Frame",
+                description: "Beautiful wooden frame with custom engraving"
+            },
+            {
+                id: 3,
+                name: "Custom T-Shirt",
+                price: 29.99,
+                image: "https://via.placeholder.com/300x300/f59e0b/ffffff?text=Custom+Tee",
+                description: "High-quality cotton with your design"
+            },
+            {
+                id: 4,
+                name: "Keychain",
+                price: 12.99,
+                image: "https://via.placeholder.com/300x300/ef4444/ffffff?text=Keychain",
+                description: "Metal keychain with custom text"
+            }
+        ];
+
+        // Initialize
+        function init() {
+            updateCartCount();
+            loadFeaturedProducts();
+        }
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            
+            notificationText.textContent = message;
+            notification.className = `notification ${type === 'success' ? 'bg-green-500' : 'bg-red-500'} text-white px-6 py-3 rounded-lg shadow-lg show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Page navigation
+        function showPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            
+            if (pageId === 'products') loadProducts();
+            if (pageId === 'cart') loadCart();
+            if (pageId === 'orders') loadOrders();
+        }
+
+        // Load featured products
+        function loadFeaturedProducts() {
+            const featuredProducts = document.getElementById('featuredProducts');
+            featuredProducts.innerHTML = products.slice(0, 4).map(product => createProductCard(product)).join('');
+        }
+
+        // Load all products
+        function loadProducts() {
+            const productsGrid = document.getElementById('productsGrid');
+            productsGrid.innerHTML = products.map(product => createProductCard(product)).join('');
+        }
+
+        // Create product card
+        function createProductCard(product) {
+            return `
+                <div class="product-card bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold mb-2">${product.name}</h3>
+                        <p class="text-gray-600 text-sm mb-3">${product.description}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xl font-bold text-purple-600">$${product.price}</span>
+                            <button onclick="addToCart(${product.id})" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Add to cart
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: productId,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    quantity: 1
+                });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            showNotification(`${product.name} added to cart!`);
+        }
+
+        // Update cart count
+        function updateCartCount() {
+            const count = cart.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cartCount').textContent = count;
+        }
+
+        // Load cart
+        function loadCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartEmpty = document.getElementById('cartEmpty');
+            const cartSummary = document.getElementById('cartSummary');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '';
+                cartEmpty.classList.remove('hidden');
+                cartSummary.classList.add('hidden');
+                return;
+            }
+            
+            cartEmpty.classList.add('hidden');
+            cartSummary.classList.remove('hidden');
+            
+            cartItems.innerHTML = cart.map(item => `
+                <div class="bg-white rounded-lg shadow-lg p-6 flex items-center space-x-4">
+                    <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-lg">
+                    <div class="flex-1">
+                        <h3 class="text-lg font-semibold">${item.name}</h3>
+                        <p class="text-gray-600">$${item.price} each</p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button onclick="updateQuantity(${item.id}, ${item.quantity - 1})" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">-</button>
+                        <span class="font-semibold">${item.quantity}</span>
+                        <button onclick="updateQuantity(${item.id}, ${item.quantity + 1})" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">+</button>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-lg font-semibold">$${(item.price * item.quantity).toFixed(2)}</div>
+                        <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-700 text-sm">Remove</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            document.getElementById('cartTotal').textContent = `$${total.toFixed(2)}`;
+        }
+
+        // Update quantity
+        function updateQuantity(productId, newQuantity) {
+            if (newQuantity <= 0) {
+                removeFromCart(productId);
+                return;
+            }
+            
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity = newQuantity;
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartCount();
+                loadCart();
+            }
+        }
+
+        // Remove from cart
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            loadCart();
+            showNotification('Item removed from cart');
+        }
+
+        // Checkout
+        function checkout() {
+            if (cart.length === 0) return;
+            
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const newOrder = {
+                id: `ORD-${Date.now()}`,
+                date: new Date().toLocaleDateString(),
+                status: 'Processing',
+                total: total,
+                items: [...cart]
+            };
+            
+            orders.push(newOrder);
+            localStorage.setItem('orders', JSON.stringify(orders));
+            
+            cart = [];
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            
+            showNotification('Order placed successfully!');
+            showPage('orders');
+        }
+
+        // Load orders
+        function loadOrders() {
+            const ordersContent = document.getElementById('ordersContent');
+            
+            if (orders.length === 0) {
+                ordersContent.innerHTML = '<p class="text-gray-500 text-center py-16">No orders found.</p>';
+                return;
+            }
+            
+            ordersContent.innerHTML = orders.map(order => `
+                <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold">Order ${order.id}</h3>
+                            <p class="text-gray-600">Date: ${order.date}</p>
+                            <p class="text-gray-600">Status: <span class="font-semibold text-blue-600">${order.status}</span></p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-xl font-bold">$${order.total.toFixed(2)}</div>
+                        </div>
+                    </div>
+                    <div class="border-t pt-4">
+                        <h4 class="font-semibold mb-2">Items:</h4>
+                        ${order.items.map(item => `
+                            <div class="flex justify-between items-center py-2">
+                                <span>${item.name} x ${item.quantity}</span>
+                                <span>$${(item.price * item.quantity).toFixed(2)}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Search
+        function handleSearch(event) {
+            if (event.key === 'Enter') {
+                const query = event.target.value.toLowerCase();
+                const filteredProducts = products.filter(product => 
+                    product.name.toLowerCase().includes(query) || 
+                    product.description.toLowerCase().includes(query)
+                );
+                
+                showPage('products');
+                const productsGrid = document.getElementById('productsGrid');
+                productsGrid.innerHTML = filteredProducts.map(product => createProductCard(product)).join('');
+            }
+        }
+
+        // Login
+        function showLoginModal() {
+            document.getElementById('loginModal').classList.add('show');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('show');
+        }
+
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (email && password) {
+                currentUser = { email: email, name: email.split('@')[0] };
+                
+                document.getElementById('loginButton').classList.add('hidden');
+                document.getElementById('userMenu').classList.remove('hidden');
+                document.getElementById('userName').textContent = currentUser.name;
+                
+                closeLoginModal();
+                showNotification('Login successful!');
+            } else {
+                showNotification('Please enter email and password', 'error');
+            }
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            document.getElementById('loginButton').classList.remove('hidden');
+            document.getElementById('userMenu').classList.add('hidden');
+            showNotification('Logged out successfully');
+        }
+
+        // Admin Panel Functions
+        let isAdmin = false;
+        let adminUsers = [
+            { id: 1, name: 'John Doe', email: 'john@example.com', joinDate: '2024-01-15' }
+        ];
+
+        function handleAdminLogin() {
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            if (username === 'admin' && password === 'admin123') {
+                isAdmin = true;
+                document.getElementById('adminLogin').classList.add('hidden');
+                document.getElementById('adminDashboard').classList.remove('hidden');
+                loadAdminStats();
+                loadAdminOrders();
+                showNotification('Admin login successful!');
+            } else {
+                showNotification('Invalid admin credentials!', 'error');
+            }
+        }
+
+        function handleAdminLogout() {
+            isAdmin = false;
+            document.getElementById('adminLogin').classList.remove('hidden');
+            document.getElementById('adminDashboard').classList.add('hidden');
+            showNotification('Admin logged out');
+        }
+
+        function loadAdminStats() {
+            const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
+            document.getElementById('totalOrders').textContent = orders.length;
+            document.getElementById('totalRevenue').textContent = `$${totalRevenue.toFixed(2)}`;
+            document.getElementById('totalProducts').textContent = products.length;
+            document.getElementById('totalUsers').textContent = adminUsers.length;
+        }
+
+        function showAdminTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.admin-tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            
+            // Reset all tab buttons
+            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+                btn.classList.remove('bg-purple-600');
+                btn.classList.add('bg-gray-600');
+            });
+            
+            // Show selected tab
+            document.getElementById(`admin${tabName.charAt(0).toUpperCase() + tabName.slice(1)}Tab`).classList.remove('hidden');
+            
+            // Highlight active tab button
+            event.target.classList.remove('bg-gray-600');
+            event.target.classList.add('bg-purple-600');
+            
+            // Load tab content
+            if (tabName === 'orders') loadAdminOrders();
+            if (tabName === 'products') loadAdminProducts();
+            if (tabName === 'users') loadAdminUsers();
+        }
+
+        function loadAdminOrders() {
+            const adminOrdersList = document.getElementById('adminOrdersList');
+            
+            if (orders.length === 0) {
+                adminOrdersList.innerHTML = '<p class="text-gray-400">No orders found.</p>';
+                return;
+            }
+            
+            adminOrdersList.innerHTML = orders.map(order => `
+                <div class="bg-gray-700 rounded-lg p-4 mb-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-semibold">${order.id}</h4>
+                            <p class="text-gray-300 text-sm">Date: ${order.date}</p>
+                            <p class="text-gray-300 text-sm">Items: ${order.items.length}</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold text-green-400">$${order.total.toFixed(2)}</div>
+                            <span class="px-2 py-1 bg-blue-600 text-white text-xs rounded">${order.status}</span>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <select onchange="updateOrderStatus('${order.id}', this.value)" class="bg-gray-600 text-white px-3 py-1 rounded text-sm">
+                            <option value="Processing" ${order.status === 'Processing' ? 'selected' : ''}>Processing</option>
+                            <option value="Shipped" ${order.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                            <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                            <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                        </select>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadAdminProducts() {
+            const adminProductsList = document.getElementById('adminProductsList');
+            
+            adminProductsList.innerHTML = products.map(product => `
+                <div class="bg-gray-700 rounded-lg p-4 mb-4">
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-center space-x-4">
+                            <img src="${product.image}" alt="${product.name}" class="w-16 h-16 object-cover rounded-lg">
+                            <div>
+                                <h4 class="font-semibold">${product.name}</h4>
+                                <p class="text-gray-300 text-sm">${product.description}</p>
+                                <p class="text-green-400 font-bold">$${product.price}</p>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="editProduct(${product.id})" class="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700">
+                                Edit
+                            </button>
+                            <button onclick="deleteProduct(${product.id})" class="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadAdminUsers() {
+            const adminUsersList = document.getElementById('adminUsersList');
+            
+            adminUsersList.innerHTML = adminUsers.map(user => `
+                <div class="bg-gray-700 rounded-lg p-4 mb-4">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h4 class="font-semibold">${user.name}</h4>
+                            <p class="text-gray-300 text-sm">${user.email}</p>
+                            <p class="text-gray-400 text-xs">Joined: ${user.joinDate}</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="bg-blue-600 text-white px-3 py-1 rounded text-sm">View Orders</button>
+                            <button class="bg-red-600 text-white px-3 py-1 rounded text-sm">Block User</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateOrderStatus(orderId, newStatus) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                order.status = newStatus;
+                localStorage.setItem('orders', JSON.stringify(orders));
+                showNotification(`Order ${orderId} status updated to ${newStatus}`);
+                loadAdminOrders();
+            }
+        }
+
+        function showAddProductForm() {
+            document.getElementById('addProductModal').classList.add('show');
+        }
+
+        function closeAddProductModal() {
+            document.getElementById('addProductModal').classList.remove('show');
+        }
+
+        function addNewProduct() {
+            const name = document.getElementById('newProductName').value;
+            const price = parseFloat(document.getElementById('newProductPrice').value);
+            const description = document.getElementById('newProductDescription').value;
+            
+            if (!name || !price || !description) {
+                showNotification('Please fill all fields!', 'error');
+                return;
+            }
+            
+            const newProduct = {
+                id: products.length + 1,
+                name: name,
+                price: price,
+                image: `https://via.placeholder.com/300x300/7c3aed/ffffff?text=${encodeURIComponent(name)}`,
+                description: description
+            };
+            
+            products.push(newProduct);
+            
+            // Clear form
+            document.getElementById('newProductName').value = '';
+            document.getElementById('newProductPrice').value = '';
+            document.getElementById('newProductDescription').value = '';
+            
+            closeAddProductModal();
+            loadAdminProducts();
+            loadAdminStats();
+            showNotification('Product added successfully!');
+        }
+
+        function editProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                const newName = prompt('Enter new product name:', product.name);
+                const newPrice = prompt('Enter new price:', product.price);
+                const newDescription = prompt('Enter new description:', product.description);
+                
+                if (newName && newPrice && newDescription) {
+                    product.name = newName;
+                    product.price = parseFloat(newPrice);
+                    product.description = newDescription;
+                    
+                    loadAdminProducts();
+                    showNotification('Product updated successfully!');
+                }
+            }
+        }
+
+        function deleteProduct(productId) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                const index = products.findIndex(p => p.id === productId);
+                if (index > -1) {
+                    products.splice(index, 1);
+                    loadAdminProducts();
+                    loadAdminStats();
+                    showNotification('Product deleted successfully!');
+                }
+            }
+        }
+
+        // Initialize on page load
+        init();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'976d184ff5b7899d',t:'MTc1NjQ4MTQ4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
+
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'976d17909136899d',t:'MTc1NjQ4MTQ1Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

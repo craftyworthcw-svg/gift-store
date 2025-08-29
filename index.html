@@ -1,140 +1,201 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CraftyWorth - Custom Mugs & T-Shirts India | Personalized Gifts ₹499+</title>
-    <meta name="description" content="Premium custom products made in India. Photo mugs ₹499, T-shirts ₹599, frames ₹399. Free delivery above ₹999. Order personalized gifts online!">
-    <meta name="keywords" content="custom mugs India, personalized t-shirts, photo frames, custom gifts, made in India">
-    <link rel="canonical" href="https://craftyworth.in">
-    
-    <!-- Open Graph Tags -->
-    <meta property="og:title" content="CraftyWorth - Custom Products Made in India">
-    <meta property="og:description" content="Premium personalized mugs, t-shirts & frames. Starting ₹399. Free delivery ₹999+">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://craftyworth.in">
-    
+    <title>CraftyWorth - Premium Custom Products | Made in India</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        * { font-family: 'Inter', sans-serif; }
-        
-        .hero-gradient { 
-            background: linear-gradient(135deg, #0EA5E9 0%, #1E40AF 100%); 
+        * {
+            font-family: 'Poppins', sans-serif;
         }
         
-        .btn-primary { 
-            background: linear-gradient(135deg, #0EA5E9, #1E40AF);
-            color: white;
-            padding: 12px 32px;
-            border-radius: 50px;
-            font-weight: 600;
+        .hero-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .card-hover {
             transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .floating-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.8s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .cart-item {
+            transition: all 0.3s ease;
+        }
+        
+        .cart-item:hover {
+            background-color: #f8fafc;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .quantity-btn {
+            background: #f9fafb;
             border: none;
+            padding: 8px 12px;
             cursor: pointer;
+            transition: background-color 0.2s;
         }
         
-        .btn-primary:hover { 
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(14, 165, 233, 0.3);
+        .quantity-btn:hover {
+            background: #e5e7eb;
         }
         
-        .card-hover { 
-            transition: all 0.3s ease; 
+        .quantity-input {
+            border: none;
+            text-align: center;
+            width: 60px;
+            padding: 8px 4px;
+            outline: none;
         }
         
-        .card-hover:hover { 
-            transform: translateY(-8px); 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1); 
+        .testimonial-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
         }
         
-        .floating { animation: floating 3s ease-in-out infinite; }
-        @keyframes floating { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
-        
-        .fade-in { opacity: 0; transform: translateY(30px); transition: all 0.6s ease; }
-        .fade-in.visible { opacity: 1; transform: translateY(0); }
-        
-        .cart-count { 
-            background: #EF4444; 
-            color: white; 
-            border-radius: 50%; 
-            padding: 2px 6px; 
-            font-size: 12px; 
-            position: absolute; 
-            top: -8px; 
-            right: -8px; 
+        .feature-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
         
-        .focus-visible:focus {
-            outline: 3px solid #0EA5E9;
-            outline-offset: 2px;
+        .price-tag {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+        
+        .indian-flag {
+            background: linear-gradient(to bottom, #ff9933 33%, #ffffff 33%, #ffffff 66%, #138808 66%);
+        }
+        
+        .rupee-symbol {
+            color: #138808;
+            font-weight: bold;
+        }
+        
+        .made-in-india {
+            background: linear-gradient(135deg, #ff9933 0%, #ffffff 50%, #138808 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
     </style>
 </head>
 <body class="bg-gray-50">
+    <!-- Notification -->
+    <div id="notification" class="notification bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg">
+        <span id="notificationText">Success!</span>
+    </div>
+
     <!-- Header -->
     <header class="bg-white shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex justify-between items-center">
-                <!-- Logo -->
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
-                        <span class="text-white font-bold text-xl">C</span>
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between py-4">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center">
+                        <i class="fas fa-palette text-white text-xl"></i>
                     </div>
-                    <h1 class="text-2xl font-bold text-gray-800">CraftyWorth</h1>
-                </div>
-                
-                <!-- Search Bar -->
-                <div class="hidden md:flex flex-1 max-w-md mx-8">
-                    <div class="relative w-full">
-                        <input type="text" id="searchInput" placeholder="Search products..." class="w-full px-4 py-2 pl-10 pr-4 border border-gray-300 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <div id="searchResults" class="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-lg shadow-lg mt-1 hidden z-50 max-h-64 overflow-y-auto">
-                        </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">CraftyWorth</h1>
+                        <p class="text-xs text-gray-500 made-in-india font-semibold">Made in India 🇮🇳</p>
                     </div>
                 </div>
                 
-                <!-- Navigation -->
                 <nav class="hidden md:flex space-x-8">
-                    <a href="#home" class="text-gray-600 hover:text-blue-600 font-medium transition focus-visible">Home</a>
-                    <a href="#products" class="text-gray-600 hover:text-blue-600 font-medium transition focus-visible">Products</a>
-                    <a href="#about" class="text-gray-600 hover:text-blue-600 font-medium transition focus-visible">About</a>
-                    <a href="#contact" class="text-gray-600 hover:text-blue-600 font-medium transition focus-visible">Contact</a>
+                    <a href="#home" class="text-gray-700 hover:text-purple-600 font-medium transition">Home</a>
+                    <a href="#products" class="text-gray-700 hover:text-purple-600 font-medium transition">Products</a>
+                    <a href="#about" class="text-gray-700 hover:text-purple-600 font-medium transition">About</a>
+                    <a href="#contact" class="text-gray-700 hover:text-purple-600 font-medium transition">Contact</a>
                 </nav>
                 
-                <!-- Cart -->
                 <div class="flex items-center space-x-4">
                     <div class="relative">
-                        <button id="cartBtn" class="text-gray-600 hover:text-blue-600 transition relative focus-visible">
+                        <button onclick="toggleCart()" class="relative p-2 text-gray-700 hover:text-purple-600 transition">
                             <i class="fas fa-shopping-cart text-xl"></i>
-                            <span id="cartCount" class="cart-count hidden">0</span>
+                            <span id="cartCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
                         </button>
                     </div>
                     
-                    <!-- Mobile Menu Button -->
-                    <button id="mobileMenuBtn" class="md:hidden text-gray-600 focus-visible">
-                        <i class="fas fa-bars text-xl"></i>
+                    <button class="md:hidden" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars text-xl text-gray-700"></i>
                     </button>
                 </div>
             </div>
             
             <!-- Mobile Menu -->
-            <div id="mobileMenu" class="md:hidden mt-4 pb-4 hidden">
-                <!-- Mobile Search -->
-                <div class="mb-4">
-                    <div class="relative">
-                        <input type="text" id="mobileSearchInput" placeholder="Search products..." class="w-full px-4 py-2 pl-10 pr-4 border border-gray-300 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                    </div>
-                </div>
-                
-                <nav class="flex flex-col space-y-3">
-                    <a href="#home" class="text-gray-600 hover:text-blue-600 font-medium">Home</a>
-                    <a href="#products" class="text-gray-600 hover:text-blue-600 font-medium">Products</a>
-                    <a href="#about" class="text-gray-600 hover:text-blue-600 font-medium">About</a>
-                    <a href="#contact" class="text-gray-600 hover:text-blue-600 font-medium">Contact</a>
+            <div id="mobileMenu" class="hidden md:hidden pb-4">
+                <nav class="flex flex-col space-y-2">
+                    <a href="#home" class="text-gray-700 hover:text-purple-600 py-2">Home</a>
+                    <a href="#products" class="text-gray-700 hover:text-purple-600 py-2">Products</a>
+                    <a href="#about" class="text-gray-700 hover:text-purple-600 py-2">About</a>
+                    <a href="#contact" class="text-gray-700 hover:text-purple-600 py-2">Contact</a>
                 </nav>
             </div>
         </div>
@@ -142,509 +203,220 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero-gradient text-white py-20">
-        <div class="container mx-auto px-4 text-center">
-            <div class="max-w-4xl mx-auto">
-                <h2 class="text-5xl md:text-6xl font-bold mb-6 fade-in">
-                    Custom Products<br>
-                    <span class="text-yellow-300">Made in India</span>
-                </h2>
-                <p class="text-xl md:text-2xl mb-8 fade-in opacity-90">
-                    Premium personalized mugs, t-shirts & frames starting ₹399
-                </p>
-                
-                <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12 fade-in">
-                    <button onclick="scrollToProducts()" class="btn-primary focus-visible">
-                        Shop Now <i class="fas fa-arrow-right ml-2"></i>
-                    </button>
-                    <button onclick="scrollToAbout()" class="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold text-lg hover:bg-gray-100 transition focus-visible">
-                        Learn More
-                    </button>
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="slide-in">
+                    <div class="flex items-center mb-4">
+                        <span class="indian-flag w-8 h-6 rounded mr-3"></span>
+                        <span class="bg-white/20 text-white px-3 py-1 rounded-full text-sm font-medium">
+                            🇮🇳 Proudly Made in India
+                        </span>
+                    </div>
+                    <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+                        Create <span class="text-yellow-300">Memories</span><br>
+                        That Last Forever
+                    </h1>
+                    <p class="text-xl mb-8 text-white/90">
+                        Premium custom products crafted with love in India. From personalized mugs to custom apparel - bring your ideas to life with our expert craftsmanship.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button onclick="scrollToProducts()" class="bg-white text-purple-600 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition transform hover:scale-105">
+                            <i class="fas fa-shopping-bag mr-2"></i>Shop Now
+                        </button>
+                        <button onclick="scrollToAbout()" class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-purple-600 transition">
+                            <i class="fas fa-play mr-2"></i>Learn More
+                        </button>
+                    </div>
+                    
+                    <!-- Indian Features -->
+                    <div class="grid grid-cols-3 gap-4 mt-12">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold">₹299+</div>
+                            <div class="text-sm text-white/80">Starting Price</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold">24-48hrs</div>
+                            <div class="text-sm text-white/80">Quick Delivery</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold">100%</div>
+                            <div class="text-sm text-white/80">Indian Made</div>
+                        </div>
+                    </div>
                 </div>
                 
-                <!-- Features -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 fade-in">
-                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-                        <i class="fas fa-shipping-fast text-3xl mb-4 text-yellow-300"></i>
-                        <h3 class="font-semibold text-lg mb-2">Free Delivery</h3>
-                        <p class="opacity-90">Orders above ₹999</p>
-                    </div>
-                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-                        <i class="fas fa-medal text-3xl mb-4 text-yellow-300"></i>
-                        <h3 class="font-semibold text-lg mb-2">Premium Quality</h3>
-                        <p class="opacity-90">Made in India guarantee</p>
-                    </div>
-                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-                        <i class="fas fa-clock text-3xl mb-4 text-yellow-300"></i>
-                        <h3 class="font-semibold text-lg mb-2">Quick Delivery</h3>
-                        <p class="opacity-90">3-5 business days</p>
+                <div class="floating-animation">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-white/20 rounded-3xl transform rotate-6"></div>
+                        <div class="relative bg-white rounded-3xl p-8 shadow-2xl">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl p-4 text-white">
+                                    <i class="fas fa-mug-hot text-3xl mb-2"></i>
+                                    <p class="font-semibold">Custom Mugs</p>
+                                    <p class="text-sm opacity-90">From ₹499</p>
+                                </div>
+                                <div class="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl p-4 text-white">
+                                    <i class="fas fa-tshirt text-3xl mb-2"></i>
+                                    <p class="font-semibold">T-Shirts</p>
+                                    <p class="text-sm opacity-90">From ₹599</p>
+                                </div>
+                                <div class="bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl p-4 text-white">
+                                    <i class="fas fa-image text-3xl mb-2"></i>
+                                    <p class="font-semibold">Photo Frames</p>
+                                    <p class="text-sm opacity-90">From ₹399</p>
+                                </div>
+                                <div class="bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl p-4 text-white">
+                                    <i class="fas fa-key text-3xl mb-2"></i>
+                                    <p class="font-semibold">Keychains</p>
+                                    <p class="text-sm opacity-90">From ₹199</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Products Section -->
-    <section id="products" class="py-20 bg-white">
+    <!-- Features Section -->
+    <section class="py-20 bg-white">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4 fade-in">Our Products</h2>
-                <p class="text-xl text-gray-600 fade-in">Premium custom products made with love in India</p>
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">Why Choose CraftyWorth?</h2>
+                <p class="text-xl text-gray-600">Experience the best of Indian craftsmanship with modern technology</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center card-hover">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-shipping-fast text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Fast Delivery</h3>
+                    <p class="text-gray-600">Quick delivery across India within 24-48 hours via trusted courier partners</p>
+                </div>
+                
+                <div class="text-center card-hover">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-award text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Premium Quality</h3>
+                    <p class="text-gray-600">High-quality materials and printing technology for long-lasting products</p>
+                </div>
+                
+                <div class="text-center card-hover">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-rupee-sign text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Best Prices</h3>
+                    <p class="text-gray-600">Competitive pricing with no hidden charges. Pay in INR with multiple payment options</p>
+                </div>
+                
+                <div class="text-center card-hover">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-heart text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Made with Love</h3>
+                    <p class="text-gray-600">Every product is crafted with care by skilled Indian artisans</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">Our Premium Products</h2>
+                <p class="text-xl text-gray-600">Discover our range of customizable products, all made in India</p>
+            </div>
+            
+            <!-- Product Categories -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button onclick="filterProducts('all')" class="filter-btn bg-purple-600 text-white px-6 py-2 rounded-full font-medium hover:bg-purple-700 transition">
+                    All Products
+                </button>
+                <button onclick="filterProducts('mugs')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-300 transition">
+                    Mugs & Drinkware
+                </button>
+                <button onclick="filterProducts('apparel')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-300 transition">
+                    Apparel
+                </button>
+                <button onclick="filterProducts('decor')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-300 transition">
+                    Home Decor
+                </button>
+                <button onclick="filterProducts('accessories')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-300 transition">
+                    Accessories
+                </button>
+            </div>
+            
+            <!-- Products Grid -->
+            <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- Products will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">What Our Indian Customers Say</h2>
+                <p class="text-xl text-gray-600">Real reviews from satisfied customers across India</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Product 1: Custom Mug -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('mug')">
-                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
-                        <img src="https://m.media-amazon.com/images/I/61VuVU94RnL._AC_UF1000,1000_QL80_.jpg" alt="Custom Photo Mug" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
-                            <i class="fas fa-mug-hot text-4xl text-red-500"></i>
+                <div class="testimonial-card text-white rounded-2xl p-8 card-hover">
+                    <div class="flex items-center mb-4">
+                        <img src="https://via.placeholder.com/60x60/7c3aed/ffffff?text=R" alt="Rahul" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-semibold">Rahul Sharma</h4>
+                            <p class="text-sm opacity-90">Mumbai, Maharashtra</p>
                         </div>
                     </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Custom Photo Mug</h3>
-                        <p class="text-gray-600 mb-4">Premium ceramic mug with your favorite photo. Perfect for gifts!</p>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">₹499</span>
-                                <span class="text-sm text-gray-500 line-through ml-2">₹699</span>
-                            </div>
-                            <button onclick="event.stopPropagation(); addToCart('Custom Photo Mug', 499)" class="btn-primary focus-visible">
-                                Add to Cart
-                            </button>
-                        </div>
+                    <div class="flex mb-4">
+                        <i class="fas fa-star text-yellow-300"></i>
+                        <i class="fas fa-star text-yellow-300"></i>
+                        <i class="fas fa-star text-yellow-300"></i>
+                        <i class="fas fa-star text-yellow-300"></i>
+                        <i class="fas fa-star text-yellow-300"></i>
                     </div>
+                    <p class="text-white/90">"Excellent quality custom mug! The print quality is amazing and delivery was super fast. Highly recommend CraftyWorth for personalized gifts."</p>
                 </div>
-
-                <!-- Product 2: Custom T-Shirt -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('tshirt')">
-                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
-                        <img src="https://m.media-amazon.com/images/I/61HaaYHZTaL._AC_UY1100_.jpg" alt="Personalized T-Shirt" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
-                            <i class="fas fa-tshirt text-4xl text-blue-500"></i>
+                
+                <div class="bg-gradient-to-br from-blue-500 to-purple-600 text-white rounded-2xl p-8 card-hover">
+                    <div class="flex items-center mb-4">
+                        <img src="https://via.placeholder.com/60x60/3b82f6/ffffff?text=P" alt="Priya" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-semibold">Priya Singh</h4>
+                            <p class="text-sm opacity-90">Delhi, NCR</p>
                         </div>
                     </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Personalized T-Shirt</h3>
-                        <p class="text-gray-600 mb-4">100% cotton t-shirt with custom design. Available in all sizes.</p>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">₹599</span>
-                                <span class="text-sm text-gray-500 line-through ml-2">₹799</span>
-                            </div>
-                            <button onclick="event.stopPropagation(); addToCart('Personalized T-Shirt', 599)" class="btn-primary focus-visible">
-                                Add to Cart
-                            </button>
-                        </div>
+                    <div class="flex mb-4">
+                        <i class="fas fa-star text-yellow-300"></i>
+                        <i class="fas fa-star text-yellow-300"></i>
+                        <i class="fas fa-star text-yellow-300"></i>
+                        <i class="fas fa-star text-yellow-300"></i>
+                        <i class="fas fa-star text-yellow-300"></i>
                     </div>
+                    <p class="text-white/90">"Ordered custom t-shirts for my family. The fabric quality is great and the printing is perfect. Great value for money!"</p>
                 </div>
-
-                <!-- Product 3: A3 Drawing Books -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('drawingbook')">
-                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
-                        <img src="https://m.media-amazon.com/images/I/71qvfX9HWEL._AC_UF1000,1000_QL80_.jpg" alt="A3 Drawing Books" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
-                            <i class="fas fa-book text-4xl text-orange-500"></i>
+                
+                <div class="bg-gradient-to-br from-green-500 to-blue-500 text-white rounded-2xl p-8 card-hover">
+                    <div class="flex items-center mb-4">
+                        <img src="https://via.placeholder.com/60x60/10b981/ffffff?text=A" alt="Amit" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-semibold">Amit Kumar</h4>
+                            <p class="text-sm opacity-90">Bangalore, Karnataka</p>
                         </div>
                     </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2 text-gray-800">A3 Drawing Books</h3>
-                        <p class="text-gray-600 mb-4">Premium quality drawing books with custom cover design.</p>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">₹349</span>
-                                <span class="text-sm text-gray-500 line-through ml-2">₹499</span>
-                            </div>
-                            <button onclick="event.stopPropagation(); addToCart('A3 Drawing Books', 349)" class="btn-primary focus-visible">
-                                Add to Cart
-                            </button>
-                        </div>
+                    <div class="flex mb-4">
+                        <i class="fas fa-star text-yellow-300"></i>
+                        <i class="fas fa-star text-yellow-300"></i>
+                        <i class="fas fa-star text-yellow-300"></i>
+                        <i class="fas fa-star text-yellow-300"></i>
+                        <i class="fas fa-star text-yellow-300"></i>
                     </div>
-                </div>
-
-                <!-- Product 4: A4 Exam Boards -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('examboard')">
-                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
-                        <img src="https://m.media-amazon.com/images/I/71K8zQqKvyL._AC_UF1000,1000_QL80_.jpg" alt="A4 Exam Boards" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
-                            <i class="fas fa-clipboard text-4xl text-teal-500"></i>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2 text-gray-800">A4 Exam Boards</h3>
-                        <p class="text-gray-600 mb-4">Durable exam boards with personalized design for students.</p>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">₹299</span>
-                                <span class="text-sm text-gray-500 line-through ml-2">₹399</span>
-                            </div>
-                            <button onclick="event.stopPropagation(); addToCart('A4 Exam Boards', 299)" class="btn-primary focus-visible">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 5: Anniversary Gifts -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('anniversary')">
-                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
-                        <img src="https://m.media-amazon.com/images/I/71xvQJ9RKOL._AC_UF1000,1000_QL80_.jpg" alt="Anniversary Gifts" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
-                            <i class="fas fa-heart text-4xl text-pink-500"></i>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Anniversary Gifts</h3>
-                        <p class="text-gray-600 mb-4">Romantic personalized gifts to celebrate your special moments.</p>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">₹899</span>
-                                <span class="text-sm text-gray-500 line-through ml-2">₹1199</span>
-                            </div>
-                            <button onclick="event.stopPropagation(); addToCart('Anniversary Gifts', 899)" class="btn-primary focus-visible">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 6: Birthday Gifts -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('birthday')">
-                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
-                        <img src="https://m.media-amazon.com/images/I/71Zl7XJHPOL._AC_UF1000,1000_QL80_.jpg" alt="Birthday Gifts" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
-                            <i class="fas fa-birthday-cake text-4xl text-yellow-500"></i>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Birthday Gifts</h3>
-                        <p class="text-gray-600 mb-4">Special personalized gifts to make birthdays memorable.</p>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">₹799</span>
-                                <span class="text-sm text-gray-500 line-through ml-2">₹999</span>
-                            </div>
-                            <button onclick="event.stopPropagation(); addToCart('Birthday Gifts', 799)" class="btn-primary focus-visible">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 7: Boyfriend Gifts -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('boyfriend')">
-                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
-                        <img src="https://m.media-amazon.com/images/I/71dKQJ8RKOL._AC_UF1000,1000_QL80_.jpg" alt="Boyfriend Gifts" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
-                            <i class="fas fa-male text-4xl text-blue-500"></i>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Boyfriend Gifts</h3>
-                        <p class="text-gray-600 mb-4">Thoughtful personalized gifts for your special someone.</p>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">₹699</span>
-                                <span class="text-sm text-gray-500 line-through ml-2">₹899</span>
-                            </div>
-                            <button onclick="event.stopPropagation(); addToCart('Boyfriend Gifts', 699)" class="btn-primary focus-visible">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 8: Design Bundles & Catalogues -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('designbundle')">
-                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
-                        <img src="https://m.media-amazon.com/images/I/81VQJ9RKOL._AC_UF1000,1000_QL80_.jpg" alt="Design Bundles" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
-                            <i class="fas fa-folder-open text-4xl text-indigo-500"></i>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Design Bundles</h3>
-                        <p class="text-gray-600 mb-4">Complete design packages and catalogues for your business.</p>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">₹1499</span>
-                                <span class="text-sm text-gray-500 line-through ml-2">₹1999</span>
-                            </div>
-                            <button onclick="event.stopPropagation(); addToCart('Design Bundles', 1499)" class="btn-primary focus-visible">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 9: Customized Frames -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('frame')">
-                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
-                        <img src="https://m.media-amazon.com/images/I/71xvQJ9RKOL._AC_UF1000,1000_QL80_.jpg" alt="Customized Frames" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
-                            <i class="fas fa-image text-4xl text-green-500"></i>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Customized Frames</h3>
-                        <p class="text-gray-600 mb-4">Beautiful wooden frames with your precious memories.</p>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">₹399</span>
-                                <span class="text-sm text-gray-500 line-through ml-2">₹549</span>
-                            </div>
-                            <button onclick="event.stopPropagation(); addToCart('Customized Frames', 399)" class="btn-primary focus-visible">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 10: Customized Notebooks -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('notebook')">
-                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
-                        <img src="https://m.media-amazon.com/images/I/71K8zQqKvyL._AC_UF1000,1000_QL80_.jpg" alt="Customized Notebooks" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
-                            <i class="fas fa-book-open text-4xl text-purple-500"></i>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Customized Notebooks</h3>
-                        <p class="text-gray-600 mb-4">Personalized notebooks for work, study, or journaling.</p>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">₹249</span>
-                                <span class="text-sm text-gray-500 line-through ml-2">₹349</span>
-                            </div>
-                            <button onclick="event.stopPropagation(); addToCart('Customized Notebooks', 249)" class="btn-primary focus-visible">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 11: Fridge Magnets -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('magnet')">
-                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
-                        <img src="https://m.media-amazon.com/images/I/61VuVU94RnL._AC_UF1000,1000_QL80_.jpg" alt="Fridge Magnets" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
-                            <i class="fas fa-magnet text-4xl text-red-500"></i>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Fridge Magnets</h3>
-                        <p class="text-gray-600 mb-4">Custom photo magnets to decorate your refrigerator.</p>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">₹149</span>
-                                <span class="text-sm text-gray-500 line-through ml-2">₹199</span>
-                            </div>
-                            <button onclick="event.stopPropagation(); addToCart('Fridge Magnets', 149)" class="btn-primary focus-visible">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 12: Keychains -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('keychain')">
-                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
-                        <img src="https://m.media-amazon.com/images/I/71dKQJ8RKOL._AC_UF1000,1000_QL80_.jpg" alt="Custom Keychains" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
-                            <i class="fas fa-key text-4xl text-yellow-500"></i>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Custom Keychains</h3>
-                        <p class="text-gray-600 mb-4">Durable acrylic keychains with your favorite photo.</p>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">₹199</span>
-                                <span class="text-sm text-gray-500 line-through ml-2">₹299</span>
-                            </div>
-                            <button onclick="event.stopPropagation(); addToCart('Custom Keychains', 199)" class="btn-primary focus-visible">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 13: Mousepads -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('mousepad')">
-                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
-                        <img src="https://m.media-amazon.com/images/I/71Zl7XJHPOL._AC_UF1000,1000_QL80_.jpg" alt="Custom Mousepads" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
-                            <i class="fas fa-mouse text-4xl text-gray-500"></i>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Custom Mousepads</h3>
-                        <p class="text-gray-600 mb-4">High-quality mousepads with your custom design.</p>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">₹299</span>
-                                <span class="text-sm text-gray-500 line-through ml-2">₹399</span>
-                            </div>
-                            <button onclick="event.stopPropagation(); addToCart('Custom Mousepads', 299)" class="btn-primary focus-visible">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 14: Coasters -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('coaster')">
-                    <div class="h-64 bg-gradient-to-br from-brown-400 to-amber-500 flex items-center justify-center">
-                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg">
-                            <i class="fas fa-circle text-4xl text-amber-600"></i>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Custom Coasters</h3>
-                        <p class="text-gray-600 mb-4">Elegant coasters with personalized designs for your home.</p>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">₹199</span>
-                                <span class="text-sm text-gray-500 line-through ml-2">₹299</span>
-                            </div>
-                            <button onclick="event.stopPropagation(); addToCart('Custom Coasters', 199)" class="btn-primary focus-visible">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 15: Photo Sketch Items -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('sketch')">
-                    <div class="h-64 bg-gradient-to-br from-slate-400 to-gray-500 flex items-center justify-center">
-                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg">
-                            <i class="fas fa-pencil-alt text-4xl text-slate-500"></i>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Photo Sketch Items</h3>
-                        <p class="text-gray-600 mb-4">Beautiful hand-drawn sketches from your favorite photos.</p>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">₹999</span>
-                                <span class="text-sm text-gray-500 line-through ml-2">₹1299</span>
-                            </div>
-                            <button onclick="event.stopPropagation(); addToCart('Photo Sketch Items', 999)" class="btn-primary focus-visible">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 16: Hindu God Idols -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('idol')">
-                    <div class="h-64 bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center">
-                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg">
-                            <i class="fas fa-om text-4xl text-orange-500"></i>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Hindu God Idols</h3>
-                        <p class="text-gray-600 mb-4">Sacred personalized idols for your home temple.</p>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">₹1299</span>
-                                <span class="text-sm text-gray-500 line-through ml-2">₹1699</span>
-                            </div>
-                            <button onclick="event.stopPropagation(); addToCart('Hindu God Idols', 1299)" class="btn-primary focus-visible">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 17: Caricatures -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('caricature')">
-                    <div class="h-64 bg-gradient-to-br from-pink-400 to-purple-500 flex items-center justify-center">
-                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg">
-                            <i class="fas fa-smile text-4xl text-pink-500"></i>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Custom Caricatures</h3>
-                        <p class="text-gray-600 mb-4">Fun cartoon-style portraits that capture your personality.</p>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">₹799</span>
-                                <span class="text-sm text-gray-500 line-through ml-2">₹999</span>
-                            </div>
-                            <button onclick="event.stopPropagation(); addToCart('Custom Caricatures', 799)" class="btn-primary focus-visible">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 18: Custom Statues -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('statue')">
-                    <div class="h-64 bg-gradient-to-br from-stone-400 to-gray-600 flex items-center justify-center">
-                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg">
-                            <i class="fas fa-chess-king text-4xl text-stone-600"></i>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Custom Statues</h3>
-                        <p class="text-gray-600 mb-4">Premium personalized statues for special occasions.</p>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">₹2499</span>
-                                <span class="text-sm text-gray-500 line-through ml-2">₹2999</span>
-                            </div>
-                            <button onclick="event.stopPropagation(); addToCart('Custom Statues', 2499)" class="btn-primary focus-visible">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 19: Custom Phone Case -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('phonecase')">
-                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
-                        <img src="https://m.media-amazon.com/images/I/61HaaYHZTaL._AC_UY1100_.jpg" alt="Custom Phone Case" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
-                            <i class="fas fa-mobile-alt text-4xl text-indigo-500"></i>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Custom Phone Case</h3>
-                        <p class="text-gray-600 mb-4">Protective case with your custom design. All models available.</p>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">₹699</span>
-                                <span class="text-sm text-gray-500 line-through ml-2">₹899</span>
-                            </div>
-                            <button onclick="event.stopPropagation(); addToCart('Custom Phone Case', 699)" class="btn-primary focus-visible">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 20: Custom Cushion -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick="openProductPage('cushion')">
-                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
-                        <img src="https://m.media-amazon.com/images/I/71xvQJ9RKOL._AC_UF1000,1000_QL80_.jpg" alt="Custom Cushion" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center shadow-lg" style="display:none;">
-                            <i class="fas fa-couch text-4xl text-purple-500"></i>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Custom Cushion</h3>
-                        <p class="text-gray-600 mb-4">Soft cushion with personalized design for home decor.</p>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">₹799</span>
-                                <span class="text-sm text-gray-500 line-through ml-2">₹999</span>
-                            </div>
-                            <button onclick="event.stopPropagation(); addToCart('Custom Cushion', 799)" class="btn-primary focus-visible">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
+                    <p class="text-white/90">"Amazing photo frame with custom engraving. Perfect gift for my parents' anniversary. The craftsmanship is top-notch!"</p>
                 </div>
             </div>
         </div>
@@ -653,47 +425,59 @@
     <!-- About Section -->
     <section id="about" class="py-20 bg-gray-50">
         <div class="container mx-auto px-4">
-            <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-4xl font-bold text-gray-800 mb-8 fade-in">Why Choose CraftyWorth?</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="flex items-center mb-6">
+                        <span class="indian-flag w-8 h-6 rounded mr-3"></span>
+                        <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">
+                            🇮🇳 Made in India
+                        </span>
+                    </div>
+                    <h2 class="text-4xl font-bold text-gray-800 mb-6">Crafting Dreams Since 2020</h2>
+                    <p class="text-lg text-gray-600 mb-6">
+                        CraftyWorth is a proud Indian company dedicated to creating premium custom products that celebrate your special moments. Based in the heart of India, we combine traditional craftsmanship with modern technology to deliver exceptional quality.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>100% Made in India with local materials</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>Supporting local artisans and craftsmen</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>Eco-friendly packaging and processes</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>Quick delivery across all Indian cities</span>
+                        </div>
+                    </div>
+                </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                    <div class="fade-in">
-                        <div class="bg-white rounded-xl p-8 shadow-lg">
-                            <i class="fas fa-heart text-4xl text-red-500 mb-6"></i>
-                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Made with Love</h3>
-                            <p class="text-gray-600 leading-relaxed">
-                                Every product is crafted with care and attention to detail. We believe in creating memories that last a lifetime.
+                <div class="relative">
+                    <div class="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 rounded-3xl transform rotate-3"></div>
+                    <div class="relative bg-white rounded-3xl p-8 shadow-2xl">
+                        <div class="text-center">
+                            <div class="w-20 h-20 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <i class="fas fa-heart text-white text-3xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-4">Our Mission</h3>
+                            <p class="text-gray-600 mb-6">
+                                To make personalized gifting accessible and affordable for every Indian family, while supporting local businesses and artisans.
                             </p>
-                        </div>
-                    </div>
-                    
-                    <div class="fade-in">
-                        <div class="bg-white rounded-xl p-8 shadow-lg">
-                            <i class="fas fa-flag text-4xl text-orange-500 mb-6"></i>
-                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Made in India</h3>
-                            <p class="text-gray-600 leading-relaxed">
-                                Proudly supporting local artisans and manufacturers. Quality products with the spirit of India.
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <div class="fade-in">
-                        <div class="bg-white rounded-xl p-8 shadow-lg">
-                            <i class="fas fa-shield-alt text-4xl text-green-500 mb-6"></i>
-                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Quality Guarantee</h3>
-                            <p class="text-gray-600 leading-relaxed">
-                                We stand behind our products. If you're not satisfied, we'll make it right with our quality guarantee.
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <div class="fade-in">
-                        <div class="bg-white rounded-xl p-8 shadow-lg">
-                            <i class="fas fa-users text-4xl text-blue-500 mb-6"></i>
-                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Happy Customers</h3>
-                            <p class="text-gray-600 leading-relaxed">
-                                Over 10,000+ satisfied customers across India. Join our family of happy customers today!
-                            </p>
+                            <div class="grid grid-cols-2 gap-4 text-center">
+                                <div>
+                                    <div class="text-2xl font-bold text-purple-600">50,000+</div>
+                                    <div class="text-sm text-gray-500">Happy Customers</div>
+                                </div>
+                                <div>
+                                    <div class="text-2xl font-bold text-purple-600">100+</div>
+                                    <div class="text-sm text-gray-500">Cities Served</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -704,774 +488,482 @@
     <!-- Contact Section -->
     <section id="contact" class="py-20 bg-white">
         <div class="container mx-auto px-4">
-            <div class="max-w-4xl mx-auto">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl font-bold text-gray-800 mb-4 fade-in">Get in Touch</h2>
-                    <p class="text-xl text-gray-600 fade-in">Have questions? We'd love to hear from you!</p>
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">Get in Touch</h2>
+                <p class="text-xl text-gray-600">We're here to help you create something amazing</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div>
+                    <div class="space-y-8">
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4 mt-1">
+                                <i class="fas fa-map-marker-alt text-purple-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-2">Our Address</h3>
+                                <p class="text-gray-600">
+                                    CraftyWorth India Pvt. Ltd.<br>
+                                    123 Business Park, Sector 18<br>
+                                    Gurgaon, Haryana 122015<br>
+                                    India
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4 mt-1">
+                                <i class="fas fa-phone text-purple-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-2">Phone Numbers</h3>
+                                <p class="text-gray-600">
+                                    Customer Care: <a href="tel:+919876543210" class="text-purple-600 hover:underline">+91 98765 43210</a><br>
+                                    WhatsApp: <a href="https://wa.me/919876543210" class="text-purple-600 hover:underline">+91 98765 43210</a><br>
+                                    Toll Free: <a href="tel:18001234567" class="text-purple-600 hover:underline">1800-123-4567</a>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4 mt-1">
+                                <i class="fas fa-envelope text-purple-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-2">Email Addresses</h3>
+                                <p class="text-gray-600">
+                                    General: <a href="mailto:hello@craftyworth.in" class="text-purple-600 hover:underline">hello@craftyworth.in</a><br>
+                                    Support: <a href="mailto:support@craftyworth.in" class="text-purple-600 hover:underline">support@craftyworth.in</a><br>
+                                    Orders: <a href="mailto:orders@craftyworth.in" class="text-purple-600 hover:underline">orders@craftyworth.in</a>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4 mt-1">
+                                <i class="fas fa-clock text-purple-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-2">Business Hours</h3>
+                                <p class="text-gray-600">
+                                    Monday - Saturday: 9:00 AM - 7:00 PM IST<br>
+                                    Sunday: 10:00 AM - 6:00 PM IST<br>
+                                    <span class="text-sm text-purple-600">We respond within 2 hours!</span>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-orange-100 to-green-100 p-6 rounded-lg">
+                            <div class="flex items-center mb-3">
+                                <span class="indian-flag w-6 h-4 rounded mr-2"></span>
+                                <h3 class="text-lg font-semibold">GST Information</h3>
+                            </div>
+                            <p class="text-gray-700">
+                                <strong>GST Number:</strong> 27AABCU9603R1ZX<br>
+                                <strong>PAN:</strong> AABCU9603R<br>
+                                <strong>CIN:</strong> U74999HR2020PTC089123
+                            </p>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                    <!-- Contact Form -->
-                    <div class="fade-in">
-                        <div class="bg-gray-50 rounded-xl p-8">
-                            <h3 class="text-2xl font-semibold mb-6 text-gray-800">Send us a Message</h3>
-                            <form id="contactForm" class="space-y-6">
-                                <div>
-                                    <label class="block text-gray-700 font-medium mb-2">Name</label>
-                                    <input type="text" id="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible" placeholder="Your Name" required>
-                                </div>
-                                <div>
-                                    <label class="block text-gray-700 font-medium mb-2">Email</label>
-                                    <input type="email" id="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible" placeholder="your@email.com" required>
-                                </div>
-                                <div>
-                                    <label class="block text-gray-700 font-medium mb-2">Message</label>
-                                    <textarea id="message" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible" placeholder="Your message..." required></textarea>
-                                </div>
-                                <button type="submit" class="w-full btn-primary focus-visible">
-                                    Send Message <i class="fas fa-paper-plane ml-2"></i>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                    
-                    <!-- Contact Info -->
-                    <div class="fade-in">
-                        <div class="space-y-8">
-                            <div class="flex items-start space-x-4">
-                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <i class="fas fa-map-marker-alt text-blue-600"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-semibold text-lg mb-2 text-gray-800">Address</h4>
-                                    <p class="text-gray-600">Sector 14, Gurgaon<br>Haryana, India - 122001</p>
-                                </div>
+                <div class="bg-gray-50 rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Send us a Message</h3>
+                    <form class="space-y-6" onsubmit="handleContactForm(event)">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                                <input type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter your full name">
                             </div>
-                            
-                            <div class="flex items-start space-x-4">
-                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <i class="fas fa-phone text-blue-600"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-semibold text-lg mb-2 text-gray-800">Phone</h4>
-                                    <p class="text-gray-600">+91 98765 43210</p>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-start space-x-4">
-                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <i class="fas fa-envelope text-blue-600"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-semibold text-lg mb-2 text-gray-800">Email</h4>
-                                    <p class="text-gray-600">hello@craftyworth.in</p>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-start space-x-4">
-                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <i class="fas fa-clock text-blue-600"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-semibold text-lg mb-2 text-gray-800">Business Hours</h4>
-                                    <p class="text-gray-600">Mon - Sat: 9:00 AM - 7:00 PM<br>Sunday: 10:00 AM - 5:00 PM</p>
-                                </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
+                                <input type="tel" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="+91 98765 43210">
                             </div>
                         </div>
-                    </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                            <input type="email" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="your.email@gmail.com">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">City</label>
+                            <select class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                <option value="">Select your city</option>
+                                <option value="Mumbai">Mumbai</option>
+                                <option value="Delhi">Delhi</option>
+                                <option value="Bangalore">Bangalore</option>
+                                <option value="Chennai">Chennai</option>
+                                <option value="Kolkata">Kolkata</option>
+                                <option value="Hyderabad">Hyderabad</option>
+                                <option value="Pune">Pune</option>
+                                <option value="Ahmedabad">Ahmedabad</option>
+                                <option value="Jaipur">Jaipur</option>
+                                <option value="Lucknow">Lucknow</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Message *</label>
+                            <textarea required rows="4" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Tell us about your custom product requirements..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-4 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition transform hover:scale-105">
+                            <i class="fas fa-paper-plane mr-2"></i>Send Message
+                        </button>
+                        
+                        <p class="text-sm text-gray-500 text-center">
+                            We'll get back to you within 2 hours during business hours
+                        </p>
+                    </form>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-12">
+    <footer class="bg-gray-900 text-white py-16">
         <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <div>
-                    <div class="flex items-center space-x-3 mb-4">
-                        <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
-                            <span class="text-white font-bold text-xl">C</span>
+                    <div class="flex items-center space-x-2 mb-6">
+                        <div class="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-palette text-white"></i>
                         </div>
-                        <h3 class="text-xl font-bold">CraftyWorth</h3>
+                        <div>
+                            <h3 class="text-xl font-bold">CraftyWorth</h3>
+                            <p class="text-xs text-gray-400 made-in-india">Made in India 🇮🇳</p>
+                        </div>
                     </div>
-                    <p class="text-gray-400 mb-4">Creating personalized memories with premium quality products made in India.</p>
+                    <p class="text-gray-400 mb-4">
+                        Creating premium custom products with love and care. Proudly serving customers across India since 2020.
+                    </p>
                     <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-white transition focus-visible"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white transition focus-visible"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white transition focus-visible"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white transition focus-visible"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
                     </div>
                 </div>
                 
                 <div>
-                    <h4 class="font-semibold text-lg mb-4">Quick Links</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#home" class="text-gray-400 hover:text-white transition focus-visible">Home</a></li>
-                        <li><a href="#products" class="text-gray-400 hover:text-white transition focus-visible">Products</a></li>
-                        <li><a href="#about" class="text-gray-400 hover:text-white transition focus-visible">About Us</a></li>
-                        <li><a href="#contact" class="text-gray-400 hover:text-white transition focus-visible">Contact</a></li>
+                    <h4 class="text-lg font-semibold mb-6">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#home" class="text-gray-400 hover:text-white transition">Home</a></li>
+                        <li><a href="#products" class="text-gray-400 hover:text-white transition">Products</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition">About Us</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition">Contact</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Track Order</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Bulk Orders</a></li>
                     </ul>
                 </div>
                 
                 <div>
-                    <h4 class="font-semibold text-lg mb-4">Products</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white transition focus-visible">Custom Mugs</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition focus-visible">T-Shirts</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition focus-visible">Photo Frames</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition focus-visible">Phone Cases</a></li>
+                    <h4 class="text-lg font-semibold mb-6">Customer Care</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Help Center</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Shipping Info</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Returns & Refunds</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Size Guide</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Terms of Service</a></li>
                     </ul>
                 </div>
                 
                 <div>
-                    <h4 class="font-semibold text-lg mb-4">Contact Info</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><i class="fas fa-map-marker-alt mr-2"></i>Gurgaon, Haryana</li>
-                        <li><i class="fas fa-phone mr-2"></i>+91 98765 43210</li>
-                        <li><i class="fas fa-envelope mr-2"></i>hello@craftyworth.in</li>
-                    </ul>
+                    <h4 class="text-lg font-semibold mb-6">Contact Info</h4>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <i class="fas fa-phone text-purple-400 mr-3"></i>
+                            <span class="text-gray-400">+91 98765 43210</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-envelope text-purple-400 mr-3"></i>
+                            <span class="text-gray-400">hello@craftyworth.in</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-purple-400 mr-3 mt-1"></i>
+                            <span class="text-gray-400">Gurgaon, Haryana, India</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-id-card text-purple-400 mr-3"></i>
+                            <span class="text-gray-400 text-sm">GST: 27AABCU9603R1ZX</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
-                <p class="text-gray-400">&copy; 2024 CraftyWorth. All rights reserved. Made with ❤️ in India</p>
+            <div class="border-t border-gray-800 mt-12 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-400 text-sm">
+                        © 2024 CraftyWorth India Pvt. Ltd. All rights reserved. | Made with ❤️ in India
+                    </p>
+                    <div class="flex items-center space-x-4 mt-4 md:mt-0">
+                        <span class="text-gray-400 text-sm">We accept:</span>
+                        <div class="flex space-x-2">
+                            <span class="bg-blue-600 text-white px-2 py-1 rounded text-xs">UPI</span>
+                            <span class="bg-green-600 text-white px-2 py-1 rounded text-xs">Cards</span>
+                            <span class="bg-purple-600 text-white px-2 py-1 rounded text-xs">Wallets</span>
+                            <span class="bg-orange-600 text-white px-2 py-1 rounded text-xs">COD</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </footer>
 
-    <!-- Product Customization Page -->
-    <div id="productPage" class="fixed inset-0 bg-white z-50 hidden overflow-y-auto">
-        <!-- Header -->
-        <div class="bg-white shadow-lg sticky top-0 z-10">
-            <div class="container mx-auto px-4 py-4">
-                <div class="flex justify-between items-center">
-                    <div class="flex items-center space-x-4">
-                        <button id="backToHome" class="text-gray-600 hover:text-blue-600 transition focus-visible">
-                            <i class="fas fa-arrow-left text-xl"></i>
-                        </button>
-                        <h1 id="productPageTitle" class="text-2xl font-bold text-gray-800">Customize Your Product</h1>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <div class="relative">
-                            <button id="cartBtnProduct" class="text-gray-600 hover:text-blue-600 transition relative focus-visible">
-                                <i class="fas fa-shopping-cart text-xl"></i>
-                                <span id="cartCountProduct" class="cart-count hidden">0</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+    <!-- Shopping Cart Sidebar -->
+    <div id="cartSidebar" class="fixed right-0 top-0 h-full w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50">
+        <div class="p-6 border-b">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-bold">Shopping Cart</h2>
+                <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
             </div>
         </div>
+        
+        <div id="cartItems" class="flex-1 overflow-y-auto p-6">
+            <!-- Cart items will be loaded here -->
+        </div>
+        
+        <div class="border-t p-6">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-lg font-semibold">Total:</span>
+                <span id="cartTotal" class="text-2xl font-bold text-purple-600 rupee-symbol">₹0.00</span>
+            </div>
+            <button onclick="proceedToCheckout()" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition">
+                <i class="fas fa-credit-card mr-2"></i>Proceed to Checkout
+            </button>
+            <p class="text-sm text-gray-500 text-center mt-2">
+                Free delivery on orders above ₹999
+            </p>
+        </div>
+    </div>
 
-        <!-- Product Customization Content -->
-        <div class="container mx-auto px-4 py-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <!-- Product Preview Section -->
-                <div class="space-y-8">
-                    <!-- Main Product Display -->
-                    <div class="bg-white rounded-xl shadow-lg p-8">
-                        <div id="productDisplayArea" class="h-96 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-lg flex items-center justify-center mb-6">
-                            <div class="w-48 h-48 bg-white rounded-lg flex items-center justify-center shadow-lg">
-                                <i id="productDisplayIcon" class="fas fa-mug-hot text-6xl text-blue-500"></i>
-                            </div>
-                        </div>
-                        
-                        <!-- Image Upload Area -->
-                        <div id="dropZone" class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-400 transition">
-                            <input type="file" id="productImageUpload" accept="image/*" class="hidden">
-                            <label for="productImageUpload" class="cursor-pointer block">
-                                <div id="uploadArea">
-                                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
-                                    <h3 class="text-lg font-semibold text-gray-700 mb-2">Upload Your Image</h3>
-                                    <p class="text-gray-500 mb-2">Click here or drag and drop</p>
-                                    <p class="text-sm text-gray-400">PNG, JPG, JPEG up to 10MB</p>
-                                </div>
-                                <div id="imagePreview" class="hidden">
-                                    <img id="previewImg" class="max-w-full h-32 object-cover rounded-lg mx-auto mb-2" alt="Preview">
-                                    <p class="text-sm text-green-600">✓ Image uploaded successfully</p>
-                                    <button type="button" id="removeImage" class="mt-2 text-red-500 hover:text-red-700 text-sm">
-                                        <i class="fas fa-trash mr-1"></i>Remove Image
-                                    </button>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
+    <!-- Cart Overlay -->
+    <div id="cartOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden" onclick="toggleCart()"></div>
 
-                    <!-- Product Features -->
-                    <div class="bg-gray-50 rounded-xl p-6">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Product Features</h3>
-                        <div class="space-y-3">
-                            <div class="flex items-center space-x-3">
-                                <i class="fas fa-check-circle text-green-500"></i>
-                                <span class="text-gray-600">Premium Quality Material</span>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <i class="fas fa-check-circle text-green-500"></i>
-                                <span class="text-gray-600">High Resolution Printing</span>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <i class="fas fa-check-circle text-green-500"></i>
-                                <span class="text-gray-600">Fade Resistant Colors</span>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <i class="fas fa-check-circle text-green-500"></i>
-                                <span class="text-gray-600">Made in India</span>
-                            </div>
-                        </div>
-                    </div>
+    <!-- Product Modal -->
+    <div id="productModal" class="modal">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="p-8">
+                <div class="flex justify-between items-start mb-6">
+                    <h2 id="modalProductName" class="text-3xl font-bold text-gray-800"></h2>
+                    <button onclick="closeProductModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
                 </div>
-
-                <!-- Customization Options Section -->
-                <div class="space-y-8">
-                    <!-- Product Info -->
-                    <div class="bg-white rounded-xl shadow-lg p-6">
-                        <div class="flex justify-between items-start mb-4">
-                            <div>
-                                <h2 id="productCustomTitle" class="text-2xl font-bold text-gray-800 mb-2">Custom Photo Mug</h2>
-                                <div class="flex items-center space-x-2">
-                                    <span id="productCustomPrice" class="text-3xl font-bold text-blue-600">₹499</span>
-                                    <span class="text-lg text-gray-500 line-through">₹699</span>
-                                    <span class="bg-red-100 text-red-600 px-2 py-1 rounded-full text-sm font-semibold">29% OFF</span>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <div class="flex items-center space-x-1 text-yellow-400 mb-1">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <p class="text-sm text-gray-500">4.9 (2,847 reviews)</p>
-                            </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <img id="modalProductImage" src="" alt="" class="w-full h-96 object-cover rounded-xl">
+                    </div>
+                    
+                    <div>
+                        <div class="mb-6">
+                            <span id="modalProductCategory" class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium"></span>
                         </div>
                         
-                        <div class="flex items-center space-x-4 text-sm text-gray-600 mb-6">
-                            <div class="flex items-center space-x-1">
-                                <i class="fas fa-shipping-fast text-green-500"></i>
-                                <span>Free Delivery</span>
-                            </div>
-                            <div class="flex items-center space-x-1">
-                                <i class="fas fa-clock text-blue-500"></i>
-                                <span>3-5 Days</span>
-                            </div>
-                            <div class="flex items-center space-x-1">
-                                <i class="fas fa-shield-alt text-purple-500"></i>
-                                <span>Quality Guaranteed</span>
-                            </div>
+                        <div class="price-tag text-white px-4 py-2 rounded-lg inline-block mb-6">
+                            <span class="text-2xl font-bold rupee-symbol" id="modalProductPrice">₹0</span>
                         </div>
-                    </div>
-
-                    <!-- Customization Form -->
-                    <div class="bg-white rounded-xl shadow-lg p-6">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-6">Customize Your Product</h3>
                         
-                        <!-- Custom Text -->
-                        <div class="mb-6">
-                            <label class="block text-gray-700 font-medium mb-3">Add Custom Text (Optional)</label>
-                            <input type="text" id="productCustomText" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" placeholder="Enter your custom text here...">
-                            <p class="text-sm text-gray-500 mt-2">Add names, dates, or special messages</p>
-                        </div>
-
-                        <!-- Size Selection (for applicable products) -->
-                        <div id="productSizeSection" class="mb-6 hidden">
-                            <label class="block text-gray-700 font-medium mb-3">Select Size</label>
-                            <div class="grid grid-cols-4 gap-3">
-                                <button class="product-size-btn px-4 py-3 border-2 border-gray-300 rounded-lg hover:border-blue-500 transition focus-visible font-semibold" data-size="S">
-                                    S
-                                </button>
-                                <button class="product-size-btn px-4 py-3 border-2 border-gray-300 rounded-lg hover:border-blue-500 transition focus-visible font-semibold" data-size="M">
-                                    M
-                                </button>
-                                <button class="product-size-btn px-4 py-3 border-2 border-gray-300 rounded-lg hover:border-blue-500 transition focus-visible font-semibold" data-size="L">
-                                    L
-                                </button>
-                                <button class="product-size-btn px-4 py-3 border-2 border-gray-300 rounded-lg hover:border-blue-500 transition focus-visible font-semibold" data-size="XL">
-                                    XL
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Color Selection -->
-                        <div class="mb-6">
-                            <label class="block text-gray-700 font-medium mb-3">Choose Color</label>
-                            <div class="flex space-x-3">
-                                <button class="product-color-btn w-12 h-12 rounded-full bg-white border-3 border-gray-300 hover:scale-110 transition-transform focus-visible" data-color="white" title="White"></button>
-                                <button class="product-color-btn w-12 h-12 rounded-full bg-black border-3 border-gray-300 hover:scale-110 transition-transform focus-visible" data-color="black" title="Black"></button>
-                                <button class="product-color-btn w-12 h-12 rounded-full bg-red-500 border-3 border-gray-300 hover:scale-110 transition-transform focus-visible" data-color="red" title="Red"></button>
-                                <button class="product-color-btn w-12 h-12 rounded-full bg-blue-500 border-3 border-gray-300 hover:scale-110 transition-transform focus-visible" data-color="blue" title="Blue"></button>
-                                <button class="product-color-btn w-12 h-12 rounded-full bg-green-500 border-3 border-gray-300 hover:scale-110 transition-transform focus-visible" data-color="green" title="Green"></button>
-                            </div>
-                        </div>
-
-                        <!-- Quantity Selection -->
-                        <div class="mb-8">
-                            <label class="block text-gray-700 font-medium mb-3">Quantity</label>
-                            <div class="flex items-center space-x-4">
-                                <button id="productDecreaseQty" class="w-12 h-12 border-2 border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition focus-visible flex items-center justify-center">
-                                    <i class="fas fa-minus text-gray-600"></i>
-                                </button>
-                                <span id="productQuantity" class="text-2xl font-bold text-gray-800 min-w-[3rem] text-center">1</span>
-                                <button id="productIncreaseQty" class="w-12 h-12 border-2 border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition focus-visible flex items-center justify-center">
-                                    <i class="fas fa-plus text-gray-600"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Price Summary -->
-                        <div class="bg-gray-50 rounded-lg p-6 mb-6">
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-gray-600">Unit Price:</span>
-                                <span id="unitPrice" class="font-semibold text-gray-800">₹499</span>
-                            </div>
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-gray-600">Quantity:</span>
-                                <span id="summaryQuantity" class="font-semibold text-gray-800">1</span>
-                            </div>
-                            <div class="border-t pt-3">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-lg font-semibold text-gray-800">Total Price:</span>
-                                    <span id="productTotalPrice" class="text-2xl font-bold text-blue-600">₹499</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Action Buttons -->
-                        <div class="space-y-4">
-                            <button id="productAddToCart" class="w-full btn-primary text-lg py-4 focus-visible">
-                                <i class="fas fa-shopping-cart mr-2"></i>
-                                Add to Cart
-                            </button>
-                            <button id="productOrderNow" class="w-full bg-green-500 text-white px-6 py-4 rounded-full font-semibold text-lg hover:bg-green-600 transition focus-visible">
-                                <i class="fas fa-check mr-2"></i>
-                                Save Customization
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Delivery Info -->
-                    <div class="bg-blue-50 rounded-xl p-6">
-                        <h3 class="text-lg font-semibold text-blue-800 mb-4">
-                            <i class="fas fa-info-circle mr-2"></i>
-                            Delivery Information
-                        </h3>
-                        <div class="space-y-3 text-blue-700">
-                            <div class="flex items-center space-x-3">
-                                <i class="fas fa-truck text-blue-500"></i>
+                        <p id="modalProductDescription" class="text-gray-600 mb-6 text-lg"></p>
+                        
+                        <div class="space-y-4 mb-8">
+                            <div class="flex items-center">
+                                <i class="fas fa-shipping-fast text-green-500 mr-3"></i>
                                 <span>Free delivery on orders above ₹999</span>
                             </div>
-                            <div class="flex items-center space-x-3">
-                                <i class="fas fa-clock text-blue-500"></i>
-                                <span>Delivery in 3-5 business days</span>
+                            <div class="flex items-center">
+                                <i class="fas fa-undo text-blue-500 mr-3"></i>
+                                <span>7-day return policy</span>
                             </div>
-                            <div class="flex items-center space-x-3">
-                                <i class="fas fa-shield-alt text-blue-500"></i>
-                                <span>100% quality guarantee or money back</span>
+                            <div class="flex items-center">
+                                <i class="fas fa-award text-purple-500 mr-3"></i>
+                                <span>Premium quality guarantee</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-heart text-red-500 mr-3"></i>
+                                <span>Made with love in India</span>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Cart Modal -->
-    <div id="cartModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-xl max-w-md w-full p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-semibold text-gray-800">Shopping Cart</h3>
-                    <button id="closeCart" class="text-gray-500 hover:text-gray-700 focus-visible">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
-                
-                <div id="cartItems" class="space-y-4 mb-6">
-                    <p class="text-gray-500 text-center py-8">Your cart is empty</p>
-                </div>
-                
-                <div id="cartTotal" class="border-t pt-4 hidden">
-                    <div class="flex justify-between items-center mb-4">
-                        <span class="font-semibold text-gray-800">Total: </span>
-                        <span id="totalAmount" class="font-bold text-xl text-blue-600">₹0</span>
-                    </div>
-                    <button onclick="checkout()" class="w-full btn-primary focus-visible">
-                        Proceed to Checkout
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Admin Panel for Image Management -->
-    <div id="adminPanel" class="fixed top-4 left-4 bg-white rounded-lg shadow-lg p-4 z-50 hidden">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-semibold text-gray-800">Image Manager</h3>
-            <button id="closeAdmin" class="text-gray-500 hover:text-gray-700">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        
-        <!-- Single Image Upload -->
-        <div class="mb-6">
-            <h4 class="font-medium text-gray-700 mb-2">Single Product Image</h4>
-            <div class="space-y-2">
-                <select id="singleProductSelect" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
-                    <option value="">Select Product</option>
-                    <option value="mug">Custom Photo Mug</option>
-                    <option value="tshirt">Personalized T-Shirt</option>
-                    <option value="drawingbook">A3 Drawing Books</option>
-                    <option value="examboard">A4 Exam Boards</option>
-                    <option value="anniversary">Anniversary Gifts</option>
-                    <option value="birthday">Birthday Gifts</option>
-                    <option value="boyfriend">Boyfriend Gifts</option>
-                    <option value="designbundle">Design Bundles</option>
-                    <option value="frame">Customized Frames</option>
-                    <option value="notebook">Customized Notebooks</option>
-                    <option value="magnet">Fridge Magnets</option>
-                    <option value="keychain">Custom Keychains</option>
-                    <option value="mousepad">Custom Mousepads</option>
-                    <option value="coaster">Custom Coasters</option>
-                    <option value="sketch">Photo Sketch Items</option>
-                    <option value="idol">Hindu God Idols</option>
-                    <option value="caricature">Custom Caricatures</option>
-                    <option value="statue">Custom Statues</option>
-                    <option value="phonecase">Custom Phone Case</option>
-                    <option value="cushion">Custom Cushion</option>
-                </select>
-                <input type="url" id="singleAwsUrl" placeholder="AWS Image URL" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
-                <button id="loadSingleImage" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
-                    Load Image
-                </button>
-            </div>
-        </div>
-        
-        <!-- Bulk Upload from Excel/CSV -->
-        <div class="mb-6">
-            <h4 class="font-medium text-gray-700 mb-2">Bulk Upload (Excel/CSV)</h4>
-            <div class="space-y-2">
-                <textarea id="csvData" placeholder="Paste CSV data here:&#10;productId,awsUrl&#10;mug,https://your-aws-url.com/image1.jpg&#10;tshirt,https://your-aws-url.com/image2.jpg" class="w-full px-3 py-2 border border-gray-300 rounded-lg h-24 text-sm"></textarea>
-                <button id="loadBulkImages" class="w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
-                    Load Bulk Images
-                </button>
-            </div>
-        </div>
-        
-        <!-- Current Images Status -->
-        <div>
-            <h4 class="font-medium text-gray-700 mb-2">Current Images</h4>
-            <div id="imageStatus" class="text-sm text-gray-600 max-h-32 overflow-y-auto">
-                <p>No custom images loaded</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Admin Toggle Button -->
-    <button id="adminToggle" class="fixed top-4 left-4 bg-gray-800 text-white p-2 rounded-lg shadow-lg hover:bg-gray-700 transition z-40">
-        <i class="fas fa-cog"></i>
-    </button>
-
-    <!-- WhatsApp Float Button -->
-    <a href="https://wa.me/919876543210?text=Hi! I'm interested in your custom products" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition floating z-40 focus-visible">
-        <i class="fab fa-whatsapp text-2xl"></i>
-    </a>
-
-    <script>
-        // AWS Configuration (In production, these would come from environment variables)
-        const AWS_CONFIG = {
-            region: 'us-east-1',
-            cloudFrontUrl: 'https://d1234567890.cloudfront.net',
-            apiEndpoint: '/api'
-        };
-
-        // Cart functionality
-        let cart = [];
-        let cartCount = 0;
-        let currentProduct = {};
-
-        // Image management utilities
-        class ImageManager {
-            static async getSignedUrl(objectKey) {
-                try {
-                    const response = await fetch(`${AWS_CONFIG.apiEndpoint}/uploads/get-url?key=${encodeURIComponent(objectKey)}`);
-                    if (!response.ok) throw new Error('Failed to get signed URL');
-                    const data = await response.json();
-                    return data.signedUrl;
-                } catch (error) {
-                    console.error('Error getting signed URL:', error);
-                    return null;
-                }
-            }
-
-            static getPublicUrl(objectKey) {
-                return `${AWS_CONFIG.cloudFrontUrl}/${objectKey}`;
-            }
-
-            static async uploadFile(file, uploadType = 'customization') {
-                // Validate file
-                if (!file.type.startsWith('image/')) {
-                    throw new Error('Please select an image file');
-                }
-                if (file.size > 10 * 1024 * 1024) { // 10MB limit
-                    throw new Error('File size must be less than 10MB');
-                }
-
-                // Get presigned URL
-                const response = await fetch(`${AWS_CONFIG.apiEndpoint}/uploads/presign`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        fileName: file.name,
-                        fileType: file.type,
-                        fileSize: file.size,
-                        uploadType: uploadType
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to get upload URL');
-                }
-
-                const { presignedUrl, objectKey, cloudFrontUrl } = await response.json();
-
-                // Upload to S3
-                const uploadResponse = await fetch(presignedUrl, {
-                    method: 'PUT',
-                    body: file,
-                    headers: {
-                        'Content-Type': file.type,
-                    }
-                });
-
-                if (!uploadResponse.ok) {
-                    throw new Error('Failed to upload file');
-                }
-
-                return { objectKey, cloudFrontUrl };
-            }
-        }
-
-        // Product data with AWS image support
-        const products = {
-            mug: { name: 'Custom Photo Mug', price: 499, icon: 'fas fa-mug-hot', gradient: 'from-red-400 to-pink-500', hasSize: false, awsImage: '' },
-            tshirt: { name: 'Personalized T-Shirt', price: 599, icon: 'fas fa-tshirt', gradient: 'from-blue-400 to-indigo-500', hasSize: true, awsImage: '' },
-            drawingbook: { name: 'A3 Drawing Books', price: 349, icon: 'fas fa-book', gradient: 'from-orange-400 to-red-500', hasSize: false, awsImage: '' },
-            examboard: { name: 'A4 Exam Boards', price: 299, icon: 'fas fa-clipboard', gradient: 'from-teal-400 to-green-500', hasSize: false, awsImage: '' },
-            anniversary: { name: 'Anniversary Gifts', price: 899, icon: 'fas fa-heart', gradient: 'from-pink-400 to-rose-500', hasSize: false, awsImage: '' },
-            birthday: { name: 'Birthday Gifts', price: 799, icon: 'fas fa-birthday-cake', gradient: 'from-yellow-400 to-orange-500', hasSize: false, awsImage: '' },
-            boyfriend: { name: 'Boyfriend Gifts', price: 699, icon: 'fas fa-male', gradient: 'from-blue-400 to-purple-500', hasSize: false, awsImage: '' },
-            designbundle: { name: 'Design Bundles', price: 1499, icon: 'fas fa-folder-open', gradient: 'from-indigo-400 to-blue-500', hasSize: false, awsImage: '' },
-            frame: { name: 'Customized Frames', price: 399, icon: 'fas fa-image', gradient: 'from-green-400 to-teal-500', hasSize: false, awsImage: '' },
-            notebook: { name: 'Customized Notebooks', price: 249, icon: 'fas fa-book-open', gradient: 'from-purple-400 to-pink-500', hasSize: false, awsImage: '' },
-            magnet: { name: 'Fridge Magnets', price: 149, icon: 'fas fa-magnet', gradient: 'from-red-400 to-orange-500', hasSize: false, awsImage: '' },
-            keychain: { name: 'Custom Keychains', price: 199, icon: 'fas fa-key', gradient: 'from-yellow-400 to-orange-500', hasSize: false, awsImage: '' },
-            mousepad: { name: 'Custom Mousepads', price: 299, icon: 'fas fa-mouse', gradient: 'from-gray-400 to-blue-500', hasSize: false, awsImage: '' },
-            coaster: { name: 'Custom Coasters', price: 199, icon: 'fas fa-circle', gradient: 'from-brown-400 to-amber-500', hasSize: false, awsImage: '' },
-            sketch: { name: 'Photo Sketch Items', price: 999, icon: 'fas fa-pencil-alt', gradient: 'from-slate-400 to-gray-500', hasSize: false, awsImage: '' },
-            idol: { name: 'Hindu God Idols', price: 1299, icon: 'fas fa-om', gradient: 'from-orange-400 to-red-500', hasSize: false, awsImage: '' },
-            caricature: { name: 'Custom Caricatures', price: 799, icon: 'fas fa-smile', gradient: 'from-pink-400 to-purple-500', hasSize: false, awsImage: '' },
-            statue: { name: 'Custom Statues', price: 2499, icon: 'fas fa-chess-king', gradient: 'from-stone-400 to-gray-600', hasSize: false, awsImage: '' },
-            phonecase: { name: 'Custom Phone Case', price: 699, icon: 'fas fa-mobile-alt', gradient: 'from-indigo-400 to-blue-500', hasSize: false, awsImage: '' },
-            cushion: { name: 'Custom Cushion', price: 799, icon: 'fas fa-couch', gradient: 'from-purple-400 to-pink-500', hasSize: false, awsImage: '' }
-        };
-
-        // AWS Image Management System
-        class AWSImageLoader {
-            static loadProductImages(imageData) {
-                // imageData can be array from Excel or single object
-                if (Array.isArray(imageData)) {
-                    imageData.forEach(item => {
-                        if (item.productId && item.awsUrl && products[item.productId]) {
-                            products[item.productId].awsImage = item.awsUrl;
-                        }
-                    });
-                } else if (imageData.productId && imageData.awsUrl) {
-                    if (products[imageData.productId]) {
-                        products[imageData.productId].awsImage = imageData.awsUrl;
-                    }
-                }
-                this.refreshProductDisplay();
-            }
-
-            static refreshProductDisplay() {
-                // Update all product cards with new AWS images
-                Object.keys(products).forEach(productId => {
-                    const productCard = document.querySelector(`[onclick="openProductPage('${productId}')"]`);
-                    if (productCard && products[productId].awsImage) {
-                        const imgElement = productCard.querySelector('img');
-                        if (imgElement) {
-                            imgElement.src = products[productId].awsImage;
-                            imgElement.style.display = 'block';
-                            const iconElement = imgElement.nextElementSibling;
-                            if (iconElement) {
-                                iconElement.style.display = 'none';
-                            }
-                        }
-                    }
-                });
-            }
-
-            static validateAWSUrl(url) {
-                // Validate AWS S3 or CloudFront URL
-                const awsPatterns = [
-                    /^https:\/\/.*\.s3\..*\.amazonaws\.com\/.*/,
-                    /^https:\/\/s3\..*\.amazonaws\.com\/.*/,
-                    /^https:\/\/.*\.cloudfront\.net\/.*/,
-                    /^https:\/\/d[a-z0-9]+\.cloudfront\.net\/.*/
-                ];
-                return awsPatterns.some(pattern => pattern.test(url));
-            }
-
-            static bulkLoadFromExcel(csvData) {
-                // Parse CSV/Excel data
-                const lines = csvData.split('\n');
-                const headers = lines[0].split(',').map(h => h.trim());
-                const imageData = [];
-
-                for (let i = 1; i < lines.length; i++) {
-                    const values = lines[i].split(',').map(v => v.trim());
-                    if (values.length >= 2) {
-                        const productId = values[0];
-                        const awsUrl = values[1];
                         
-                        if (productId && awsUrl && this.validateAWSUrl(awsUrl)) {
-                            imageData.push({ productId, awsUrl });
-                        }
-                    }
-                }
-
-                this.loadProductImages(imageData);
-                return imageData.length;
-            }
-        }
-
-        function openProductPage(productType) {
-            currentProduct = { ...products[productType], type: productType, quantity: 1, size: 'M', color: 'white', customText: '', image: null };
-            
-            // Update product page content
-            document.getElementById('productPageTitle').textContent = `Customize ${currentProduct.name}`;
-            document.getElementById('productCustomTitle').textContent = currentProduct.name;
-            document.getElementById('productDisplayIcon').className = `${currentProduct.icon} text-6xl text-blue-500`;
-            document.getElementById('productDisplayArea').className = `h-96 bg-gradient-to-br ${currentProduct.gradient} rounded-lg flex items-center justify-center mb-6`;
-            document.getElementById('productCustomPrice').textContent = `₹${currentProduct.price}`;
-            document.getElementById('productTotalPrice').textContent = `₹${currentProduct.price}`;
-            document.getElementById('unitPrice').textContent = `₹${currentProduct.price}`;
-            
-            // Update cart count on product page
-            document.getElementById('cartCountProduct').textContent = cartCount;
-            if (cartCount > 0) {
-                document.getElementById('cartCountProduct').classList.remove('hidden');
-            } else {
-                document.getElementById('cartCountProduct').classList.add('hidden');
-            }
-            
-            // Show/hide size options
-            const sizeSection = document.getElementById('productSizeSection');
-            if (currentProduct.hasSize) {
-                sizeSection.classList.remove('hidden');
-            } else {
-                sizeSection.classList.add('hidden');
-            }
-            
-            // Reset form
-            document.getElementById('productCustomText').value = '';
-            document.getElementById('productQuantity').textContent = '1';
-            document.getElementById('summaryQuantity').textContent = '1';
-            document.querySelectorAll('.product-size-btn').forEach(btn => btn.classList.remove('bg-blue-500', 'text-white', 'border-blue-500'));
-            document.querySelectorAll('.product-color-btn').forEach(btn => btn.classList.remove('ring-4', 'ring-blue-500'));
-            document.querySelector('[data-size="M"]')?.classList.add('bg-blue-500', 'text-white', 'border-blue-500');
-            document.querySelector('[data-color="white"]')?.classList.add('ring-4', 'ring-blue-500');
-            
-            // Reset image upload
-            document.getElementById('imagePreview').classList.add('hidden');
-            document.getElementById('uploadArea').classList.remove('hidden');
-            
-            // Show product page
-            document.getElementById('productPage').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function addToCart(productName, price) {
-            cart.push({ name: productName, price: price });
-            cartCount++;
-            updateCartUI();
-            showNotification(`${productName} added to cart!`);
-        }
-
-        function updateCartUI() {
-            const cartCountElement = document.getElementById('cartCount');
-            if (cartCount > 0) {
-                cartCountElement.textContent = cartCount;
-                cartCountElement.classList.remove('hidden');
-            } else {
-                cartCountElement.classList.add('hidden');
-            }
-        }
-
-        function showCart() {
-            const modal = document.getElementById('cartModal');
-            const cartItems = document.getElementById('cartItems');
-            const cartTotal = document.getElementById('cartTotal');
-            const totalAmount = document.getElementById('totalAmount');
-            
-            if (cart.length === 0) {
-                cartItems.innerHTML = '<p class="text-gray-500 text-center py-8">Your cart is empty</p>';
-                cartTotal.classList.add('hidden');
-            } else {
-                let itemsHTML = '';
-                let total = 0;
-                
-                cart.forEach((item, index) => {
-                    total += item.price;
-                    itemsHTML += `
-                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                            <span class="text-gray-800">${item.name}</span>
-                            <div class="flex items-center space-x-2">
-                                <span class="font-semibold text-gray-800">₹${item.price}</span>
-                                <button onclick="removeFromCart(${index})" class="text-red-500 hover:text-red-700 focus-visible">
-                                    <i class="fas fa-trash"></i>
+                        <div class="flex items-center space-x-4 mb-6">
+                            <label class="font-medium">Quantity:</label>
+                            <div class="quantity-controls">
+                                <button class="quantity-btn" onclick="decreaseModalQuantity()">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <input type="number" id="modalQuantity" value="1" min="1" class="quantity-input">
+                                <button class="quantity-btn" onclick="increaseModalQuantity()">
+                                    <i class="fas fa-plus"></i>
                                 </button>
                             </div>
                         </div>
-                    `;
-                });
-                
-                cartItems.innerHTML = itemsHTML;
-                totalAmount.textContent = `₹${total}`;
-                cartTotal.classList.remove('hidden');
+                        
+                        <button onclick="addToCartFromModal()" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-4 rounded-xl font-semibold text-lg hover:from-purple-700 hover:to-blue-700 transition transform hover:scale-105">
+                            <i class="fas fa-cart-plus mr-2"></i>Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let currentProduct = null;
+        
+        // Indian products data with INR pricing
+        const products = [
+            {
+                id: 1,
+                name: "Custom Photo Mug",
+                price: 499,
+                category: "mugs",
+                description: "Premium ceramic mug with your favorite photo. Perfect for gifting or personal use. High-quality printing that won't fade.",
+                image: "https://via.placeholder.com/400x400/7c3aed/ffffff?text=Custom+Mug",
+                inStock: true
+            },
+            {
+                id: 2,
+                name: "Personalized T-Shirt",
+                price: 599,
+                category: "apparel",
+                description: "100% cotton t-shirt with custom design. Available in multiple sizes and colors. Comfortable and durable.",
+                image: "https://via.placeholder.com/400x400/10b981/ffffff?text=Custom+Tee",
+                inStock: true
+            },
+            {
+                id: 3,
+                name: "Custom Photo Frame",
+                price: 399,
+                category: "decor",
+                description: "Beautiful wooden frame with custom engraving. Perfect for displaying your precious memories.",
+                image: "https://via.placeholder.com/400x400/f59e0b/ffffff?text=Photo+Frame",
+                inStock: true
+            },
+            {
+                id: 4,
+                name: "Personalized Keychain",
+                price: 199,
+                category: "accessories",
+                description: "Metal keychain with custom text or design. Durable and stylish accessory for your keys.",
+                image: "https://via.placeholder.com/400x400/ef4444/ffffff?text=Keychain",
+                inStock: true
+            },
+            {
+                id: 5,
+                name: "Custom Coffee Mug Set",
+                price: 899,
+                category: "mugs",
+                description: "Set of 2 premium coffee mugs with matching designs. Perfect for couples or best friends.",
+                image: "https://via.placeholder.com/400x400/8b5cf6/ffffff?text=Mug+Set",
+                inStock: true
+            },
+            {
+                id: 6,
+                name: "Personalized Hoodie",
+                price: 1299,
+                category: "apparel",
+                description: "Cozy hoodie with custom print. Perfect for winter season. Available in various sizes.",
+                image: "https://via.placeholder.com/400x400/06b6d4/ffffff?text=Custom+Hoodie",
+                inStock: true
+            },
+            {
+                id: 7,
+                name: "Custom Wall Clock",
+                price: 799,
+                category: "decor",
+                description: "Unique wall clock with your photo or design. Silent movement, perfect for any room.",
+                image: "https://via.placeholder.com/400x400/f97316/ffffff?text=Wall+Clock",
+                inStock: true
+            },
+            {
+                id: 8,
+                name: "Personalized Phone Case",
+                price: 349,
+                category: "accessories",
+                description: "Protective phone case with custom design. Available for all popular phone models.",
+                image: "https://via.placeholder.com/400x400/ec4899/ffffff?text=Phone+Case",
+                inStock: true
+            },
+            {
+                id: 9,
+                name: "Custom Cushion Cover",
+                price: 449,
+                category: "decor",
+                description: "Soft cushion cover with your favorite photo or text. Machine washable and durable.",
+                image: "https://via.placeholder.com/400x400/84cc16/ffffff?text=Cushion",
+                inStock: true
+            },
+            {
+                id: 10,
+                name: "Personalized Water Bottle",
+                price: 549,
+                category: "accessories",
+                description: "Stainless steel water bottle with custom engraving. Keeps drinks hot/cold for hours.",
+                image: "https://via.placeholder.com/400x400/3b82f6/ffffff?text=Water+Bottle",
+                inStock: true
+            },
+            {
+                id: 11,
+                name: "Custom Laptop Sleeve",
+                price: 699,
+                category: "accessories",
+                description: "Protective laptop sleeve with custom design. Available for 13, 15, and 17 inch laptops.",
+                image: "https://via.placeholder.com/400x400/6366f1/ffffff?text=Laptop+Sleeve",
+                inStock: true
+            },
+            {
+                id: 12,
+                name: "Personalized Calendar",
+                price: 299,
+                category: "decor",
+                description: "12-month calendar with your photos. High-quality paper and printing. Perfect for gifting.",
+                image: "https://via.placeholder.com/400x400/dc2626/ffffff?text=Calendar",
+                inStock: true
             }
-            
-            modal.classList.remove('hidden');
-        }
+        ];
 
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            cartCount--;
+        // Initialize
+        function init() {
+            loadProducts();
             updateCartUI();
-            showCart();
         }
 
-        function checkout() {
-            if (cart.length === 0) return;
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
             
-            let message = "Hi! I want to order:\n\n";
-            let total = 0;
+            notificationText.textContent = message;
+            notification.className = `notification ${type === 'success' ? 'bg-green-500' : 'bg-red-500'} text-white px-6 py-3 rounded-lg shadow-lg show`;
             
-            cart.forEach(item => {
-                message += `• ${item.name} - ₹${item.price}\n`;
-                total += item.price;
-            });
-            
-            message += `\nTotal: ₹${total}`;
-            
-            const whatsappURL = `https://wa.me/919876543210?text=${encodeURIComponent(message)}`;
-            window.open(whatsappURL, '_blank');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
         }
 
-        // Smooth scrolling
+        // Toggle mobile menu
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        // Scroll functions
         function scrollToProducts() {
             document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
         }
@@ -1480,472 +972,253 @@
             document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Mobile menu toggle
-        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
-            const mobileMenu = document.getElementById('mobileMenu');
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Cart modal events
-        document.getElementById('cartBtn').addEventListener('click', showCart);
-        document.getElementById('closeCart').addEventListener('click', function() {
-            document.getElementById('cartModal').classList.add('hidden');
-        });
-
-        // Close modal when clicking outside
-        document.getElementById('cartModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                this.classList.add('hidden');
-            }
-        });
-
-        // Contact form
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        // Load products
+        function loadProducts(filter = 'all') {
+            const productsGrid = document.getElementById('productsGrid');
+            const filteredProducts = filter === 'all' ? products : products.filter(p => p.category === filter);
             
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
-            
-            const whatsappMessage = `New Contact Form Submission:\n\nName: ${name}\nEmail: ${email}\nMessage: ${message}`;
-            const whatsappURL = `https://wa.me/919876543210?text=${encodeURIComponent(whatsappMessage)}`;
-            
-            window.open(whatsappURL, '_blank');
-            showNotification('Message sent! We\'ll get back to you soon.');
-            
-            this.reset();
-        });
-
-        // Enhanced notification system
-        function showNotification(message, type = 'success') {
-            const notification = document.createElement('div');
-            let bgColor = 'bg-green-500';
-            let icon = 'fas fa-check-circle';
-            
-            switch(type) {
-                case 'error':
-                    bgColor = 'bg-red-500';
-                    icon = 'fas fa-exclamation-circle';
-                    break;
-                case 'info':
-                    bgColor = 'bg-blue-500';
-                    icon = 'fas fa-info-circle';
-                    break;
-                case 'warning':
-                    bgColor = 'bg-yellow-500';
-                    icon = 'fas fa-exclamation-triangle';
-                    break;
-            }
-            
-            notification.className = `fixed top-4 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform flex items-center space-x-2`;
-            notification.innerHTML = `<i class="${icon}"></i><span>${message}</span>`;
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.classList.remove('translate-x-full');
-            }, 100);
-            
-            setTimeout(() => {
-                notification.classList.add('translate-x-full');
-                setTimeout(() => {
-                    if (document.body.contains(notification)) {
-                        document.body.removeChild(notification);
-                    }
-                }, 300);
-            }, type === 'error' ? 5000 : 3000);
-        }
-
-        // Fade in animation on scroll
-        function handleScrollAnimation() {
-            const elements = document.querySelectorAll('.fade-in');
-            
-            elements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                const elementVisible = 150;
-                
-                if (elementTop < window.innerHeight - elementVisible) {
-                    element.classList.add('visible');
-                }
-            });
-        }
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                    document.getElementById('mobileMenu').classList.add('hidden');
-                }
-            });
-        });
-
-        // Product customization event handlers
-        document.addEventListener('DOMContentLoaded', function() {
-            // Back to home button
-            document.getElementById('backToHome').addEventListener('click', function() {
-                document.getElementById('productPage').classList.add('hidden');
-                document.body.style.overflow = 'auto';
-            });
-
-            // Cart button on product page
-            document.getElementById('cartBtnProduct').addEventListener('click', showCart);
-
-            // Quantity controls on product page
-            document.getElementById('productIncreaseQty').addEventListener('click', function() {
-                currentProduct.quantity++;
-                document.getElementById('productQuantity').textContent = currentProduct.quantity;
-                document.getElementById('summaryQuantity').textContent = currentProduct.quantity;
-                updateProductTotalPrice();
-            });
-
-            document.getElementById('productDecreaseQty').addEventListener('click', function() {
-                if (currentProduct.quantity > 1) {
-                    currentProduct.quantity--;
-                    document.getElementById('productQuantity').textContent = currentProduct.quantity;
-                    document.getElementById('summaryQuantity').textContent = currentProduct.quantity;
-                    updateProductTotalPrice();
-                }
-            });
-
-            // Size selection on product page
-            document.querySelectorAll('.product-size-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.product-size-btn').forEach(b => b.classList.remove('bg-blue-500', 'text-white', 'border-blue-500'));
-                    this.classList.add('bg-blue-500', 'text-white', 'border-blue-500');
-                    currentProduct.size = this.dataset.size;
-                });
-            });
-
-            // Color selection on product page
-            document.querySelectorAll('.product-color-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.product-color-btn').forEach(b => b.classList.remove('ring-4', 'ring-blue-500'));
-                    this.classList.add('ring-4', 'ring-blue-500');
-                    currentProduct.color = this.dataset.color;
-                });
-            });
-
-            // Custom text input on product page
-            document.getElementById('productCustomText').addEventListener('input', function() {
-                currentProduct.customText = this.value;
-            });
-
-            // Image upload functionality
-            async function handleImageUpload(file) {
-                try {
-                    showNotification('Uploading image...', 'info');
+            productsGrid.innerHTML = filteredProducts.map(product => `
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                    <div class="relative">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-64 object-cover" onerror="this.src='https://via.placeholder.com/400x400/7c3aed/ffffff?text=No+Image'; this.alt='Image not found';">
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-white/90 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">
+                                ${getCategoryName(product.category)}
+                            </span>
+                        </div>
+                        ${product.inStock ? '' : '<div class="absolute inset-0 bg-black/50 flex items-center justify-center"><span class="bg-red-500 text-white px-4 py-2 rounded-full font-semibold">Out of Stock</span></div>'}
+                    </div>
                     
-                    const { objectKey, cloudFrontUrl } = await ImageManager.uploadFile(file, 'customization');
-
-                    // Update UI with uploaded image
-                    currentProduct.image = objectKey;
-                    currentProduct.imageUrl = cloudFrontUrl;
-                    document.getElementById('previewImg').src = cloudFrontUrl;
-                    document.getElementById('uploadArea').classList.add('hidden');
-                    document.getElementById('imagePreview').classList.remove('hidden');
-                    showNotification('Image uploaded successfully!', 'success');
-
-                } catch (error) {
-                    console.error('Upload error:', error);
-                    showNotification(error.message || 'Failed to upload image. Please try again.', 'error');
-                }
-            }
-
-            // File input change event
-            document.getElementById('productImageUpload').addEventListener('change', async function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    await handleImageUpload(file);
-                }
-            });
-
-            // Drag and drop functionality
-            const dropZone = document.getElementById('dropZone');
-            
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, preventDefaults, false);
-            });
-
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropZone.addEventListener(eventName, highlight, false);
-            });
-
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, unhighlight, false);
-            });
-
-            function highlight(e) {
-                dropZone.classList.add('border-blue-500', 'bg-blue-50');
-            }
-
-            function unhighlight(e) {
-                dropZone.classList.remove('border-blue-500', 'bg-blue-50');
-            }
-
-            dropZone.addEventListener('drop', handleDrop, false);
-
-            function handleDrop(e) {
-                const dt = e.dataTransfer;
-                const files = dt.files;
-                
-                if (files.length > 0) {
-                    handleImageUpload(files[0]);
-                }
-            }
-
-            // Remove image functionality
-            document.addEventListener('click', function(e) {
-                if (e.target.id === 'removeImage' || e.target.closest('#removeImage')) {
-                    currentProduct.image = null;
-                    currentProduct.imageUrl = null;
-                    document.getElementById('uploadArea').classList.remove('hidden');
-                    document.getElementById('imagePreview').classList.add('hidden');
-                    document.getElementById('productImageUpload').value = '';
-                    showNotification('Image removed', 'info');
-                }
-            });
-
-            // Add to cart from product page
-            document.getElementById('productAddToCart').addEventListener('click', function() {
-                const customizedProduct = {
-                    name: currentProduct.name,
-                    price: currentProduct.price * currentProduct.quantity,
-                    quantity: currentProduct.quantity,
-                    size: currentProduct.size,
-                    color: currentProduct.color,
-                    customText: currentProduct.customText,
-                    hasImage: !!currentProduct.image
-                };
-                
-                cart.push(customizedProduct);
-                cartCount += currentProduct.quantity;
-                updateCartUI();
-                document.getElementById('cartCountProduct').textContent = cartCount;
-                document.getElementById('cartCountProduct').classList.remove('hidden');
-                showNotification(`${customizedProduct.name} added to cart!`);
-            });
-
-            // Save customization from product page
-            document.getElementById('productOrderNow').addEventListener('click', function() {
-                const customizedProduct = {
-                    name: currentProduct.name,
-                    price: currentProduct.price * currentProduct.quantity,
-                    quantity: currentProduct.quantity,
-                    size: currentProduct.size,
-                    color: currentProduct.color,
-                    customText: currentProduct.customText,
-                    hasImage: !!currentProduct.image
-                };
-                
-                cart.push(customizedProduct);
-                cartCount += currentProduct.quantity;
-                updateCartUI();
-                document.getElementById('cartCountProduct').textContent = cartCount;
-                document.getElementById('cartCountProduct').classList.remove('hidden');
-                showNotification('Customization saved to cart!');
-            });
-        });
-
-        function updateProductTotalPrice() {
-            const total = currentProduct.price * currentProduct.quantity;
-            document.getElementById('productTotalPrice').textContent = `₹${total}`;
-        }
-
-        // Admin Panel Functionality
-        function updateImageStatus() {
-            const statusDiv = document.getElementById('imageStatus');
-            const loadedImages = Object.keys(products).filter(key => products[key].awsImage);
-            
-            if (loadedImages.length === 0) {
-                statusDiv.innerHTML = '<p>No custom images loaded</p>';
-            } else {
-                let statusHTML = '';
-                loadedImages.forEach(productId => {
-                    const product = products[productId];
-                    statusHTML += `<div class="flex justify-between items-center py-1">
-                        <span class="text-xs">${product.name}</span>
-                        <span class="text-green-500 text-xs">✓</span>
-                    </div>`;
-                });
-                statusDiv.innerHTML = statusHTML;
-            }
-        }
-
-        // Admin Panel Event Listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            // Admin toggle
-            document.getElementById('adminToggle').addEventListener('click', function() {
-                document.getElementById('adminPanel').classList.toggle('hidden');
-                updateImageStatus();
-            });
-
-            // Close admin panel
-            document.getElementById('closeAdmin').addEventListener('click', function() {
-                document.getElementById('adminPanel').classList.add('hidden');
-            });
-
-            // Single image load
-            document.getElementById('loadSingleImage').addEventListener('click', function() {
-                const productId = document.getElementById('singleProductSelect').value;
-                const awsUrl = document.getElementById('singleAwsUrl').value;
-
-                if (!productId) {
-                    showNotification('Please select a product', 'error');
-                    return;
-                }
-
-                if (!awsUrl) {
-                    showNotification('Please enter AWS URL', 'error');
-                    return;
-                }
-
-                if (!AWSImageLoader.validateAWSUrl(awsUrl)) {
-                    showNotification('Please enter a valid AWS URL', 'error');
-                    return;
-                }
-
-                AWSImageLoader.loadProductImages({ productId, awsUrl });
-                showNotification(`Image loaded for ${products[productId].name}`, 'success');
-                updateImageStatus();
-                
-                // Clear form
-                document.getElementById('singleProductSelect').value = '';
-                document.getElementById('singleAwsUrl').value = '';
-            });
-
-            // Bulk image load
-            document.getElementById('loadBulkImages').addEventListener('click', function() {
-                const csvData = document.getElementById('csvData').value.trim();
-
-                if (!csvData) {
-                    showNotification('Please paste CSV data', 'error');
-                    return;
-                }
-
-                try {
-                    const loadedCount = AWSImageLoader.bulkLoadFromExcel(csvData);
-                    if (loadedCount > 0) {
-                        showNotification(`Successfully loaded ${loadedCount} images`, 'success');
-                        updateImageStatus();
-                        document.getElementById('csvData').value = '';
-                    } else {
-                        showNotification('No valid images found in CSV data', 'warning');
-                    }
-                } catch (error) {
-                    showNotification('Error processing CSV data', 'error');
-                    console.error('CSV processing error:', error);
-                }
-            });
-        });
-
-        // Search functionality
-        function initializeSearch() {
-            const searchInput = document.getElementById('searchInput');
-            const mobileSearchInput = document.getElementById('mobileSearchInput');
-            const searchResults = document.getElementById('searchResults');
-            
-            function performSearch(query) {
-                if (!query.trim()) {
-                    searchResults.classList.add('hidden');
-                    return;
-                }
-                
-                const results = Object.keys(products).filter(key => {
-                    const product = products[key];
-                    return product.name.toLowerCase().includes(query.toLowerCase());
-                });
-                
-                if (results.length === 0) {
-                    searchResults.innerHTML = '<div class="p-4 text-gray-500 text-center">No products found</div>';
-                } else {
-                    let resultsHTML = '';
-                    results.forEach(productId => {
-                        const product = products[productId];
-                        resultsHTML += `
-                            <div class="p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0" onclick="openProductPage('${productId}'); document.getElementById('searchResults').classList.add('hidden'); document.getElementById('searchInput').value = '';">
-                                <div class="flex items-center space-x-3">
-                                    <i class="${product.icon} text-blue-500"></i>
-                                    <div>
-                                        <div class="font-medium text-gray-800">${product.name}</div>
-                                        <div class="text-sm text-blue-600 font-semibold">₹${product.price}</div>
-                                    </div>
-                                </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">${product.name}</h3>
+                        <p class="text-gray-600 mb-4 line-clamp-2">${product.description}</p>
+                        
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="price-tag text-white px-3 py-1 rounded-lg">
+                                <span class="text-xl font-bold rupee-symbol">₹${product.price}</span>
                             </div>
-                        `;
-                    });
-                    searchResults.innerHTML = resultsHTML;
-                }
-                
-                searchResults.classList.remove('hidden');
-            }
-            
-            // Desktop search
-            searchInput.addEventListener('input', function() {
-                performSearch(this.value);
-            });
-            
-            searchInput.addEventListener('focus', function() {
-                if (this.value.trim()) {
-                    performSearch(this.value);
-                }
-            });
-            
-            // Mobile search
-            mobileSearchInput.addEventListener('input', function() {
-                const query = this.value;
-                if (query.trim()) {
-                    // Filter products on page
-                    const productCards = document.querySelectorAll('[onclick^="openProductPage"]');
-                    productCards.forEach(card => {
-                        const productName = card.querySelector('h3').textContent.toLowerCase();
-                        if (productName.includes(query.toLowerCase())) {
-                            card.style.display = 'block';
-                        } else {
-                            card.style.display = 'none';
-                        }
-                    });
-                } else {
-                    // Show all products
-                    const productCards = document.querySelectorAll('[onclick^="openProductPage"]');
-                    productCards.forEach(card => {
-                        card.style.display = 'block';
-                    });
-                }
-            });
-            
-            // Close search results when clicking outside
-            document.addEventListener('click', function(e) {
-                if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
-                    searchResults.classList.add('hidden');
-                }
-            });
+                            <div class="flex items-center text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="text-gray-500 text-sm ml-1">(4.9)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex space-x-2">
+                            <button onclick="openProductModal(${product.id})" class="flex-1 bg-gray-100 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-200 transition font-medium">
+                                <i class="fas fa-eye mr-2"></i>View Details
+                            </button>
+                            <button onclick="addToCart(${product.id})" class="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 px-4 rounded-lg hover:from-purple-700 hover:to-blue-700 transition font-medium ${!product.inStock ? 'opacity-50 cursor-not-allowed' : ''}" ${!product.inStock ? 'disabled' : ''}>
+                                <i class="fas fa-cart-plus mr-2"></i>Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        // Initialize animations on page load
-        window.addEventListener('scroll', handleScrollAnimation);
-        window.addEventListener('load', function() {
-            handleScrollAnimation();
-            initializeSearch();
-        });
+        // Get category name
+        function getCategoryName(category) {
+            const categoryNames = {
+                'mugs': 'Mugs & Drinkware',
+                'apparel': 'Apparel',
+                'decor': 'Home Decor',
+                'accessories': 'Accessories'
+            };
+            return categoryNames[category] || 'Other';
+        }
 
-        // Keyboard navigation support
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                document.getElementById('cartModal').classList.add('hidden');
-                document.getElementById('productPage').classList.add('hidden');
-                document.getElementById('mobileMenu').classList.add('hidden');
-                document.getElementById('adminPanel').classList.add('hidden');
-                document.body.style.overflow = 'auto';
+        // Filter products
+        function filterProducts(category) {
+            // Update filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-purple-600', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
+            });
+            
+            event.target.classList.remove('bg-gray-200', 'text-gray-700');
+            event.target.classList.add('bg-purple-600', 'text-white');
+            
+            loadProducts(category);
+        }
+
+        // Open product modal
+        function openProductModal(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            currentProduct = product;
+            
+            document.getElementById('modalProductName').textContent = product.name;
+            document.getElementById('modalProductImage').src = product.image;
+            document.getElementById('modalProductImage').alt = product.name;
+            document.getElementById('modalProductCategory').textContent = getCategoryName(product.category);
+            document.getElementById('modalProductPrice').textContent = `₹${product.price}`;
+            document.getElementById('modalProductDescription').textContent = product.description;
+            document.getElementById('modalQuantity').value = 1;
+            
+            document.getElementById('productModal').classList.add('show');
+        }
+
+        // Close product modal
+        function closeProductModal() {
+            document.getElementById('productModal').classList.remove('show');
+            currentProduct = null;
+        }
+
+        // Modal quantity controls
+        function increaseModalQuantity() {
+            const quantityInput = document.getElementById('modalQuantity');
+            quantityInput.value = parseInt(quantityInput.value) + 1;
+        }
+
+        function decreaseModalQuantity() {
+            const quantityInput = document.getElementById('modalQuantity');
+            if (parseInt(quantityInput.value) > 1) {
+                quantityInput.value = parseInt(quantityInput.value) - 1;
             }
-        });
+        }
+
+        // Add to cart from modal
+        function addToCartFromModal() {
+            if (!currentProduct) return;
+            
+            const quantity = parseInt(document.getElementById('modalQuantity').value);
+            addToCart(currentProduct.id, quantity);
+            closeProductModal();
+        }
+
+        // Add to cart
+        function addToCart(productId, quantity = 1) {
+            const product = products.find(p => p.id === productId);
+            if (!product || !product.inStock) return;
+            
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    quantity: quantity
+                });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartUI();
+            showNotification(`${product.name} added to cart!`);
+        }
+
+        // Remove from cart
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartUI();
+            showNotification('Item removed from cart');
+        }
+
+        // Update cart quantity
+        function updateCartQuantity(productId, newQuantity) {
+            if (newQuantity <= 0) {
+                removeFromCart(productId);
+                return;
+            }
+            
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity = newQuantity;
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartUI();
+            }
+        }
+
+        // Toggle cart
+        function toggleCart() {
+            const cartSidebar = document.getElementById('cartSidebar');
+            const cartOverlay = document.getElementById('cartOverlay');
+            
+            if (cartSidebar.classList.contains('translate-x-full')) {
+                cartSidebar.classList.remove('translate-x-full');
+                cartOverlay.classList.remove('hidden');
+            } else {
+                cartSidebar.classList.add('translate-x-full');
+                cartOverlay.classList.add('hidden');
+            }
+        }
+
+        // Update cart UI
+        function updateCartUI() {
+            const cartCount = document.getElementById('cartCount');
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            cartCount.textContent = totalItems;
+            cartTotal.textContent = `₹${totalPrice.toFixed(2)}`;
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="text-center py-12">
+                        <i class="fas fa-shopping-cart text-6xl text-gray-300 mb-4"></i>
+                        <p class="text-gray-500 text-lg">Your cart is empty</p>
+                        <p class="text-gray-400 text-sm">Add some products to get started</p>
+                    </div>
+                `;
+            } else {
+                cartItems.innerHTML = cart.map(item => `
+                    <div class="cart-item flex items-center space-x-4 p-4 border-b">
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded-lg" onerror="this.src='https://via.placeholder.com/64x64/7c3aed/ffffff?text=No+Image'; this.alt='Image not found';">
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-gray-800">${item.name}</h4>
+                            <p class="text-purple-600 font-bold rupee-symbol">₹${item.price}</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="updateCartQuantity(${item.id}, ${item.quantity - 1})" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200">
+                                <i class="fas fa-minus text-xs"></i>
+                            </button>
+                            <span class="w-8 text-center font-semibold">${item.quantity}</span>
+                            <button onclick="updateCartQuantity(${item.id}, ${item.quantity + 1})" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200">
+                                <i class="fas fa-plus text-xs"></i>
+                            </button>
+                        </div>
+                        <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-700">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Proceed to checkout
+        function proceedToCheckout() {
+            if (cart.length === 0) {
+                showNotification('Your cart is empty!', 'error');
+                return;
+            }
+            
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const orderSummary = cart.map(item => `${item.name} x${item.quantity} = ₹${(item.price * item.quantity).toFixed(2)}`).join('\n');
+            
+            alert(`Order Summary:\n\n${orderSummary}\n\nTotal: ₹${totalPrice.toFixed(2)}\n\nThis is a demo. In a real application, you would be redirected to a secure payment gateway.\n\nPayment options available:\n• UPI (PhonePe, Google Pay, Paytm)\n• Credit/Debit Cards\n• Net Banking\n• Cash on Delivery\n\nFree delivery on orders above ₹999!`);
+        }
+
+        // Handle contact form
+        function handleContactForm(event) {
+            event.preventDefault();
+            showNotification('Thank you for your message! We\'ll get back to you within 2 hours during business hours.');
+            event.target.reset();
+        }
+
+        // Initialize on page load
+        init();
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'976d0b61d590899d',t:'MTc1NjQ4MDk1My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'976d128da26e899d',t:'MTc1NjQ4MTI0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

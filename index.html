@@ -3,99 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShopCraft - Complete E-commerce Platform</title>
+    <title id="pageTitle">ShopCraft - Custom E-commerce Platform</title>
+    <meta name="description" id="pageDescription" content="Shop custom products with our advanced e-commerce platform. Create personalized gifts, custom apparel, and unique home decor items.">
+    <meta name="keywords" id="pageKeywords" content="custom products, personalized gifts, e-commerce, online shopping, wireless headphones, custom t-shirt, smart watch">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" id="ogTitle" content="ShopCraft - Custom E-commerce Platform">
+    <meta property="og:description" id="ogDescription" content="Shop custom products with our advanced e-commerce platform. Create personalized gifts, custom apparel, and unique home decor items.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://shopcraft.com">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" id="twitterTitle" content="ShopCraft - Custom E-commerce Platform">
+    <meta name="twitter:description" id="twitterDescription" content="Shop custom products with our advanced e-commerce platform. Create personalized gifts, custom apparel, and unique home decor items.">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         .fade-in { animation: fadeIn 0.5s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        
+        .slide-in { animation: slideIn 0.3s ease-out; }
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+        .product-card:hover { transform: translateY(-5px); transition: all 0.3s ease; }
+        .admin-sidebar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
         .hero-gradient { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .card-hover { transition: all 0.3s ease; }
-        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-        
-        .search-dropdown { 
-            max-height: 400px; 
-            overflow-y: auto;
-            scrollbar-width: thin;
-        }
-        
-        .product-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-            gap: 1.5rem; 
-        }
-        
-        .cart-sidebar {
-            position: fixed;
-            top: 0;
-            right: -400px;
-            width: 400px;
-            height: 100vh;
-            background: white;
-            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-            transition: right 0.3s ease;
-            z-index: 1000;
-        }
-        
-        .cart-sidebar.open { right: 0; }
-        .cart-overlay { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: rgba(0,0,0,0.5); 
-            z-index: 999; 
-            display: none; 
-        }
-        .cart-overlay.show { display: block; }
-        
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            color: white;
-            font-weight: 500;
-            z-index: 1001;
-            transform: translateX(400px);
-            transition: transform 0.3s ease;
-        }
-        
-        .notification.show { transform: translateX(0); }
-        .notification.success { background: #10b981; }
-        .notification.error { background: #ef4444; }
-        
-        .admin-panel { display: none; }
-        .admin-panel.show { display: block; }
-        
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1002;
-        }
-        
-        .modal.show { display: flex; }
-        
-        .loading-spinner {
-            border: 3px solid #f3f4f6;
-            border-top: 3px solid #3b82f6;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -103,253 +32,60 @@
     <nav class="bg-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-center h-16">
-                <!-- Logo -->
+                <div class="flex items-center space-x-8">
+                    <div class="text-2xl font-bold text-purple-600 cursor-pointer" onclick="showPage('home')">
+                        <i class="fas fa-store mr-2"></i>ShopCraft
+                    </div>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="#" onclick="showPage('home')" class="text-gray-700 hover:text-purple-600 transition">Home</a>
+                        <a href="#" onclick="showPage('products')" class="text-gray-700 hover:text-purple-600 transition">Products</a>
+                        <a href="#" onclick="showPage('categories')" class="text-gray-700 hover:text-purple-600 transition">Categories</a>
+                    </div>
+                </div>
+                
                 <div class="flex items-center space-x-4">
-                    <div class="text-2xl font-bold text-blue-600">
-                        <i class="fas fa-shopping-bag mr-2"></i>ShopCraft
-                    </div>
-                </div>
-
-                <!-- Search Bar -->
-                <div class="flex-1 max-w-2xl mx-8">
-                    <div class="relative">
-                        <input 
-                            type="text" 
-                            id="searchInput"
-                            placeholder="Search products... (try 'phone', 'laptop', 'shirt')"
-                            class="w-full px-4 py-2 pl-10 pr-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        >
-                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    <div class="relative hidden md:block">
+                        <input type="text" id="searchInput" placeholder="Search products..." 
+                               class="w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                               onkeyup="handleSearch(event)" onfocus="showSearchSuggestions()" onblur="hideSearchSuggestions()">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
                         
-                        <!-- Search Dropdown -->
-                        <div id="searchDropdown" class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-xl search-dropdown hidden">
-                            <div id="searchResults"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Navigation Links -->
-                <div class="flex items-center space-x-6">
-                    <button onclick="showSection('home')" class="nav-link text-gray-700 hover:text-blue-600 font-medium">Home</button>
-                    <button onclick="showSection('products')" class="nav-link text-gray-700 hover:text-blue-600 font-medium">Products</button>
-                    <button onclick="showSection('orders')" class="nav-link text-gray-700 hover:text-blue-600 font-medium">Orders</button>
-                    
-                    <!-- Cart Button -->
-                    <button onclick="toggleCart()" class="relative p-2 text-gray-700 hover:text-blue-600">
-                        <i class="fas fa-shopping-cart text-xl"></i>
-                        <span id="cartCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
-                    </button>
-                    
-                    <!-- User Menu -->
-                    <div class="relative">
-                        <button onclick="toggleUserMenu()" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
-                            <i class="fas fa-user-circle text-xl"></i>
-                            <span id="userName">Guest</span>
-                        </button>
-                        <div id="userMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border hidden">
-                            <div class="py-2">
-                                <button onclick="showLogin()" id="loginBtn" class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Login</button>
-                                <button onclick="showRegister()" id="registerBtn" class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Register</button>
-                                <button onclick="showAdmin()" id="adminBtn" class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 hidden">Admin Panel</button>
-                                <button onclick="logout()" id="logoutBtn" class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 hidden">Logout</button>
+                        <!-- Search Suggestions Dropdown -->
+                        <div id="searchSuggestions" class="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-lg shadow-lg mt-1 hidden z-50 max-h-96 overflow-y-auto">
+                            <div id="searchResults" class="p-2">
+                                <!-- Search results will appear here -->
+                            </div>
+                            <div id="searchCategories" class="border-t border-gray-200 p-2">
+                                <div class="text-xs text-gray-500 mb-2">Search by category:</div>
+                                <div class="flex flex-wrap gap-1">
+                                    <button onclick="searchByCategory('electronics')" class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs hover:bg-blue-200">Electronics</button>
+                                    <button onclick="searchByCategory('clothing')" class="px-2 py-1 bg-pink-100 text-pink-800 rounded text-xs hover:bg-pink-200">Clothing</button>
+                                    <button onclick="searchByCategory('home')" class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs hover:bg-green-200">Home</button>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    
+                    <button onclick="toggleCart()" class="relative p-2 text-gray-700 hover:text-purple-600 transition">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span id="cartCount" class="absolute -top-1 -right-1 bg-purple-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                    </button>
+                    
+                    <button onclick="showPage('auth')" id="authBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
+                        Login
+                    </button>
+                    
+                    <button onclick="showPage('admin')" id="adminBtn" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition hidden">
+                        Admin
+                    </button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main>
-        <!-- Home Section -->
-        <section id="homeSection" class="section-content">
-            <!-- Hero Section -->
-            <div class="hero-gradient text-white py-20">
-                <div class="max-w-7xl mx-auto px-4 text-center">
-                    <h1 class="text-5xl font-bold mb-6 fade-in">Welcome to ShopCraft</h1>
-                    <p class="text-xl mb-8 fade-in">Discover amazing products with our smart search technology</p>
-                    <div class="max-w-2xl mx-auto mb-8 fade-in">
-                        <div class="relative">
-                            <input 
-                                type="text" 
-                                placeholder="Search for anything..."
-                                class="w-full px-6 py-4 pl-12 text-gray-900 rounded-full shadow-lg focus:outline-none focus:ring-4 focus:ring-white/30"
-                            >
-                            <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        </div>
-                    </div>
-                    <div class="flex flex-wrap justify-center gap-4 fade-in">
-                        <div class="flex items-center bg-white/10 rounded-full px-6 py-3">
-                            <i class="fas fa-shipping-fast mr-2"></i>
-                            <span>Free Shipping</span>
-                        </div>
-                        <div class="flex items-center bg-white/10 rounded-full px-6 py-3">
-                            <i class="fas fa-star mr-2"></i>
-                            <span>Premium Quality</span>
-                        </div>
-                        <div class="flex items-center bg-white/10 rounded-full px-6 py-3">
-                            <i class="fas fa-tags mr-2"></i>
-                            <span>Best Prices</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Featured Products -->
-            <div class="py-16 bg-white">
-                <div class="max-w-7xl mx-auto px-4">
-                    <div class="text-center mb-12">
-                        <h2 class="text-3xl font-bold text-gray-900 mb-4">Featured Products</h2>
-                        <p class="text-lg text-gray-600">Handpicked products just for you</p>
-                    </div>
-                    <div id="featuredProducts" class="product-grid">
-                        <!-- Products will be loaded here -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Categories -->
-            <div class="py-16 bg-gray-50">
-                <div class="max-w-7xl mx-auto px-4">
-                    <div class="text-center mb-12">
-                        <h2 class="text-3xl font-bold text-gray-900 mb-4">Shop by Category</h2>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div onclick="filterByCategory('Electronics')" class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg p-8 text-white text-center cursor-pointer card-hover">
-                            <div class="text-4xl mb-4">📱</div>
-                            <h3 class="text-xl font-bold">Electronics</h3>
-                        </div>
-                        <div onclick="filterByCategory('Fashion')" class="bg-gradient-to-r from-pink-500 to-pink-600 rounded-lg p-8 text-white text-center cursor-pointer card-hover">
-                            <div class="text-4xl mb-4">👕</div>
-                            <h3 class="text-xl font-bold">Fashion</h3>
-                        </div>
-                        <div onclick="filterByCategory('Home')" class="bg-gradient-to-r from-green-500 to-green-600 rounded-lg p-8 text-white text-center cursor-pointer card-hover">
-                            <div class="text-4xl mb-4">🏠</div>
-                            <h3 class="text-xl font-bold">Home & Garden</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Products Section -->
-        <section id="productsSection" class="section-content hidden">
-            <div class="max-w-7xl mx-auto px-4 py-8">
-                <div class="flex justify-between items-center mb-8">
-                    <h1 class="text-3xl font-bold text-gray-900">All Products</h1>
-                    <div class="flex space-x-4">
-                        <select id="categoryFilter" class="px-4 py-2 border border-gray-300 rounded-lg">
-                            <option value="">All Categories</option>
-                            <option value="Electronics">Electronics</option>
-                            <option value="Fashion">Fashion</option>
-                            <option value="Home">Home & Garden</option>
-                            <option value="Sports">Sports</option>
-                        </select>
-                        <select id="sortFilter" class="px-4 py-2 border border-gray-300 rounded-lg">
-                            <option value="name">Sort by Name</option>
-                            <option value="price-low">Price: Low to High</option>
-                            <option value="price-high">Price: High to Low</option>
-                            <option value="newest">Newest First</option>
-                        </select>
-                    </div>
-                </div>
-                <div id="allProducts" class="product-grid">
-                    <!-- Products will be loaded here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Orders Section -->
-        <section id="ordersSection" class="section-content hidden">
-            <div class="max-w-7xl mx-auto px-4 py-8">
-                <h1 class="text-3xl font-bold text-gray-900 mb-8">My Orders</h1>
-                <div id="ordersList">
-                    <div class="text-center py-12 text-gray-500">
-                        <i class="fas fa-shopping-bag text-4xl mb-4"></i>
-                        <p>Please login to view your orders</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Admin Panel -->
-        <section id="adminSection" class="section-content admin-panel">
-            <div class="max-w-7xl mx-auto px-4 py-8">
-                <h1 class="text-3xl font-bold text-gray-900 mb-8">Admin Dashboard</h1>
-                
-                <!-- Admin Stats -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                    <div class="bg-white rounded-lg shadow p-6">
-                        <div class="flex items-center">
-                            <div class="p-3 bg-blue-100 rounded-full">
-                                <i class="fas fa-box text-blue-600"></i>
-                            </div>
-                            <div class="ml-4">
-                                <p class="text-sm text-gray-600">Total Products</p>
-                                <p class="text-2xl font-bold" id="totalProducts">0</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-lg shadow p-6">
-                        <div class="flex items-center">
-                            <div class="p-3 bg-green-100 rounded-full">
-                                <i class="fas fa-shopping-cart text-green-600"></i>
-                            </div>
-                            <div class="ml-4">
-                                <p class="text-sm text-gray-600">Total Orders</p>
-                                <p class="text-2xl font-bold" id="totalOrders">0</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-lg shadow p-6">
-                        <div class="flex items-center">
-                            <div class="p-3 bg-yellow-100 rounded-full">
-                                <i class="fas fa-users text-yellow-600"></i>
-                            </div>
-                            <div class="ml-4">
-                                <p class="text-sm text-gray-600">Total Users</p>
-                                <p class="text-2xl font-bold" id="totalUsers">0</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-lg shadow p-6">
-                        <div class="flex items-center">
-                            <div class="p-3 bg-purple-100 rounded-full">
-                                <i class="fas fa-dollar-sign text-purple-600"></i>
-                            </div>
-                            <div class="ml-4">
-                                <p class="text-sm text-gray-600">Revenue</p>
-                                <p class="text-2xl font-bold" id="totalRevenue">$0</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product Management -->
-                <div class="bg-white rounded-lg shadow mb-8">
-                    <div class="p-6 border-b border-gray-200">
-                        <div class="flex justify-between items-center">
-                            <h2 class="text-xl font-bold">Product Management</h2>
-                            <button onclick="showAddProduct()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-                                <i class="fas fa-plus mr-2"></i>Add Product
-                            </button>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div id="adminProducts" class="space-y-4">
-                            <!-- Admin products will be loaded here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
     <!-- Cart Sidebar -->
-    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
-    <div class="cart-sidebar" id="cartSidebar">
-        <div class="p-6 border-b border-gray-200">
+    <div id="cartSidebar" class="fixed right-0 top-0 h-full w-96 bg-white shadow-xl transform translate-x-full transition-transform duration-300 z-50">
+        <div class="p-6 border-b">
             <div class="flex justify-between items-center">
                 <h2 class="text-xl font-bold">Shopping Cart</h2>
                 <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-700">
@@ -357,367 +93,1112 @@
                 </button>
             </div>
         </div>
-        <div class="flex-1 overflow-y-auto p-6">
-            <div id="cartItems">
-                <div class="text-center py-12 text-gray-500">
-                    <i class="fas fa-shopping-cart text-4xl mb-4"></i>
-                    <p>Your cart is empty</p>
-                </div>
-            </div>
+        <div id="cartItems" class="flex-1 overflow-y-auto p-6">
+            <p class="text-gray-500 text-center">Your cart is empty</p>
         </div>
-        <div class="border-t border-gray-200 p-6">
+        <div class="border-t p-6">
             <div class="flex justify-between items-center mb-4">
-                <span class="text-lg font-bold">Total:</span>
-                <span class="text-lg font-bold" id="cartTotal">$0.00</span>
+                <span class="text-lg font-bold">Total: $<span id="cartTotal">0.00</span></span>
             </div>
-            <button onclick="checkout()" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 font-medium">
-                Proceed to Checkout
+            <button onclick="showPage('checkout')" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition">
+                Checkout
             </button>
         </div>
     </div>
 
-    <!-- Login Modal -->
-    <div class="modal" id="loginModal">
-        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold">Login</h2>
-                <button onclick="closeModal('loginModal')" class="text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <form onsubmit="login(event)">
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
-                    <input type="email" id="loginEmail" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+    <!-- Main Content -->
+    <main id="mainContent">
+        <!-- Home Page -->
+        <div id="homePage" class="page">
+            <!-- Hero Section -->
+            <section class="hero-gradient text-white py-20">
+                <div class="max-w-7xl mx-auto px-4 text-center">
+                    <h1 class="text-5xl font-bold mb-6 fade-in">Welcome to ShopCraft</h1>
+                    <p class="text-xl mb-8 fade-in">Customize, Create, and Shop Amazing Products</p>
+                    <button onclick="showPage('products')" class="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition fade-in">
+                        Shop Now
+                    </button>
                 </div>
-                <div class="mb-6">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
-                    <input type="password" id="loginPassword" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                </div>
-                <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-medium">
-                    Login
-                </button>
-            </form>
-            <p class="text-center mt-4 text-gray-600">
-                Don't have an account? 
-                <button onclick="closeModal('loginModal'); showRegister()" class="text-blue-600 hover:text-blue-800">Register</button>
-            </p>
-        </div>
-    </div>
+            </section>
 
-    <!-- Register Modal -->
-    <div class="modal" id="registerModal">
-        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold">Register</h2>
-                <button onclick="closeModal('registerModal')" class="text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <form onsubmit="register(event)">
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Name</label>
-                    <input type="text" id="registerName" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+            <!-- Featured Products -->
+            <section class="py-16">
+                <div class="max-w-7xl mx-auto px-4">
+                    <h2 class="text-3xl font-bold text-center mb-12">Featured Products</h2>
+                    <div id="featuredProducts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <!-- Products will be loaded here -->
+                    </div>
                 </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
-                    <input type="email" id="registerEmail" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                </div>
-                <div class="mb-6">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
-                    <input type="password" id="registerPassword" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                </div>
-                <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-medium">
-                    Register
-                </button>
-            </form>
-            <p class="text-center mt-4 text-gray-600">
-                Already have an account? 
-                <button onclick="closeModal('registerModal'); showLogin()" class="text-blue-600 hover:text-blue-800">Login</button>
-            </p>
+            </section>
         </div>
-    </div>
 
-    <!-- Add Product Modal -->
-    <div class="modal" id="addProductModal">
-        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold">Add Product</h2>
-                <button onclick="closeModal('addProductModal')" class="text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-times"></i>
-                </button>
+        <!-- Products Page -->
+        <div id="productsPage" class="page hidden">
+            <div class="max-w-7xl mx-auto px-4 py-8">
+                <div class="flex justify-between items-center mb-8">
+                    <h1 class="text-3xl font-bold">All Products</h1>
+                    <div class="flex space-x-4">
+                        <select id="sortSelect" onchange="sortProducts()" class="border border-gray-300 rounded-lg px-4 py-2">
+                            <option value="name">Sort by Name</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                        </select>
+                        <select id="categoryFilter" onchange="filterByCategory()" class="border border-gray-300 rounded-lg px-4 py-2">
+                            <option value="">All Categories</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="clothing">Clothing</option>
+                            <option value="home">Home & Garden</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Products will be loaded here -->
+                </div>
             </div>
-            <form onsubmit="addProduct(event)">
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Name</label>
-                    <input type="text" id="productName" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Description</label>
-                    <textarea id="productDescription" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" rows="3"></textarea>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Price</label>
-                    <input type="number" id="productPrice" step="0.01" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Category</label>
-                    <select id="productCategory" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                        <option value="">Select Category</option>
-                        <option value="Electronics">Electronics</option>
-                        <option value="Fashion">Fashion</option>
-                        <option value="Home">Home & Garden</option>
-                        <option value="Sports">Sports</option>
-                    </select>
-                </div>
-                <div class="mb-6">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Stock</label>
-                    <input type="number" id="productStock" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                </div>
-                <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-medium">
-                    Add Product
-                </button>
-            </form>
         </div>
-    </div>
 
-    <!-- Notification -->
-    <div id="notification" class="notification"></div>
+        <!-- Product Detail Page -->
+        <div id="productDetailPage" class="page hidden">
+            <div class="max-w-7xl mx-auto px-4 py-8">
+                <div id="productDetail" class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <!-- Product detail will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Categories Page -->
+        <div id="categoriesPage" class="page hidden">
+            <div class="max-w-7xl mx-auto px-4 py-8">
+                <h1 class="text-3xl font-bold mb-8">Shop by Category</h1>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition" onclick="filterByCategory('electronics')">
+                        <div class="h-48 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                            <i class="fas fa-laptop text-6xl text-white"></i>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2">Electronics</h3>
+                            <p class="text-gray-600">Latest gadgets and tech</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition" onclick="filterByCategory('clothing')">
+                        <div class="h-48 bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center">
+                            <i class="fas fa-tshirt text-6xl text-white"></i>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2">Clothing</h3>
+                            <p class="text-gray-600">Fashion and apparel</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition" onclick="filterByCategory('home')">
+                        <div class="h-48 bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
+                            <i class="fas fa-home text-6xl text-white"></i>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2">Home & Garden</h3>
+                            <p class="text-gray-600">Decor and essentials</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Checkout Page -->
+        <div id="checkoutPage" class="page hidden">
+            <div class="max-w-4xl mx-auto px-4 py-8">
+                <h1 class="text-3xl font-bold mb-8">Checkout</h1>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <h2 class="text-xl font-bold mb-6">Shipping Information</h2>
+                        <form id="checkoutForm">
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <input type="text" placeholder="First Name" class="border border-gray-300 rounded-lg px-4 py-2" required>
+                                <input type="text" placeholder="Last Name" class="border border-gray-300 rounded-lg px-4 py-2" required>
+                            </div>
+                            <input type="email" placeholder="Email" class="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4" required>
+                            <input type="text" placeholder="Address" class="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4" required>
+                            <div class="grid grid-cols-3 gap-4 mb-6">
+                                <input type="text" placeholder="City" class="border border-gray-300 rounded-lg px-4 py-2" required>
+                                <input type="text" placeholder="State" class="border border-gray-300 rounded-lg px-4 py-2" required>
+                                <input type="text" placeholder="ZIP" class="border border-gray-300 rounded-lg px-4 py-2" required>
+                            </div>
+                            
+                            <h3 class="text-lg font-bold mb-4">Payment Information (Demo)</h3>
+                            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+                                <p class="text-yellow-800 text-sm">
+                                    <i class="fas fa-info-circle mr-2"></i>
+                                    This is a demo checkout. No real payment will be processed.
+                                </p>
+                            </div>
+                            <input type="text" placeholder="Card Number (Demo)" class="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4" value="4111 1111 1111 1111" readonly>
+                            <div class="grid grid-cols-2 gap-4 mb-6">
+                                <input type="text" placeholder="MM/YY" class="border border-gray-300 rounded-lg px-4 py-2" value="12/25" readonly>
+                                <input type="text" placeholder="CVV" class="border border-gray-300 rounded-lg px-4 py-2" value="123" readonly>
+                            </div>
+                            
+                            <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition">
+                                Place Order (Demo)
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <h2 class="text-xl font-bold mb-6">Order Summary</h2>
+                        <div id="checkoutItems" class="space-y-4 mb-6">
+                            <!-- Checkout items will be loaded here -->
+                        </div>
+                        <div class="border-t pt-4">
+                            <div class="flex justify-between mb-2">
+                                <span>Subtotal:</span>
+                                <span>$<span id="checkoutSubtotal">0.00</span></span>
+                            </div>
+                            <div class="flex justify-between mb-2">
+                                <span>Shipping:</span>
+                                <span>$9.99</span>
+                            </div>
+                            <div class="flex justify-between mb-2">
+                                <span>Tax:</span>
+                                <span>$<span id="checkoutTax">0.00</span></span>
+                            </div>
+                            <div class="flex justify-between text-xl font-bold">
+                                <span>Total:</span>
+                                <span>$<span id="checkoutTotal">0.00</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Auth Page -->
+        <div id="authPage" class="page hidden">
+            <div class="max-w-md mx-auto px-4 py-16">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <div class="text-center mb-8">
+                        <h1 class="text-2xl font-bold">Welcome Back</h1>
+                        <p class="text-gray-600">Sign in to your account</p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="flex border-b">
+                            <button id="loginTab" onclick="switchAuthTab('login')" class="flex-1 py-2 text-center border-b-2 border-purple-600 text-purple-600 font-semibold">
+                                Login
+                            </button>
+                            <button id="signupTab" onclick="switchAuthTab('signup')" class="flex-1 py-2 text-center text-gray-500">
+                                Sign Up
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <form id="authForm">
+                        <div id="signupFields" class="hidden">
+                            <input type="text" id="firstName" placeholder="First Name" class="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4">
+                            <input type="text" id="lastName" placeholder="Last Name" class="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4">
+                        </div>
+                        <input type="email" id="email" placeholder="Email" class="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4" required>
+                        <input type="password" id="password" placeholder="Password" class="w-full border border-gray-300 rounded-lg px-4 py-2 mb-6" required>
+                        
+                        <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition">
+                            <span id="authSubmitText">Sign In</span>
+                        </button>
+                    </form>
+                    
+                    <div class="mt-6 text-center">
+                        <p class="text-sm text-gray-600">
+                            Demo credentials: admin@demo.com / password123
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="adminPage" class="page hidden">
+            <div class="flex h-screen bg-gray-100">
+                <!-- Admin Sidebar -->
+                <div class="admin-sidebar w-64 text-white">
+                    <div class="p-6">
+                        <h2 class="text-xl font-bold">Admin Panel</h2>
+                    </div>
+                    <nav class="mt-6">
+                        <a href="#" onclick="showAdminSection('dashboard')" class="admin-nav-item block px-6 py-3 hover:bg-white hover:bg-opacity-10 transition">
+                            <i class="fas fa-chart-bar mr-3"></i>Dashboard
+                        </a>
+                        <a href="#" onclick="showAdminSection('products')" class="admin-nav-item block px-6 py-3 hover:bg-white hover:bg-opacity-10 transition">
+                            <i class="fas fa-box mr-3"></i>Products
+                        </a>
+                        <a href="#" onclick="showAdminSection('orders')" class="admin-nav-item block px-6 py-3 hover:bg-white hover:bg-opacity-10 transition">
+                            <i class="fas fa-shopping-bag mr-3"></i>Orders
+                        </a>
+                        <a href="#" onclick="showAdminSection('seo')" class="admin-nav-item block px-6 py-3 hover:bg-white hover:bg-opacity-10 transition">
+                            <i class="fas fa-search mr-3"></i>SEO
+                        </a>
+                        <a href="#" onclick="showAdminSection('upload')" class="admin-nav-item block px-6 py-3 hover:bg-white hover:bg-opacity-10 transition">
+                            <i class="fas fa-upload mr-3"></i>Bulk Upload
+                        </a>
+                    </nav>
+                </div>
+                
+                <!-- Admin Content -->
+                <div class="flex-1 overflow-y-auto">
+                    <div class="p-8">
+                        <!-- Dashboard -->
+                        <div id="adminDashboard" class="admin-section">
+                            <h1 class="text-3xl font-bold mb-8">Dashboard</h1>
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                                <div class="bg-white rounded-lg shadow p-6">
+                                    <div class="flex items-center">
+                                        <div class="p-3 bg-blue-100 rounded-full">
+                                            <i class="fas fa-shopping-cart text-blue-600"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="text-sm text-gray-600">Total Orders</p>
+                                            <p class="text-2xl font-bold">1,234</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-white rounded-lg shadow p-6">
+                                    <div class="flex items-center">
+                                        <div class="p-3 bg-green-100 rounded-full">
+                                            <i class="fas fa-dollar-sign text-green-600"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="text-sm text-gray-600">Revenue</p>
+                                            <p class="text-2xl font-bold">$45,678</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-white rounded-lg shadow p-6">
+                                    <div class="flex items-center">
+                                        <div class="p-3 bg-purple-100 rounded-full">
+                                            <i class="fas fa-box text-purple-600"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="text-sm text-gray-600">Products</p>
+                                            <p class="text-2xl font-bold">567</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-white rounded-lg shadow p-6">
+                                    <div class="flex items-center">
+                                        <div class="p-3 bg-yellow-100 rounded-full">
+                                            <i class="fas fa-users text-yellow-600"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="text-sm text-gray-600">Customers</p>
+                                            <p class="text-2xl font-bold">890</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Products Management -->
+                        <div id="adminProducts" class="admin-section hidden">
+                            <div class="flex justify-between items-center mb-8">
+                                <h1 class="text-3xl font-bold">Products</h1>
+                                <button onclick="showAddProductModal()" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
+                                    <i class="fas fa-plus mr-2"></i>Add Product
+                                </button>
+                            </div>
+                            <div class="bg-white rounded-lg shadow overflow-hidden">
+                                <table class="w-full">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Product</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Stock</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="adminProductsList" class="divide-y divide-gray-200">
+                                        <!-- Products will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Orders Management -->
+                        <div id="adminOrders" class="admin-section hidden">
+                            <h1 class="text-3xl font-bold mb-8">Orders</h1>
+                            <div class="bg-white rounded-lg shadow overflow-hidden">
+                                <table class="w-full">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Order ID</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4">#ORD-001</td>
+                                            <td class="px-6 py-4">John Doe</td>
+                                            <td class="px-6 py-4">$299.99</td>
+                                            <td class="px-6 py-4"><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm">Completed</span></td>
+                                            <td class="px-6 py-4">2024-01-15</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4">#ORD-002</td>
+                                            <td class="px-6 py-4">Jane Smith</td>
+                                            <td class="px-6 py-4">$149.99</td>
+                                            <td class="px-6 py-4"><span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-sm">Processing</span></td>
+                                            <td class="px-6 py-4">2024-01-14</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- SEO Management -->
+                        <div id="adminSEO" class="admin-section hidden">
+                            <h1 class="text-3xl font-bold mb-8">SEO Management</h1>
+                            
+                            <!-- SEO Dashboard -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                                <div class="bg-white rounded-lg shadow p-6">
+                                    <div class="flex items-center">
+                                        <div class="p-3 bg-green-100 rounded-full">
+                                            <i class="fas fa-search text-green-600"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="text-sm text-gray-600">Total Keywords</p>
+                                            <p class="text-2xl font-bold" id="totalKeywords">10</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-white rounded-lg shadow p-6">
+                                    <div class="flex items-center">
+                                        <div class="p-3 bg-blue-100 rounded-full">
+                                            <i class="fas fa-chart-line text-blue-600"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="text-sm text-gray-600">Avg Priority</p>
+                                            <p class="text-2xl font-bold" id="avgPriority">72.5</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-white rounded-lg shadow p-6">
+                                    <div class="flex items-center">
+                                        <div class="p-3 bg-purple-100 rounded-full">
+                                            <i class="fas fa-sync text-purple-600"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="text-sm text-gray-600">Last Update</p>
+                                            <p class="text-sm font-bold" id="lastSeoUpdate">2 hours ago</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                <!-- Keywords Management -->
+                                <div class="bg-white rounded-lg shadow p-6">
+                                    <div class="flex justify-between items-center mb-4">
+                                        <h2 class="text-xl font-bold">SEO Keywords</h2>
+                                        <button onclick="runSEOCronJob()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+                                            <i class="fas fa-sync mr-2"></i>Run SEO Update
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <div class="flex space-x-2">
+                                            <input type="text" id="newKeyword" placeholder="Add new keyword..." class="flex-1 border border-gray-300 rounded-lg px-4 py-2">
+                                            <input type="number" id="keywordPriority" placeholder="Priority" min="1" max="100" class="w-20 border border-gray-300 rounded-lg px-2 py-2">
+                                            <button onclick="addSEOKeyword()" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
+                                                Add
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="max-h-64 overflow-y-auto">
+                                        <table class="w-full text-sm">
+                                            <thead class="bg-gray-50 sticky top-0">
+                                                <tr>
+                                                    <th class="px-3 py-2 text-left">Keyword</th>
+                                                    <th class="px-3 py-2 text-left">Priority</th>
+                                                    <th class="px-3 py-2 text-left">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="seoKeywordsList">
+                                                <!-- Keywords will be loaded here -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <!-- Meta Data Management -->
+                                <div class="bg-white rounded-lg shadow p-6">
+                                    <h2 class="text-xl font-bold mb-4">Meta Data Management</h2>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label class="block text-sm font-medium mb-2">Homepage Title</label>
+                                            <input type="text" id="homepageTitle" value="ShopCraft - Custom E-commerce Platform" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium mb-2">Homepage Description</label>
+                                            <textarea id="homepageDescription" class="w-full border border-gray-300 rounded-lg px-4 py-2" rows="3">Shop custom products with our advanced e-commerce platform. Create personalized gifts, custom apparel, and unique home decor items.</textarea>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium mb-2">Homepage Keywords</label>
+                                            <input type="text" id="homepageKeywords" value="custom products, personalized gifts, e-commerce, online shopping" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                                        </div>
+                                        <button onclick="updateHomepageMeta()" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+                                            Update Homepage Meta
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Schema Markup -->
+                            <div class="mt-8 bg-white rounded-lg shadow p-6">
+                                <h2 class="text-xl font-bold mb-4">Schema Markup</h2>
+                                <div class="bg-gray-100 rounded-lg p-4">
+                                    <pre class="text-sm text-gray-700 overflow-x-auto" id="schemaMarkup">
+{
+  "@context": "https://schema.org/",
+  "@type": "WebSite",
+  "name": "ShopCraft",
+  "url": "https://shopcraft.com",
+  "description": "Custom e-commerce platform for personalized products",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://shopcraft.com/search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  },
+  "keywords": "custom products, personalized gifts, e-commerce, online shopping"
+}
+                                    </pre>
+                                </div>
+                                <button onclick="updateSchemaMarkup()" class="mt-4 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
+                                    Update Schema
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Bulk Upload -->
+                        <div id="adminUpload" class="admin-section hidden">
+                            <h1 class="text-3xl font-bold mb-8">Bulk Product Upload</h1>
+                            <div class="bg-white rounded-lg shadow p-6">
+                                <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                                    <h3 class="text-lg font-semibold mb-2">Upload CSV File</h3>
+                                    <p class="text-gray-600 mb-4">Drag and drop your CSV file here, or click to browse</p>
+                                    <input type="file" id="csvUpload" accept=".csv" class="hidden" onchange="handleCSVUpload(event)">
+                                    <button onclick="document.getElementById('csvUpload').click()" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition">
+                                        Choose File
+                                    </button>
+                                </div>
+                                <div class="mt-6">
+                                    <h4 class="font-semibold mb-2">CSV Format Example:</h4>
+                                    <div class="bg-gray-100 rounded-lg p-4 text-sm">
+                                        <code>name,description,price,category,stock,image_url<br>
+                                        "Wireless Headphones","High-quality wireless headphones",99.99,"electronics",50,"https://example.com/image1.jpg"</code>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Customizer Modal -->
+        <div id="customizerModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+            <div class="bg-white rounded-lg max-w-6xl w-full mx-4 max-h-[95vh] overflow-y-auto">
+                <div class="p-6 border-b flex justify-between items-center">
+                    <h2 class="text-2xl font-bold">Customize Your Product</h2>
+                    <div class="flex items-center space-x-4">
+                        <select id="productTemplate" onchange="changeProductTemplate()" class="border border-gray-300 rounded-lg px-4 py-2">
+                            <option value="tshirt">T-Shirt</option>
+                            <option value="mug">Coffee Mug</option>
+                            <option value="frame">Picture Frame</option>
+                            <option value="canvas">Canvas Print</option>
+                        </select>
+                        <button onclick="closeCustomizer()" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <!-- Canvas Area -->
+                        <div class="lg:col-span-2">
+                            <div class="relative">
+                                <canvas id="fabricCanvas" width="600" height="600" class="border border-gray-300 rounded-lg shadow-lg"></canvas>
+                                <div id="canvasOverlay" class="absolute inset-0 pointer-events-none">
+                                    <!-- Product template overlay will be rendered here -->
+                                </div>
+                            </div>
+                            <div class="mt-4 flex justify-center space-x-4">
+                                <button onclick="zoomIn()" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                                    <i class="fas fa-search-plus mr-2"></i>Zoom In
+                                </button>
+                                <button onclick="zoomOut()" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                                    <i class="fas fa-search-minus mr-2"></i>Zoom Out
+                                </button>
+                                <button onclick="resetZoom()" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                                    <i class="fas fa-expand-arrows-alt mr-2"></i>Reset
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Controls Panel -->
+                        <div class="space-y-6">
+                            <!-- Image Upload -->
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h3 class="text-lg font-bold mb-4">
+                                    <i class="fas fa-image mr-2 text-blue-600"></i>Upload Image
+                                </h3>
+                                <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                                    <input type="file" id="imageUpload" accept="image/png,image/jpeg,image/jpg" class="hidden" onchange="handleImageUpload(event)">
+                                    <button onclick="document.getElementById('imageUpload').click()" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+                                        <i class="fas fa-cloud-upload-alt mr-2"></i>Choose Image
+                                    </button>
+                                    <p class="text-xs text-gray-500 mt-2">PNG, JPG up to 5MB</p>
+                                </div>
+                                <div id="imageControls" class="mt-4 hidden">
+                                    <label class="block text-sm font-medium mb-2">Image Opacity</label>
+                                    <input type="range" id="imageOpacity" min="0" max="100" value="100" onchange="updateImageOpacity()" class="w-full">
+                                    <button onclick="removeSelectedImage()" class="w-full mt-2 bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition">
+                                        Remove Image
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Text Controls -->
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h3 class="text-lg font-bold mb-4">
+                                    <i class="fas fa-font mr-2 text-green-600"></i>Add Text
+                                </h3>
+                                <div class="space-y-3">
+                                    <input type="text" id="customText" placeholder="Enter your text" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                                    
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Font</label>
+                                            <select id="fontFamily" onchange="updateTextProperties()" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                                                <option value="Arial">Arial</option>
+                                                <option value="Helvetica">Helvetica</option>
+                                                <option value="Times New Roman">Times</option>
+                                                <option value="Georgia">Georgia</option>
+                                                <option value="Verdana">Verdana</option>
+                                                <option value="Impact">Impact</option>
+                                                <option value="Comic Sans MS">Comic Sans</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Size</label>
+                                            <input type="range" id="fontSize" min="12" max="72" value="24" onchange="updateTextProperties()" class="w-full">
+                                            <span id="fontSizeValue" class="text-xs text-gray-500">24px</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Color</label>
+                                            <input type="color" id="textColor" value="#000000" onchange="updateTextProperties()" class="w-full h-10 border border-gray-300 rounded-lg">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Style</label>
+                                            <div class="flex space-x-1">
+                                                <button id="boldBtn" onclick="toggleBold()" class="flex-1 bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded text-sm font-bold">B</button>
+                                                <button id="italicBtn" onclick="toggleItalic()" class="flex-1 bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded text-sm italic">I</button>
+                                                <button id="underlineBtn" onclick="toggleUnderline()" class="flex-1 bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded text-sm underline">U</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <button onclick="addCustomText()" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
+                                        <i class="fas fa-plus mr-2"></i>Add Text
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Layer Controls -->
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h3 class="text-lg font-bold mb-4">
+                                    <i class="fas fa-layer-group mr-2 text-purple-600"></i>Layers
+                                </h3>
+                                <div id="layersList" class="space-y-2 mb-4">
+                                    <!-- Layers will be listed here -->
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button onclick="bringToFront()" class="bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition text-sm">
+                                        <i class="fas fa-arrow-up mr-1"></i>Front
+                                    </button>
+                                    <button onclick="sendToBack()" class="bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition text-sm">
+                                        <i class="fas fa-arrow-down mr-1"></i>Back
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Background Controls -->
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h3 class="text-lg font-bold mb-4">
+                                    <i class="fas fa-palette mr-2 text-orange-600"></i>Background
+                                </h3>
+                                <div class="space-y-3">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2">Background Color</label>
+                                        <input type="color" id="bgColor" value="#ffffff" onchange="changeBgColor()" class="w-full h-10 border border-gray-300 rounded-lg">
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-2">
+                                        <button onclick="setBgColor('#ffffff')" class="h-8 bg-white border-2 border-gray-300 rounded"></button>
+                                        <button onclick="setBgColor('#000000')" class="h-8 bg-black border-2 border-gray-300 rounded"></button>
+                                        <button onclick="setBgColor('#ff0000')" class="h-8 bg-red-500 border-2 border-gray-300 rounded"></button>
+                                        <button onclick="setBgColor('#00ff00')" class="h-8 bg-green-500 border-2 border-gray-300 rounded"></button>
+                                        <button onclick="setBgColor('#0000ff')" class="h-8 bg-blue-500 border-2 border-gray-300 rounded"></button>
+                                        <button onclick="setBgColor('#ffff00')" class="h-8 bg-yellow-500 border-2 border-gray-300 rounded"></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="space-y-3">
+                                <button onclick="clearCanvas()" class="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition">
+                                    <i class="fas fa-trash mr-2"></i>Clear All
+                                </button>
+                                <button onclick="exportDesign()" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">
+                                    <i class="fas fa-download mr-2"></i>Export Design
+                                </button>
+                                <button onclick="saveCustomization()" class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition">
+                                    <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <script>
-        // Global State
+        // Global state
         let currentUser = null;
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let products = [];
-        let orders = JSON.parse(localStorage.getItem('orders')) || [];
-        let users = JSON.parse(localStorage.getItem('users')) || [];
-
-        // Initialize sample data
-        function initializeData() {
-            if (products.length === 0) {
-                products = [
-                    {
-                        id: 1,
-                        name: "iPhone 15 Pro",
-                        description: "Latest iPhone with advanced camera system and A17 Pro chip",
-                        price: 999.99,
-                        category: "Electronics",
-                        stock: 50,
-                        image: "📱",
-                        rating: 4.8
-                    },
-                    {
-                        id: 2,
-                        name: "MacBook Pro 16\"",
-                        description: "Powerful laptop for professionals with M3 chip",
-                        price: 2499.99,
-                        category: "Electronics",
-                        stock: 25,
-                        image: "💻",
-                        rating: 4.9
-                    },
-                    {
-                        id: 3,
-                        name: "Nike Air Max",
-                        description: "Comfortable running shoes with air cushioning",
-                        price: 129.99,
-                        category: "Fashion",
-                        stock: 100,
-                        image: "👟",
-                        rating: 4.6
-                    },
-                    {
-                        id: 4,
-                        name: "Samsung 4K TV",
-                        description: "55-inch Smart TV with HDR and streaming apps",
-                        price: 799.99,
-                        category: "Electronics",
-                        stock: 30,
-                        image: "📺",
-                        rating: 4.7
-                    },
-                    {
-                        id: 5,
-                        name: "Cotton T-Shirt",
-                        description: "Premium quality cotton t-shirt in various colors",
-                        price: 24.99,
-                        category: "Fashion",
-                        stock: 200,
-                        image: "👕",
-                        rating: 4.4
-                    },
-                    {
-                        id: 6,
-                        name: "Coffee Maker",
-                        description: "Automatic drip coffee maker with programmable timer",
-                        price: 89.99,
-                        category: "Home",
-                        stock: 75,
-                        image: "☕",
-                        rating: 4.5
-                    },
-                    {
-                        id: 7,
-                        name: "Wireless Headphones",
-                        description: "Noise-cancelling Bluetooth headphones with 30h battery",
-                        price: 199.99,
-                        category: "Electronics",
-                        stock: 60,
-                        image: "🎧",
-                        rating: 4.8
-                    },
-                    {
-                        id: 8,
-                        name: "Yoga Mat",
-                        description: "Non-slip exercise mat for yoga and fitness",
-                        price: 39.99,
-                        category: "Sports",
-                        stock: 150,
-                        image: "🧘",
-                        rating: 4.3
-                    }
-                ];
-                localStorage.setItem('products', JSON.stringify(products));
-            } else {
-                products = JSON.parse(localStorage.getItem('products'));
+        let cart = [];
+        let searchDebounceTimer = null;
+        let seoKeywords = [
+            { id: 1, keyword: 'wireless headphones', priority: 95 },
+            { id: 2, keyword: 'custom t-shirt', priority: 90 },
+            { id: 3, keyword: 'smart watch', priority: 85 },
+            { id: 4, keyword: 'coffee mug', priority: 80 },
+            { id: 5, keyword: 'laptop bag', priority: 75 },
+            { id: 6, keyword: 'canvas print', priority: 70 },
+            { id: 7, keyword: 'bluetooth audio', priority: 65 },
+            { id: 8, keyword: 'personalized gifts', priority: 60 },
+            { id: 9, keyword: 'home decor', priority: 55 },
+            { id: 10, keyword: 'tech accessories', priority: 50 }
+        ];
+        let products = [
+            {
+                id: 1,
+                name: "Wireless Headphones",
+                price: 99.99,
+                category: "electronics",
+                description: "High-quality wireless headphones with noise cancellation",
+                image: "🎧",
+                stock: 50,
+                customizable: true,
+                tags: ["wireless", "bluetooth", "audio", "music", "headphones", "noise cancellation"],
+                seoKeywords: ["wireless headphones", "bluetooth audio", "tech accessories"],
+                metaTitle: "Premium Wireless Headphones - Noise Cancelling Audio",
+                metaDescription: "Shop high-quality wireless headphones with advanced noise cancellation technology. Perfect for music lovers and professionals."
+            },
+            {
+                id: 2,
+                name: "Custom T-Shirt",
+                price: 24.99,
+                category: "clothing",
+                description: "Comfortable cotton t-shirt, perfect for customization",
+                image: "👕",
+                stock: 100,
+                customizable: true,
+                tags: ["custom", "t-shirt", "clothing", "cotton", "personalized", "apparel"],
+                seoKeywords: ["custom t-shirt", "personalized gifts"],
+                metaTitle: "Custom T-Shirts - Personalized Clothing & Apparel",
+                metaDescription: "Create your own custom t-shirt with our easy design tools. High-quality cotton shirts perfect for personal or business use."
+            },
+            {
+                id: 3,
+                name: "Smart Watch",
+                price: 199.99,
+                category: "electronics",
+                description: "Feature-rich smartwatch with health tracking",
+                image: "⌚",
+                stock: 25,
+                customizable: false,
+                tags: ["smart", "watch", "fitness", "health", "tracking", "wearable"],
+                seoKeywords: ["smart watch", "tech accessories"],
+                metaTitle: "Smart Watch with Health Tracking - Fitness Wearable",
+                metaDescription: "Advanced smartwatch with comprehensive health tracking features. Monitor your fitness goals with style and precision."
+            },
+            {
+                id: 4,
+                name: "Coffee Mug",
+                price: 12.99,
+                category: "home",
+                description: "Ceramic coffee mug, great for personalization",
+                image: "☕",
+                stock: 75,
+                customizable: true,
+                tags: ["coffee", "mug", "ceramic", "custom", "personalized", "drinkware"],
+                seoKeywords: ["coffee mug", "personalized gifts", "home decor"],
+                metaTitle: "Custom Coffee Mugs - Personalized Ceramic Drinkware",
+                metaDescription: "Design your own coffee mug with our customization tools. Perfect personalized gifts for coffee lovers and special occasions."
+            },
+            {
+                id: 5,
+                name: "Laptop Bag",
+                price: 49.99,
+                category: "electronics",
+                description: "Durable laptop bag with multiple compartments",
+                image: "💼",
+                stock: 30,
+                customizable: false,
+                tags: ["laptop", "bag", "computer", "carrying", "professional", "business"],
+                seoKeywords: ["laptop bag", "tech accessories"],
+                metaTitle: "Professional Laptop Bags - Durable Computer Cases",
+                metaDescription: "High-quality laptop bags with multiple compartments. Perfect for professionals and students who need reliable computer protection."
+            },
+            {
+                id: 6,
+                name: "Canvas Print",
+                price: 34.99,
+                category: "home",
+                description: "High-quality canvas print, perfect for custom designs",
+                image: "🖼️",
+                stock: 40,
+                customizable: true,
+                tags: ["canvas", "print", "art", "custom", "wall", "decor"],
+                seoKeywords: ["canvas print", "personalized gifts", "home decor"],
+                metaTitle: "Custom Canvas Prints - Personalized Wall Art",
+                metaDescription: "Create stunning custom canvas prints for your home or office. High-quality printing on premium canvas material."
             }
+        ];
+        
+        let fabricCanvas = null;
+        let currentProduct = null;
 
-            // Check if user is logged in
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFeaturedProducts();
+            loadAllProducts();
+            updateCartUI();
+            
+            // Check for saved user
             const savedUser = localStorage.getItem('currentUser');
             if (savedUser) {
                 currentUser = JSON.parse(savedUser);
-                updateUserInterface();
+                updateAuthUI();
             }
-
-            updateCartUI();
-            loadProducts();
-        }
-
-        // Navigation
-        function showSection(sectionName) {
-            // Hide all sections
-            document.querySelectorAll('.section-content').forEach(section => {
-                section.classList.add('hidden');
+            
+            // Load saved cart
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+                updateCartUI();
+            }
+            
+            // Load saved SEO keywords
+            const savedKeywords = localStorage.getItem('seoKeywords');
+            if (savedKeywords) {
+                seoKeywords = JSON.parse(savedKeywords);
+            }
+            
+            // Initialize search suggestions on focus
+            document.getElementById('searchInput').addEventListener('focus', function() {
+                if (this.value.trim().length > 0) {
+                    performSearch(this.value.trim());
+                    showSearchSuggestions();
+                }
             });
-            
-            // Show selected section
-            document.getElementById(sectionName + 'Section').classList.remove('hidden');
-            
-            // Update navigation
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.classList.remove('text-blue-600');
-                link.classList.add('text-gray-700');
-            });
-            
-            if (sectionName === 'products') {
-                loadAllProducts();
-            } else if (sectionName === 'orders') {
-                loadOrders();
-            }
-        }
-
-        // Search functionality
-        let searchTimeout;
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            clearTimeout(searchTimeout);
-            const query = e.target.value.toLowerCase().trim();
-            
-            if (query.length === 0) {
-                document.getElementById('searchDropdown').classList.add('hidden');
-                return;
-            }
-            
-            searchTimeout = setTimeout(() => {
-                performSearch(query);
-            }, 300);
         });
 
-        function performSearch(query) {
-            const results = smartSearch(query);
-            displaySearchResults(results);
+        // Page navigation
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.add('hidden');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId + 'Page').classList.remove('hidden');
+            
+            // Special handling for certain pages
+            if (pageId === 'products') {
+                loadAllProducts();
+            } else if (pageId === 'admin' && !currentUser?.isAdmin) {
+                alert('Access denied. Admin privileges required.');
+                showPage('home');
+                return;
+            } else if (pageId === 'checkout') {
+                loadCheckoutItems();
+            }
+            
+            // Close cart if open
+            document.getElementById('cartSidebar').classList.add('translate-x-full');
         }
 
-        function smartSearch(query) {
-            // Step 1: Exact matches
-            let results = products.filter(product => 
-                product.name.toLowerCase().includes(query) ||
-                product.description.toLowerCase().includes(query) ||
-                product.category.toLowerCase().includes(query)
-            );
+        // Product functions
+        function loadFeaturedProducts() {
+            const container = document.getElementById('featuredProducts');
+            const featured = products.slice(0, 4);
+            
+            container.innerHTML = featured.map(product => createProductCard(product)).join('');
+        }
 
-            if (results.length > 0) {
-                return {
-                    results: results.slice(0, 5),
-                    type: 'exact',
-                    didYouMean: null
-                };
-            }
+        function loadAllProducts() {
+            const container = document.getElementById('productsGrid');
+            container.innerHTML = products.map(product => createProductCard(product)).join('');
+        }
 
-            // Step 2: Synonym matching
-            const synonyms = {
-                'phone': ['mobile', 'smartphone', 'cell'],
-                'laptop': ['notebook', 'computer'],
-                'shirt': ['tshirt', 't-shirt', 'top'],
-                'shoes': ['sneakers', 'footwear'],
-                'tv': ['television', 'monitor']
-            };
+        function createProductCard(product) {
+            return `
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden product-card cursor-pointer" onclick="showProductDetail(${product.id})">
+                    <div class="h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-6xl">
+                        ${product.image}
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-bold mb-2">${product.name}</h3>
+                        <p class="text-gray-600 text-sm mb-4">${product.description}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-purple-600">$${product.price}</span>
+                            <button onclick="event.stopPropagation(); addToCart(${product.id})" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
+                                Add to Cart
+                            </button>
+                        </div>
+                        ${product.customizable ? '<div class="mt-2"><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">Customizable</span></div>' : ''}
+                    </div>
+                </div>
+            `;
+        }
 
-            for (const [key, values] of Object.entries(synonyms)) {
-                if (values.includes(query) || key === query) {
-                    const searchTerms = [key, ...values];
-                    results = products.filter(product =>
-                        searchTerms.some(term =>
-                            product.name.toLowerCase().includes(term) ||
-                            product.description.toLowerCase().includes(term)
-                        )
-                    );
+        function showProductDetail(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            currentProduct = product;
+            
+            // Update SEO meta tags for this product
+            updateProductMeta(productId);
+            const container = document.getElementById('productDetail');
+            
+            container.innerHTML = `
+                <div>
+                    <div class="h-96 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center text-8xl mb-6">
+                        ${product.image}
+                    </div>
+                    ${product.customizable ? `
+                        <button onclick="openCustomizer()" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition mb-4">
+                            <i class="fas fa-paint-brush mr-2"></i>Customize This Product
+                        </button>
+                    ` : ''}
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold mb-4">${product.name}</h1>
+                    <p class="text-2xl font-bold text-purple-600 mb-6">$${product.price}</p>
+                    <p class="text-gray-600 mb-6">${product.description}</p>
                     
-                    if (results.length > 0) {
-                        return {
-                            results: results.slice(0, 5),
-                            type: 'synonym',
-                            didYouMean: null
-                        };
-                    }
+                    <div class="mb-6">
+                        <span class="text-sm text-gray-500">Category: </span>
+                        <span class="bg-gray-100 px-2 py-1 rounded-full text-sm">${product.category}</span>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <span class="text-sm text-gray-500">Stock: </span>
+                        <span class="text-green-600 font-semibold">${product.stock} available</span>
+                    </div>
+                    
+                    <div class="flex space-x-4">
+                        <button onclick="addToCart(${product.id})" class="flex-1 bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition">
+                            <i class="fas fa-cart-plus mr-2"></i>Add to Cart
+                        </button>
+                        <button onclick="buyNow(${product.id})" class="flex-1 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition">
+                            Buy Now
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            showPage('productDetail');
+        }
+
+        // Cart functions
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            
+            updateCartUI();
+            saveCart();
+            
+            // Show success message
+            showNotification('Product added to cart!', 'success');
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartUI();
+            saveCart();
+        }
+
+        function updateQuantity(productId, change) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    updateCartUI();
+                    saveCart();
                 }
             }
+        }
 
-            // Step 3: Fuzzy matching (simple typo correction)
-            const fuzzyResults = [];
-            let bestMatch = null;
-            let bestDistance = Infinity;
+        function updateCartUI() {
+            const cartCount = document.getElementById('cartCount');
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            cartCount.textContent = totalItems;
+            cartTotal.textContent = totalPrice.toFixed(2);
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p class="text-gray-500 text-center">Your cart is empty</p>';
+            } else {
+                cartItems.innerHTML = cart.map(item => `
+                    <div class="flex items-center space-x-4 p-4 border-b">
+                        <div class="text-2xl">${item.image}</div>
+                        <div class="flex-1">
+                            <h4 class="font-semibold">${item.name}</h4>
+                            <p class="text-gray-600">$${item.price}</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="updateQuantity(${item.id}, -1)" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300">-</button>
+                            <span class="w-8 text-center">${item.quantity}</span>
+                            <button onclick="updateQuantity(${item.id}, 1)" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300">+</button>
+                        </div>
+                        <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-700">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+        }
 
+        function toggleCart() {
+            const sidebar = document.getElementById('cartSidebar');
+            sidebar.classList.toggle('translate-x-full');
+        }
+
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function buyNow(productId) {
+            addToCart(productId);
+            showPage('checkout');
+        }
+
+        // Advanced Search System
+        function handleSearch(event) {
+            const query = event.target.value.trim();
+            
+            // Clear previous debounce timer
+            if (searchDebounceTimer) {
+                clearTimeout(searchDebounceTimer);
+            }
+            
+            // Debounce search for 300ms
+            searchDebounceTimer = setTimeout(() => {
+                if (query.length > 0) {
+                    performSearch(query);
+                    showSearchSuggestions();
+                } else {
+                    hideSearchSuggestions();
+                }
+            }, 300);
+            
+            // Handle Enter key
+            if (event.key === 'Enter' && query.length > 0) {
+                clearTimeout(searchDebounceTimer);
+                performSearch(query);
+                showSearchResults(query);
+                hideSearchSuggestions();
+            }
+        }
+
+        function performSearch(query) {
+            // Simulate API call to /api/search with fuzzy matching
+            const searchResults = fuzzySearch(query);
+            displaySearchSuggestions(searchResults, query);
+        }
+
+        function fuzzySearch(query) {
+            const queryLower = query.toLowerCase();
+            const results = [];
+            
             products.forEach(product => {
-                const nameDistance = levenshteinDistance(query, product.name.toLowerCase());
-                const descDistance = levenshteinDistance(query, product.description.toLowerCase());
-                const minDistance = Math.min(nameDistance, descDistance);
-
-                if (minDistance <= 2) {
-                    fuzzyResults.push(product);
-                    if (minDistance < bestDistance) {
-                        bestDistance = minDistance;
-                        bestMatch = product.name;
-                    }
+                let score = 0;
+                
+                // Exact name match (highest priority)
+                if (product.name.toLowerCase().includes(queryLower)) {
+                    score += 100;
+                }
+                
+                // Description match
+                if (product.description.toLowerCase().includes(queryLower)) {
+                    score += 50;
+                }
+                
+                // Category match
+                if (product.category.toLowerCase().includes(queryLower)) {
+                    score += 30;
+                }
+                
+                // Tags match
+                if (product.tags && product.tags.some(tag => tag.toLowerCase().includes(queryLower))) {
+                    score += 40;
+                }
+                
+                // SEO keywords match
+                if (product.seoKeywords && product.seoKeywords.some(keyword => keyword.toLowerCase().includes(queryLower))) {
+                    score += 60;
+                }
+                
+                // Fuzzy matching for typos (simple implementation)
+                const fuzzyMatches = [
+                    product.name.toLowerCase(),
+                    product.description.toLowerCase(),
+                    ...product.tags.map(tag => tag.toLowerCase())
+                ].some(text => calculateLevenshteinDistance(text, queryLower) <= 2);
+                
+                if (fuzzyMatches) {
+                    score += 20;
+                }
+                
+                if (score > 0) {
+                    results.push({ ...product, searchScore: score });
                 }
             });
-
-            if (fuzzyResults.length > 0) {
-                return {
-                    results: fuzzyResults.slice(0, 5),
-                    type: 'fuzzy',
-                    didYouMean: bestMatch
-                };
-            }
-
-            // Step 4: Fallback - trending products
-            return {
-                results: products.slice(0, 5),
-                type: 'fallback',
-                didYouMean: null
-            };
+            
+            // Sort by relevance score
+            return results.sort((a, b) => b.searchScore - a.searchScore);
         }
 
-        function levenshteinDistance(str1, str2) {
+        function calculateLevenshteinDistance(str1, str2) {
             const matrix = [];
             
             for (let i = 0; i <= str2.length; i++) {
@@ -745,577 +1226,966 @@
             return matrix[str2.length][str1.length];
         }
 
-        function displaySearchResults(searchResult) {
-            const dropdown = document.getElementById('searchDropdown');
-            const resultsContainer = document.getElementById('searchResults');
+        function displaySearchSuggestions(results, query) {
+            const searchResults = document.getElementById('searchResults');
             
-            let html = '';
+            if (results.length === 0) {
+                searchResults.innerHTML = `
+                    <div class="p-2 text-gray-500 text-sm">
+                        No results found for "${query}"
+                    </div>
+                `;
+                return;
+            }
             
-            // Search type indicator
-            const typeLabels = {
-                'exact': 'Exact matches',
-                'synonym': 'Related products',
-                'fuzzy': 'Similar products',
-                'fallback': 'Popular products'
-            };
-            
-            html += `
-                <div class="px-4 py-2 bg-gray-50 border-b border-gray-100 flex items-center justify-between">
-                    <span class="text-sm font-medium text-gray-700">${typeLabels[searchResult.type]}</span>
-                    <span class="text-xs text-gray-500">${searchResult.results.length} results</span>
+            const topResults = results.slice(0, 5);
+            searchResults.innerHTML = topResults.map(product => `
+                <div class="flex items-center p-2 hover:bg-gray-100 cursor-pointer rounded" onclick="selectSearchResult(${product.id})">
+                    <span class="text-2xl mr-3">${product.image}</span>
+                    <div class="flex-1">
+                        <div class="font-medium text-sm">${highlightMatch(product.name, query)}</div>
+                        <div class="text-xs text-gray-500">${product.category} • $${product.price}</div>
+                    </div>
+                    <div class="text-xs text-purple-600 font-medium">Score: ${product.searchScore}</div>
                 </div>
-            `;
-            
-            // Did you mean suggestion
-            if (searchResult.didYouMean) {
-                html += `
-                    <div class="px-4 py-2 bg-blue-50 border-b border-blue-100">
-                        <p class="text-sm text-blue-800">
-                            Did you mean: <button onclick="searchFor('${searchResult.didYouMean}')" class="font-medium underline">${searchResult.didYouMean}</button>?
-                        </p>
-                    </div>
-                `;
-            }
-            
-            // Results
-            searchResult.results.forEach(product => {
-                html += `
-                    <div onclick="viewProduct(${product.id})" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0">
-                        <div class="flex items-center">
-                            <div class="text-2xl mr-3">${product.image}</div>
-                            <div class="flex-1">
-                                <div class="font-medium text-gray-900">${product.name}</div>
-                                <div class="text-sm text-gray-500">$${product.price} • ${product.category}</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            resultsContainer.innerHTML = html;
-            dropdown.classList.remove('hidden');
+            `).join('');
         }
 
-        function searchFor(term) {
-            document.getElementById('searchInput').value = term;
-            performSearch(term.toLowerCase());
+        function highlightMatch(text, query) {
+            const regex = new RegExp(`(${query})`, 'gi');
+            return text.replace(regex, '<mark class="bg-yellow-200">$1</mark>');
         }
 
-        // Product functions
-        function loadProducts() {
-            const container = document.getElementById('featuredProducts');
-            const featuredProducts = products.slice(0, 4);
-            
-            container.innerHTML = featuredProducts.map(product => createProductCard(product)).join('');
+        function selectSearchResult(productId) {
+            hideSearchSuggestions();
+            showProductDetail(productId);
+            document.getElementById('searchInput').value = '';
         }
 
-        function loadAllProducts() {
-            const container = document.getElementById('allProducts');
-            let filteredProducts = [...products];
+        function showSearchResults(query) {
+            const results = fuzzySearch(query);
+            const container = document.getElementById('productsGrid');
+            container.innerHTML = results.map(product => createProductCard(product)).join('');
+            showPage('products');
+        }
+
+        function showSearchSuggestions() {
+            document.getElementById('searchSuggestions').classList.remove('hidden');
+        }
+
+        function hideSearchSuggestions() {
+            // Delay hiding to allow clicks on suggestions
+            setTimeout(() => {
+                document.getElementById('searchSuggestions').classList.add('hidden');
+            }, 200);
+        }
+
+        function searchByCategory(category) {
+            document.getElementById('searchInput').value = category;
+            filterByCategory(category);
+            hideSearchSuggestions();
+        }
+
+        function sortProducts() {
+            const sortBy = document.getElementById('sortSelect').value;
+            let sorted = [...products];
             
-            // Apply filters
-            const categoryFilter = document.getElementById('categoryFilter').value;
-            const sortFilter = document.getElementById('sortFilter').value;
-            
-            if (categoryFilter) {
-                filteredProducts = filteredProducts.filter(p => p.category === categoryFilter);
-            }
-            
-            // Apply sorting
-            switch (sortFilter) {
+            switch(sortBy) {
+                case 'name':
+                    sorted.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
                 case 'price-low':
-                    filteredProducts.sort((a, b) => a.price - b.price);
+                    sorted.sort((a, b) => a.price - b.price);
                     break;
                 case 'price-high':
-                    filteredProducts.sort((a, b) => b.price - a.price);
+                    sorted.sort((a, b) => b.price - a.price);
                     break;
-                case 'newest':
-                    filteredProducts.sort((a, b) => b.id - a.id);
-                    break;
-                default:
-                    filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
             }
             
-            container.innerHTML = filteredProducts.map(product => createProductCard(product)).join('');
+            const container = document.getElementById('productsGrid');
+            container.innerHTML = sorted.map(product => createProductCard(product)).join('');
         }
 
-        function createProductCard(product) {
-            return `
-                <div class="bg-white rounded-lg shadow-md card-hover overflow-hidden">
-                    <div class="aspect-square bg-gray-100 flex items-center justify-center text-6xl">
-                        ${product.image}
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-semibold text-gray-900 mb-2">${product.name}</h3>
-                        <p class="text-sm text-gray-600 mb-3 line-clamp-2">${product.description}</p>
-                        <div class="flex items-center mb-3">
-                            <div class="flex items-center">
-                                ${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5 - Math.floor(product.rating))}
-                            </div>
-                            <span class="text-sm text-gray-500 ml-2">(${product.rating})</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <span class="text-2xl font-bold text-gray-900">$${product.price}</span>
-                                <div class="text-sm text-gray-500">${product.stock} in stock</div>
-                            </div>
-                            <button onclick="addToCart(${product.id})" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
-                                <i class="fas fa-cart-plus"></i>
-                            </button>
-                        </div>
-                        <div class="mt-3">
-                            <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs">${product.category}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function filterByCategory(category) {
-            showSection('products');
-            document.getElementById('categoryFilter').value = category;
-            loadAllProducts();
-        }
-
-        function viewProduct(productId) {
-            document.getElementById('searchDropdown').classList.add('hidden');
-            // In a real app, this would navigate to product detail page
-            showNotification(`Viewing product ${productId}`, 'success');
-        }
-
-        // Cart functions
-        function addToCart(productId) {
-            const product = products.find(p => p.id === productId);
-            if (!product) return;
+        function filterByCategory(category = '') {
+            const filtered = category ? products.filter(p => p.category === category) : products;
+            const container = document.getElementById('productsGrid');
+            container.innerHTML = filtered.map(product => createProductCard(product)).join('');
             
-            const existingItem = cart.find(item => item.id === productId);
+            if (category) {
+                document.getElementById('categoryFilter').value = category;
+                showPage('products');
+            }
+        }
+
+        // Auth functions
+        function switchAuthTab(tab) {
+            const loginTab = document.getElementById('loginTab');
+            const signupTab = document.getElementById('signupTab');
+            const signupFields = document.getElementById('signupFields');
+            const submitText = document.getElementById('authSubmitText');
             
-            if (existingItem) {
-                existingItem.quantity += 1;
+            if (tab === 'login') {
+                loginTab.classList.add('border-b-2', 'border-purple-600', 'text-purple-600', 'font-semibold');
+                loginTab.classList.remove('text-gray-500');
+                signupTab.classList.remove('border-b-2', 'border-purple-600', 'text-purple-600', 'font-semibold');
+                signupTab.classList.add('text-gray-500');
+                signupFields.classList.add('hidden');
+                submitText.textContent = 'Sign In';
             } else {
-                cart.push({
-                    ...product,
-                    quantity: 1
-                });
-            }
-            
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartUI();
-            showNotification(`${product.name} added to cart!`, 'success');
-        }
-
-        function removeFromCart(productId) {
-            cart = cart.filter(item => item.id !== productId);
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartUI();
-        }
-
-        function updateQuantity(productId, change) {
-            const item = cart.find(item => item.id === productId);
-            if (item) {
-                item.quantity += change;
-                if (item.quantity <= 0) {
-                    removeFromCart(productId);
-                } else {
-                    localStorage.setItem('cart', JSON.stringify(cart));
-                    updateCartUI();
-                }
+                signupTab.classList.add('border-b-2', 'border-purple-600', 'text-purple-600', 'font-semibold');
+                signupTab.classList.remove('text-gray-500');
+                loginTab.classList.remove('border-b-2', 'border-purple-600', 'text-purple-600', 'font-semibold');
+                loginTab.classList.add('text-gray-500');
+                signupFields.classList.remove('hidden');
+                submitText.textContent = 'Sign Up';
             }
         }
 
-        function updateCartUI() {
-            const cartCount = document.getElementById('cartCount');
-            const cartItems = document.getElementById('cartItems');
-            const cartTotal = document.getElementById('cartTotal');
+        document.getElementById('authForm').addEventListener('submit', function(e) {
+            e.preventDefault();
             
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const isSignup = !document.getElementById('signupFields').classList.contains('hidden');
             
-            cartCount.textContent = totalItems;
-            cartTotal.textContent = `$${totalPrice.toFixed(2)}`;
-            
-            if (cart.length === 0) {
-                cartItems.innerHTML = `
-                    <div class="text-center py-12 text-gray-500">
-                        <i class="fas fa-shopping-cart text-4xl mb-4"></i>
-                        <p>Your cart is empty</p>
-                    </div>
-                `;
-            } else {
-                cartItems.innerHTML = cart.map(item => `
-                    <div class="flex items-center py-4 border-b border-gray-200">
-                        <div class="text-3xl mr-4">${item.image}</div>
-                        <div class="flex-1">
-                            <h4 class="font-medium">${item.name}</h4>
-                            <p class="text-sm text-gray-500">$${item.price}</p>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <button onclick="updateQuantity(${item.id}, -1)" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">-</button>
-                            <span class="w-8 text-center">${item.quantity}</span>
-                            <button onclick="updateQuantity(${item.id}, 1)" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">+</button>
-                        </div>
-                        <button onclick="removeFromCart(${item.id})" class="ml-4 text-red-500 hover:text-red-700">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `).join('');
-            }
-        }
-
-        function toggleCart() {
-            const sidebar = document.getElementById('cartSidebar');
-            const overlay = document.getElementById('cartOverlay');
-            
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('show');
-        }
-
-        function checkout() {
-            if (!currentUser) {
-                showNotification('Please login to checkout', 'error');
-                showLogin();
-                return;
-            }
-            
-            if (cart.length === 0) {
-                showNotification('Your cart is empty', 'error');
-                return;
-            }
-            
-            // Create order
-            const order = {
-                id: Date.now(),
-                userId: currentUser.id,
-                items: [...cart],
-                total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
-                status: 'pending',
-                date: new Date().toISOString()
-            };
-            
-            orders.push(order);
-            localStorage.setItem('orders', JSON.stringify(orders));
-            
-            // Clear cart
-            cart = [];
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartUI();
-            
-            toggleCart();
-            showNotification('Order placed successfully!', 'success');
-        }
-
-        // User functions
-        function toggleUserMenu() {
-            const menu = document.getElementById('userMenu');
-            menu.classList.toggle('hidden');
-        }
-
-        function showLogin() {
-            document.getElementById('loginModal').classList.add('show');
-        }
-
-        function showRegister() {
-            document.getElementById('registerModal').classList.add('show');
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('show');
-        }
-
-        function login(event) {
-            event.preventDefault();
-            
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            // Demo login - in real app, this would be API call
-            if (email === 'admin@shopcraft.com' && password === 'admin123') {
+            if (isSignup) {
+                const firstName = document.getElementById('firstName').value;
+                const lastName = document.getElementById('lastName').value;
+                
+                // Demo signup
                 currentUser = {
-                    id: 1,
-                    name: 'Admin User',
-                    email: email,
-                    role: 'admin'
+                    id: Date.now(),
+                    email,
+                    firstName,
+                    lastName,
+                    isAdmin: email === 'admin@demo.com'
                 };
+                
+                showNotification('Account created successfully!', 'success');
             } else {
-                // Find user or create demo user
-                let user = users.find(u => u.email === email);
-                if (!user) {
-                    user = {
-                        id: Date.now(),
-                        name: email.split('@')[0],
-                        email: email,
-                        role: 'customer'
+                // Demo login
+                if (email === 'admin@demo.com' && password === 'password123') {
+                    currentUser = {
+                        id: 1,
+                        email,
+                        firstName: 'Admin',
+                        lastName: 'User',
+                        isAdmin: true
                     };
-                    users.push(user);
-                    localStorage.setItem('users', JSON.stringify(users));
+                } else {
+                    currentUser = {
+                        id: 2,
+                        email,
+                        firstName: 'Demo',
+                        lastName: 'User',
+                        isAdmin: false
+                    };
                 }
-                currentUser = user;
+                
+                showNotification('Logged in successfully!', 'success');
             }
             
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
-            updateUserInterface();
-            closeModal('loginModal');
-            showNotification('Login successful!', 'success');
-        }
+            updateAuthUI();
+            showPage('home');
+        });
 
-        function register(event) {
-            event.preventDefault();
+        function updateAuthUI() {
+            const authBtn = document.getElementById('authBtn');
+            const adminBtn = document.getElementById('adminBtn');
             
-            const name = document.getElementById('registerName').value;
-            const email = document.getElementById('registerEmail').value;
-            const password = document.getElementById('registerPassword').value;
-            
-            // Check if user already exists
-            if (users.find(u => u.email === email)) {
-                showNotification('User already exists!', 'error');
-                return;
+            if (currentUser) {
+                authBtn.textContent = 'Logout';
+                authBtn.onclick = logout;
+                
+                if (currentUser.isAdmin) {
+                    adminBtn.classList.remove('hidden');
+                }
+            } else {
+                authBtn.textContent = 'Login';
+                authBtn.onclick = () => showPage('auth');
+                adminBtn.classList.add('hidden');
             }
-            
-            const user = {
-                id: Date.now(),
-                name: name,
-                email: email,
-                role: 'customer'
-            };
-            
-            users.push(user);
-            localStorage.setItem('users', JSON.stringify(users));
-            
-            currentUser = user;
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-            
-            updateUserInterface();
-            closeModal('registerModal');
-            showNotification('Registration successful!', 'success');
         }
 
         function logout() {
             currentUser = null;
             localStorage.removeItem('currentUser');
-            updateUserInterface();
+            updateAuthUI();
             showNotification('Logged out successfully!', 'success');
+            showPage('home');
         }
 
-        function updateUserInterface() {
-            const userName = document.getElementById('userName');
-            const loginBtn = document.getElementById('loginBtn');
-            const registerBtn = document.getElementById('registerBtn');
-            const adminBtn = document.getElementById('adminBtn');
-            const logoutBtn = document.getElementById('logoutBtn');
+        // Checkout functions
+        function loadCheckoutItems() {
+            const container = document.getElementById('checkoutItems');
+            const subtotalEl = document.getElementById('checkoutSubtotal');
+            const taxEl = document.getElementById('checkoutTax');
+            const totalEl = document.getElementById('checkoutTotal');
             
-            if (currentUser) {
-                userName.textContent = currentUser.name;
-                loginBtn.classList.add('hidden');
-                registerBtn.classList.add('hidden');
-                logoutBtn.classList.remove('hidden');
-                
-                if (currentUser.role === 'admin') {
-                    adminBtn.classList.remove('hidden');
-                }
-            } else {
-                userName.textContent = 'Guest';
-                loginBtn.classList.remove('hidden');
-                registerBtn.classList.remove('hidden');
-                adminBtn.classList.add('hidden');
-                logoutBtn.classList.add('hidden');
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.08; // 8% tax
+            const shipping = 9.99;
+            const total = subtotal + tax + shipping;
+            
+            container.innerHTML = cart.map(item => `
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-xl">${item.image}</span>
+                        <div>
+                            <p class="font-semibold">${item.name}</p>
+                            <p class="text-sm text-gray-600">Qty: ${item.quantity}</p>
+                        </div>
+                    </div>
+                    <span>$${(item.price * item.quantity).toFixed(2)}</span>
+                </div>
+            `).join('');
+            
+            subtotalEl.textContent = subtotal.toFixed(2);
+            taxEl.textContent = tax.toFixed(2);
+            totalEl.textContent = total.toFixed(2);
+        }
+
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Demo order processing
+            const orderId = 'ORD-' + Date.now();
+            
+            showNotification(`Order ${orderId} placed successfully! (Demo)`, 'success');
+            
+            // Clear cart
+            cart = [];
+            updateCartUI();
+            saveCart();
+            
+            // Redirect to home
+            setTimeout(() => {
+                showPage('home');
+            }, 2000);
+        });
+
+        // SEO Management Functions
+        function loadSEOKeywords() {
+            const container = document.getElementById('seoKeywordsList');
+            container.innerHTML = seoKeywords.map(keyword => `
+                <tr>
+                    <td class="px-3 py-2">${keyword.keyword}</td>
+                    <td class="px-3 py-2">
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                            keyword.priority >= 80 ? 'bg-green-100 text-green-800' :
+                            keyword.priority >= 60 ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-red-100 text-red-800'
+                        }">
+                            ${keyword.priority}
+                        </span>
+                    </td>
+                    <td class="px-3 py-2">
+                        <button onclick="removeSEOKeyword(${keyword.id})" class="text-red-600 hover:text-red-800 text-xs">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+            
+            // Update stats
+            document.getElementById('totalKeywords').textContent = seoKeywords.length;
+            const avgPriority = seoKeywords.reduce((sum, k) => sum + k.priority, 0) / seoKeywords.length;
+            document.getElementById('avgPriority').textContent = avgPriority.toFixed(1);
+        }
+
+        function addSEOKeyword() {
+            const keyword = document.getElementById('newKeyword').value.trim();
+            const priority = parseInt(document.getElementById('keywordPriority').value) || 50;
+            
+            if (!keyword) {
+                showNotification('Please enter a keyword', 'error');
+                return;
             }
+            
+            // Check for duplicates
+            if (seoKeywords.some(k => k.keyword.toLowerCase() === keyword.toLowerCase())) {
+                showNotification('Keyword already exists', 'error');
+                return;
+            }
+            
+            const newKeyword = {
+                id: Date.now(),
+                keyword: keyword,
+                priority: Math.max(1, Math.min(100, priority))
+            };
+            
+            seoKeywords.push(newKeyword);
+            seoKeywords.sort((a, b) => b.priority - a.priority);
+            
+            document.getElementById('newKeyword').value = '';
+            document.getElementById('keywordPriority').value = '';
+            
+            loadSEOKeywords();
+            showNotification('SEO keyword added successfully!', 'success');
+        }
+
+        function removeSEOKeyword(keywordId) {
+            seoKeywords = seoKeywords.filter(k => k.id !== keywordId);
+            loadSEOKeywords();
+            showNotification('SEO keyword removed', 'success');
+        }
+
+        function runSEOCronJob() {
+            showNotification('Running SEO optimization...', 'info');
+            
+            // Simulate cron job that picks top keywords and assigns to products
+            setTimeout(() => {
+                const topKeywords = seoKeywords
+                    .filter(k => k.priority >= 70)
+                    .slice(0, 5)
+                    .map(k => k.keyword);
+                
+                // Update homepage meta with top keywords
+                const homepageKeywords = topKeywords.join(', ');
+                document.getElementById('homepageKeywords').value = homepageKeywords;
+                document.getElementById('pageKeywords').content = homepageKeywords;
+                
+                // Update products with relevant SEO keywords
+                products.forEach(product => {
+                    const relevantKeywords = topKeywords.filter(keyword => 
+                        product.name.toLowerCase().includes(keyword.toLowerCase()) ||
+                        product.description.toLowerCase().includes(keyword.toLowerCase()) ||
+                        product.tags.some(tag => keyword.toLowerCase().includes(tag.toLowerCase()))
+                    );
+                    
+                    if (relevantKeywords.length > 0) {
+                        product.seoKeywords = [...new Set([...product.seoKeywords, ...relevantKeywords])];
+                    }
+                });
+                
+                // Update last update time
+                document.getElementById('lastSeoUpdate').textContent = 'Just now';
+                
+                showNotification('SEO optimization completed! Keywords assigned to products and homepage.', 'success');
+            }, 2000);
+        }
+
+        function updateHomepageMeta() {
+            const title = document.getElementById('homepageTitle').value;
+            const description = document.getElementById('homepageDescription').value;
+            const keywords = document.getElementById('homepageKeywords').value;
+            
+            // Update actual meta tags
+            document.getElementById('pageTitle').textContent = title;
+            document.getElementById('pageDescription').content = description;
+            document.getElementById('pageKeywords').content = keywords;
+            document.getElementById('ogTitle').content = title;
+            document.getElementById('ogDescription').content = description;
+            document.getElementById('twitterTitle').content = title;
+            document.getElementById('twitterDescription').content = description;
+            
+            showNotification('Homepage meta data updated successfully!', 'success');
+        }
+
+        function updateSchemaMarkup() {
+            const title = document.getElementById('homepageTitle').value;
+            const description = document.getElementById('homepageDescription').value;
+            const keywords = document.getElementById('homepageKeywords').value;
+            
+            const schema = {
+                "@context": "https://schema.org/",
+                "@type": "WebSite",
+                "name": title.split(' - ')[0],
+                "url": "https://shopcraft.com",
+                "description": description,
+                "potentialAction": {
+                    "@type": "SearchAction",
+                    "target": "https://shopcraft.com/search?q={search_term_string}",
+                    "query-input": "required name=search_term_string"
+                },
+                "keywords": keywords
+            };
+            
+            document.getElementById('schemaMarkup').textContent = JSON.stringify(schema, null, 2);
+            showNotification('Schema markup updated successfully!', 'success');
+        }
+
+        function updateProductMeta(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            // Update page meta for product detail view
+            document.getElementById('pageTitle').textContent = product.metaTitle;
+            document.getElementById('pageDescription').content = product.metaDescription;
+            document.getElementById('pageKeywords').content = product.seoKeywords.join(', ');
+            document.getElementById('ogTitle').content = product.metaTitle;
+            document.getElementById('ogDescription').content = product.metaDescription;
+            document.getElementById('twitterTitle').content = product.metaTitle;
+            document.getElementById('twitterDescription').content = product.metaDescription;
         }
 
         // Admin functions
-        function showAdmin() {
-            if (!currentUser || currentUser.role !== 'admin') {
-                showNotification('Admin access required', 'error');
+        function showAdminSection(section) {
+            // Hide all admin sections
+            document.querySelectorAll('.admin-section').forEach(sec => {
+                sec.classList.add('hidden');
+            });
+            
+            // Show selected section
+            document.getElementById('admin' + section.charAt(0).toUpperCase() + section.slice(1)).classList.remove('hidden');
+            
+            // Update nav
+            document.querySelectorAll('.admin-nav-item').forEach(item => {
+                item.classList.remove('bg-white', 'bg-opacity-10');
+            });
+            event.target.classList.add('bg-white', 'bg-opacity-10');
+            
+            // Load section-specific data
+            if (section === 'products') {
+                loadAdminProducts();
+            } else if (section === 'seo') {
+                loadSEOKeywords();
+            }
+        }
+
+        function loadAdminProducts() {
+            const container = document.getElementById('adminProductsList');
+            container.innerHTML = products.map(product => `
+                <tr>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">${product.image}</span>
+                            <span class="font-medium">${product.name}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">${product.category}</td>
+                    <td class="px-6 py-4">$${product.price}</td>
+                    <td class="px-6 py-4">${product.stock}</td>
+                    <td class="px-6 py-4">
+                        <button class="text-blue-600 hover:text-blue-800 mr-3">Edit</button>
+                        <button class="text-red-600 hover:text-red-800">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function showAddProductModal() {
+            showNotification('Add Product modal would open here (Demo)', 'info');
+        }
+
+        function handleCSVUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                showNotification(`CSV file "${file.name}" uploaded successfully! (Demo)`, 'success');
+            }
+        }
+
+        // Customizer functions
+        let selectedObject = null;
+        let currentZoom = 1;
+        let productTemplates = {
+            tshirt: { width: 300, height: 350, x: 150, y: 125 },
+            mug: { width: 200, height: 250, x: 200, y: 175 },
+            frame: { width: 400, height: 300, x: 100, y: 150 },
+            canvas: { width: 500, height: 400, x: 50, y: 100 }
+        };
+
+        function openCustomizer() {
+            document.getElementById('customizerModal').classList.remove('hidden');
+            
+            // Initialize Fabric.js canvas
+            if (!fabricCanvas) {
+                fabricCanvas = new fabric.Canvas('fabricCanvas', {
+                    width: 600,
+                    height: 600
+                });
+                
+                // Set up event listeners
+                fabricCanvas.on('selection:created', updateSelectedObject);
+                fabricCanvas.on('selection:updated', updateSelectedObject);
+                fabricCanvas.on('selection:cleared', clearSelectedObject);
+                fabricCanvas.on('object:modified', updateLayersList);
+                fabricCanvas.on('object:added', updateLayersList);
+                fabricCanvas.on('object:removed', updateLayersList);
+                
+                // Initialize with default template
+                changeProductTemplate();
+            }
+            
+            updateLayersList();
+        }
+
+        function closeCustomizer() {
+            document.getElementById('customizerModal').classList.add('hidden');
+        }
+
+        function changeProductTemplate() {
+            const template = document.getElementById('productTemplate').value;
+            const templateData = productTemplates[template];
+            
+            if (fabricCanvas) {
+                // Clear existing template
+                fabricCanvas.setBackgroundColor('#f0f0f0', fabricCanvas.renderAll.bind(fabricCanvas));
+                
+                // Add product template outline
+                const rect = new fabric.Rect({
+                    left: templateData.x,
+                    top: templateData.y,
+                    width: templateData.width,
+                    height: templateData.height,
+                    fill: 'transparent',
+                    stroke: '#ddd',
+                    strokeWidth: 2,
+                    strokeDashArray: [5, 5],
+                    selectable: false,
+                    evented: false,
+                    excludeFromExport: true
+                });
+                
+                fabricCanvas.add(rect);
+                fabricCanvas.sendToBack(rect);
+                
+                // Add template-specific elements
+                addTemplateElements(template, templateData);
+            }
+        }
+
+        function addTemplateElements(template, templateData) {
+            switch(template) {
+                case 'tshirt':
+                    // Add t-shirt outline
+                    const tshirtPath = new fabric.Path('M150,125 L200,125 L200,100 L250,100 L250,125 L450,125 L450,200 L430,200 L430,475 L170,475 L170,200 L150,200 Z', {
+                        fill: 'rgba(255,255,255,0.8)',
+                        stroke: '#ccc',
+                        strokeWidth: 1,
+                        selectable: false,
+                        evented: false,
+                        excludeFromExport: true
+                    });
+                    fabricCanvas.add(tshirtPath);
+                    fabricCanvas.sendToBack(tshirtPath);
+                    break;
+                    
+                case 'mug':
+                    // Add mug outline
+                    const mugBody = new fabric.Ellipse({
+                        left: 200,
+                        top: 175,
+                        rx: 100,
+                        ry: 125,
+                        fill: 'rgba(255,255,255,0.8)',
+                        stroke: '#ccc',
+                        strokeWidth: 1,
+                        selectable: false,
+                        evented: false,
+                        excludeFromExport: true
+                    });
+                    
+                    const mugHandle = new fabric.Path('M320,250 Q350,250 350,280 Q350,310 320,310', {
+                        fill: 'transparent',
+                        stroke: '#ccc',
+                        strokeWidth: 2,
+                        selectable: false,
+                        evented: false,
+                        excludeFromExport: true
+                    });
+                    
+                    fabricCanvas.add(mugBody, mugHandle);
+                    fabricCanvas.sendToBack(mugBody);
+                    fabricCanvas.sendToBack(mugHandle);
+                    break;
+                    
+                case 'frame':
+                    // Add frame outline
+                    const frameOuter = new fabric.Rect({
+                        left: 100,
+                        top: 150,
+                        width: 400,
+                        height: 300,
+                        fill: 'rgba(139,69,19,0.3)',
+                        stroke: '#8B4513',
+                        strokeWidth: 3,
+                        selectable: false,
+                        evented: false,
+                        excludeFromExport: true
+                    });
+                    
+                    const frameInner = new fabric.Rect({
+                        left: 120,
+                        top: 170,
+                        width: 360,
+                        height: 260,
+                        fill: 'rgba(255,255,255,0.9)',
+                        stroke: '#ddd',
+                        strokeWidth: 1,
+                        selectable: false,
+                        evented: false,
+                        excludeFromExport: true
+                    });
+                    
+                    fabricCanvas.add(frameOuter, frameInner);
+                    fabricCanvas.sendToBack(frameOuter);
+                    fabricCanvas.sendToBack(frameInner);
+                    break;
+                    
+                case 'canvas':
+                    // Add canvas outline
+                    const canvasRect = new fabric.Rect({
+                        left: 50,
+                        top: 100,
+                        width: 500,
+                        height: 400,
+                        fill: 'rgba(255,255,255,0.9)',
+                        stroke: '#ddd',
+                        strokeWidth: 2,
+                        selectable: false,
+                        evented: false,
+                        excludeFromExport: true
+                    });
+                    fabricCanvas.add(canvasRect);
+                    fabricCanvas.sendToBack(canvasRect);
+                    break;
+            }
+        }
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Check file size (5MB limit)
+            if (file.size > 5 * 1024 * 1024) {
+                showNotification('Image too large. Please choose a file under 5MB.', 'error');
                 return;
             }
             
-            showSection('admin');
-            loadAdminData();
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                fabric.Image.fromURL(e.target.result, function(img) {
+                    // Scale image to fit within canvas
+                    const maxWidth = 300;
+                    const maxHeight = 300;
+                    
+                    if (img.width > maxWidth || img.height > maxHeight) {
+                        const scale = Math.min(maxWidth / img.width, maxHeight / img.height);
+                        img.scale(scale);
+                    }
+                    
+                    img.set({
+                        left: 150,
+                        top: 150,
+                        cornerStyle: 'circle',
+                        cornerColor: '#4F46E5',
+                        cornerSize: 8,
+                        transparentCorners: false
+                    });
+                    
+                    fabricCanvas.add(img);
+                    fabricCanvas.setActiveObject(img);
+                    
+                    // Show image controls
+                    document.getElementById('imageControls').classList.remove('hidden');
+                    
+                    showNotification('Image uploaded successfully!', 'success');
+                });
+            };
+            reader.readAsDataURL(file);
         }
 
-        function loadAdminData() {
-            // Update stats
-            document.getElementById('totalProducts').textContent = products.length;
-            document.getElementById('totalOrders').textContent = orders.length;
-            document.getElementById('totalUsers').textContent = users.length;
+        function updateImageOpacity() {
+            const opacity = document.getElementById('imageOpacity').value / 100;
+            const activeObject = fabricCanvas.getActiveObject();
             
-            const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
-            document.getElementById('totalRevenue').textContent = `$${totalRevenue.toFixed(2)}`;
+            if (activeObject && activeObject.type === 'image') {
+                activeObject.set('opacity', opacity);
+                fabricCanvas.renderAll();
+            }
+        }
+
+        function removeSelectedImage() {
+            const activeObject = fabricCanvas.getActiveObject();
+            if (activeObject && activeObject.type === 'image') {
+                fabricCanvas.remove(activeObject);
+                document.getElementById('imageControls').classList.add('hidden');
+                showNotification('Image removed', 'success');
+            }
+        }
+
+        function addCustomText() {
+            const text = document.getElementById('customText').value;
+            if (!text.trim()) {
+                showNotification('Please enter some text', 'error');
+                return;
+            }
             
-            // Load admin products
-            const container = document.getElementById('adminProducts');
-            container.innerHTML = products.map(product => `
-                <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                    <div class="flex items-center">
-                        <div class="text-2xl mr-4">${product.image}</div>
-                        <div>
-                            <h4 class="font-medium">${product.name}</h4>
-                            <p class="text-sm text-gray-500">$${product.price} • Stock: ${product.stock}</p>
-                        </div>
-                    </div>
-                    <div class="flex space-x-2">
-                        <button onclick="editProduct(${product.id})" class="text-blue-600 hover:text-blue-800">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button onclick="deleteProduct(${product.id})" class="text-red-600 hover:text-red-800">
+            const fontFamily = document.getElementById('fontFamily').value;
+            const fontSize = parseInt(document.getElementById('fontSize').value);
+            const color = document.getElementById('textColor').value;
+            
+            const textObj = new fabric.Text(text, {
+                left: 200,
+                top: 200,
+                fontFamily: fontFamily,
+                fontSize: fontSize,
+                fill: color,
+                cornerStyle: 'circle',
+                cornerColor: '#4F46E5',
+                cornerSize: 8,
+                transparentCorners: false
+            });
+            
+            fabricCanvas.add(textObj);
+            fabricCanvas.setActiveObject(textObj);
+            document.getElementById('customText').value = '';
+            
+            showNotification('Text added successfully!', 'success');
+        }
+
+        function updateTextProperties() {
+            const activeObject = fabricCanvas.getActiveObject();
+            if (activeObject && activeObject.type === 'text') {
+                const fontFamily = document.getElementById('fontFamily').value;
+                const fontSize = parseInt(document.getElementById('fontSize').value);
+                const color = document.getElementById('textColor').value;
+                
+                activeObject.set({
+                    fontFamily: fontFamily,
+                    fontSize: fontSize,
+                    fill: color
+                });
+                
+                fabricCanvas.renderAll();
+            }
+            
+            // Update font size display
+            document.getElementById('fontSizeValue').textContent = document.getElementById('fontSize').value + 'px';
+        }
+
+        function toggleBold() {
+            const activeObject = fabricCanvas.getActiveObject();
+            if (activeObject && activeObject.type === 'text') {
+                const isBold = activeObject.fontWeight === 'bold';
+                activeObject.set('fontWeight', isBold ? 'normal' : 'bold');
+                fabricCanvas.renderAll();
+                
+                const btn = document.getElementById('boldBtn');
+                btn.classList.toggle('bg-blue-500', !isBold);
+                btn.classList.toggle('text-white', !isBold);
+            }
+        }
+
+        function toggleItalic() {
+            const activeObject = fabricCanvas.getActiveObject();
+            if (activeObject && activeObject.type === 'text') {
+                const isItalic = activeObject.fontStyle === 'italic';
+                activeObject.set('fontStyle', isItalic ? 'normal' : 'italic');
+                fabricCanvas.renderAll();
+                
+                const btn = document.getElementById('italicBtn');
+                btn.classList.toggle('bg-blue-500', !isItalic);
+                btn.classList.toggle('text-white', !isItalic);
+            }
+        }
+
+        function toggleUnderline() {
+            const activeObject = fabricCanvas.getActiveObject();
+            if (activeObject && activeObject.type === 'text') {
+                const isUnderlined = activeObject.underline;
+                activeObject.set('underline', !isUnderlined);
+                fabricCanvas.renderAll();
+                
+                const btn = document.getElementById('underlineBtn');
+                btn.classList.toggle('bg-blue-500', !isUnderlined);
+                btn.classList.toggle('text-white', !isUnderlined);
+            }
+        }
+
+        function updateSelectedObject() {
+            selectedObject = fabricCanvas.getActiveObject();
+            
+            if (selectedObject) {
+                // Update controls based on selected object
+                if (selectedObject.type === 'text') {
+                    document.getElementById('fontFamily').value = selectedObject.fontFamily || 'Arial';
+                    document.getElementById('fontSize').value = selectedObject.fontSize || 24;
+                    document.getElementById('textColor').value = selectedObject.fill || '#000000';
+                    updateTextProperties();
+                } else if (selectedObject.type === 'image') {
+                    document.getElementById('imageOpacity').value = (selectedObject.opacity || 1) * 100;
+                    document.getElementById('imageControls').classList.remove('hidden');
+                }
+            }
+        }
+
+        function clearSelectedObject() {
+            selectedObject = null;
+            document.getElementById('imageControls').classList.add('hidden');
+        }
+
+        function updateLayersList() {
+            const layersList = document.getElementById('layersList');
+            const objects = fabricCanvas.getObjects().filter(obj => !obj.excludeFromExport);
+            
+            layersList.innerHTML = objects.map((obj, index) => {
+                const name = obj.type === 'text' ? `Text: ${obj.text.substring(0, 20)}...` : 
+                            obj.type === 'image' ? 'Image' : 
+                            obj.type;
+                            
+                return `
+                    <div class="flex items-center justify-between bg-white p-2 rounded border ${fabricCanvas.getActiveObject() === obj ? 'border-blue-500' : 'border-gray-200'}">
+                        <span class="text-sm cursor-pointer" onclick="selectLayer(${index})">${name}</span>
+                        <button onclick="removeLayer(${index})" class="text-red-500 hover:text-red-700 text-sm">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
-                </div>
-            `).join('');
-        }
-
-        function showAddProduct() {
-            document.getElementById('addProductModal').classList.add('show');
-        }
-
-        function addProduct(event) {
-            event.preventDefault();
-            
-            const product = {
-                id: Date.now(),
-                name: document.getElementById('productName').value,
-                description: document.getElementById('productDescription').value,
-                price: parseFloat(document.getElementById('productPrice').value),
-                category: document.getElementById('productCategory').value,
-                stock: parseInt(document.getElementById('productStock').value),
-                image: '📦',
-                rating: 4.0
-            };
-            
-            products.push(product);
-            localStorage.setItem('products', JSON.stringify(products));
-            
-            closeModal('addProductModal');
-            loadAdminData();
-            showNotification('Product added successfully!', 'success');
-            
-            // Reset form
-            event.target.reset();
-        }
-
-        function deleteProduct(productId) {
-            if (confirm('Are you sure you want to delete this product?')) {
-                products = products.filter(p => p.id !== productId);
-                localStorage.setItem('products', JSON.stringify(products));
-                loadAdminData();
-                showNotification('Product deleted successfully!', 'success');
-            }
-        }
-
-        function editProduct(productId) {
-            // In a real app, this would open an edit modal
-            showNotification('Edit functionality would be implemented here', 'success');
-        }
-
-        // Orders
-        function loadOrders() {
-            const container = document.getElementById('ordersList');
-            
-            if (!currentUser) {
-                container.innerHTML = `
-                    <div class="text-center py-12 text-gray-500">
-                        <i class="fas fa-shopping-bag text-4xl mb-4"></i>
-                        <p>Please login to view your orders</p>
-                    </div>
                 `;
-                return;
+            }).join('');
+        }
+
+        function selectLayer(index) {
+            const objects = fabricCanvas.getObjects().filter(obj => !obj.excludeFromExport);
+            if (objects[index]) {
+                fabricCanvas.setActiveObject(objects[index]);
+                fabricCanvas.renderAll();
+                updateLayersList();
             }
-            
-            const userOrders = orders.filter(order => order.userId === currentUser.id);
-            
-            if (userOrders.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-12 text-gray-500">
-                        <i class="fas fa-shopping-bag text-4xl mb-4"></i>
-                        <p>No orders found</p>
-                    </div>
-                `;
-                return;
+        }
+
+        function removeLayer(index) {
+            const objects = fabricCanvas.getObjects().filter(obj => !obj.excludeFromExport);
+            if (objects[index]) {
+                fabricCanvas.remove(objects[index]);
+                updateLayersList();
             }
+        }
+
+        function bringToFront() {
+            const activeObject = fabricCanvas.getActiveObject();
+            if (activeObject) {
+                fabricCanvas.bringToFront(activeObject);
+                updateLayersList();
+            }
+        }
+
+        function sendToBack() {
+            const activeObject = fabricCanvas.getActiveObject();
+            if (activeObject) {
+                fabricCanvas.sendToBack(activeObject);
+                updateLayersList();
+            }
+        }
+
+        function changeBgColor() {
+            const color = document.getElementById('bgColor').value;
+            if (fabricCanvas) {
+                fabricCanvas.setBackgroundColor(color, fabricCanvas.renderAll.bind(fabricCanvas));
+            }
+        }
+
+        function setBgColor(color) {
+            document.getElementById('bgColor').value = color;
+            changeBgColor();
+        }
+
+        function zoomIn() {
+            currentZoom = Math.min(currentZoom * 1.2, 3);
+            fabricCanvas.setZoom(currentZoom);
+        }
+
+        function zoomOut() {
+            currentZoom = Math.max(currentZoom / 1.2, 0.5);
+            fabricCanvas.setZoom(currentZoom);
+        }
+
+        function resetZoom() {
+            currentZoom = 1;
+            fabricCanvas.setZoom(1);
+            fabricCanvas.viewportTransform = [1, 0, 0, 1, 0, 0];
+            fabricCanvas.renderAll();
+        }
+
+        function clearCanvas() {
+            if (fabricCanvas) {
+                // Remove all objects except template elements
+                const objects = fabricCanvas.getObjects().slice();
+                objects.forEach(obj => {
+                    if (!obj.excludeFromExport) {
+                        fabricCanvas.remove(obj);
+                    }
+                });
+                
+                fabricCanvas.setBackgroundColor('#f0f0f0', fabricCanvas.renderAll.bind(fabricCanvas));
+                document.getElementById('imageControls').classList.add('hidden');
+                updateLayersList();
+                showNotification('Canvas cleared', 'success');
+            }
+        }
+
+        function exportDesign() {
+            if (!fabricCanvas) return;
             
-            container.innerHTML = userOrders.map(order => `
-                <div class="bg-white rounded-lg shadow p-6 mb-4">
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
-                            <h3 class="font-bold text-lg">Order #${order.id}</h3>
-                            <p class="text-gray-500">${new Date(order.date).toLocaleDateString()}</p>
-                        </div>
-                        <span class="px-3 py-1 rounded-full text-sm font-medium ${
-                            order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                            order.status === 'completed' ? 'bg-green-100 text-green-800' :
-                            'bg-gray-100 text-gray-800'
-                        }">
-                            ${order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                        </span>
-                    </div>
-                    <div class="space-y-2 mb-4">
-                        ${order.items.map(item => `
-                            <div class="flex justify-between">
-                                <span>${item.name} x${item.quantity}</span>
-                                <span>$${(item.price * item.quantity).toFixed(2)}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                    <div class="border-t pt-2">
-                        <div class="flex justify-between font-bold">
-                            <span>Total:</span>
-                            <span>$${order.total.toFixed(2)}</span>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
+            // Hide template elements temporarily
+            const templateObjects = fabricCanvas.getObjects().filter(obj => obj.excludeFromExport);
+            templateObjects.forEach(obj => obj.set('visible', false));
+            
+            fabricCanvas.renderAll();
+            
+            // Export as image
+            const dataURL = fabricCanvas.toDataURL({
+                format: 'png',
+                quality: 1,
+                multiplier: 2 // Higher resolution
+            });
+            
+            // Show template elements again
+            templateObjects.forEach(obj => obj.set('visible', true));
+            fabricCanvas.renderAll();
+            
+            // Download the image
+            const link = document.createElement('a');
+            link.download = `custom-design-${Date.now()}.png`;
+            link.href = dataURL;
+            link.click();
+            
+            showNotification('Design exported successfully!', 'success');
+        }
+
+        function saveCustomization() {
+            if (fabricCanvas && currentProduct) {
+                // Export design data for saving with product
+                const designData = {
+                    canvas: fabricCanvas.toJSON(),
+                    template: document.getElementById('productTemplate').value,
+                    timestamp: Date.now()
+                };
+                
+                // In a real app, this would save the customization to the product
+                localStorage.setItem(`customization_${currentProduct.id}`, JSON.stringify(designData));
+                
+                showNotification('Customization saved! Added to cart.', 'success');
+                addToCart(currentProduct.id);
+                closeCustomizer();
+            }
         }
 
         // Utility functions
-        function showNotification(message, type = 'success') {
-            const notification = document.getElementById('notification');
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg text-white font-semibold slide-in ${
+                type === 'success' ? 'bg-green-600' : 
+                type === 'error' ? 'bg-red-600' : 
+                'bg-blue-600'
+            }`;
             notification.textContent = message;
-            notification.className = `notification ${type}`;
-            notification.classList.add('show');
+            
+            document.body.appendChild(notification);
             
             setTimeout(() => {
-                notification.classList.remove('show');
+                notification.remove();
             }, 3000);
         }
 
-        // Event listeners
-        document.addEventListener('click', function(e) {
-            // Close search dropdown when clicking outside
-            if (!e.target.closest('#searchInput') && !e.target.closest('#searchDropdown')) {
-                document.getElementById('searchDropdown').classList.add('hidden');
+        // Initialize admin dashboard on first load
+        setTimeout(() => {
+            if (document.getElementById('adminDashboard')) {
+                showAdminSection('dashboard');
             }
-            
-            // Close user menu when clicking outside
-            if (!e.target.closest('#userMenu') && !e.target.closest('button[onclick="toggleUserMenu()"]')) {
-                document.getElementById('userMenu').classList.add('hidden');
-            }
-        });
-
-        // Filter event listeners
-        document.getElementById('categoryFilter').addEventListener('change', loadAllProducts);
-        document.getElementById('sortFilter').addEventListener('change', loadAllProducts);
-
-        // Initialize the application
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeData();
-            
-            // Add fade-in animation to elements
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll('.fade-in').forEach(el => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(20px)';
-                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(el);
-            });
-        });
+        }, 100);
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9772b9bc903b91cd',t:'MTc1NjU0MDUyMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9772877ad58054e7',t:'MTc1NjUzODQ2NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

@@ -3,1419 +3,261 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CraftyWorth - Custom Products</title>
+    <title>E-commerce Monorepo Structure</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
     <style>
-        .page-section {
-            display: none;
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
         }
-        .page-section.active {
-            display: block;
+        .folder-tree {
+            font-family: 'Courier New', monospace;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
         }
-        
-        .product-card {
-            transition: transform 0.3s ease;
-        }
-        .product-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-        }
-        .modal.show {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            transform: translateX(400px);
-            transition: transform 0.3s ease;
-        }
-        .notification.show {
-            transform: translateX(0);
-        }
-        
-        .hero-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .cart-badge {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #ef4444;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        .folder { color: #3b82f6; font-weight: bold; }
+        .file { color: #64748b; }
+        .config-file { color: #f59e0b; }
+        .js-file { color: #10b981; }
+        .ts-file { color: #8b5cf6; }
+        .json-file { color: #ef4444; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .tab-button.active { background: #3b82f6; color: white; }
     </style>
 </head>
 <body class="bg-gray-50">
-    <!-- Notification -->
-    <div id="notification" class="notification bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg">
-        <span id="notificationText">Success!</span>
-    </div>
-
-    <!-- Login Modal -->
-    <div id="loginModal" class="modal">
-        <div class="bg-white rounded-lg shadow-xl p-8 max-w-md w-full mx-4">
-            <div class="text-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-800">Sign In</h2>
-                <p class="text-gray-600 mt-2">Welcome back!</p>
-            </div>
-            
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium mb-2">Email</label>
-                    <input type="email" id="loginEmail" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter your email">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">Password</label>
-                    <input type="password" id="loginPassword" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter your password">
-                </div>
-                <button onclick="handleLogin()" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition font-semibold">
-                    Sign In
-                </button>
-            </div>
-            
-            <div class="mt-6 flex justify-end">
-                <button onclick="closeLoginModal()" class="text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Navigation -->
-    <nav class="bg-white shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
-                <h1 class="text-2xl font-bold text-purple-600 cursor-pointer" onclick="showPage('home')">
-                    🎨 CraftyWorth
-                </h1>
-                
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#" onclick="showPage('home')" class="text-gray-700 hover:text-purple-600 transition">Home</a>
-                    <a href="#" onclick="showPage('products')" class="text-gray-700 hover:text-purple-600 transition">Products</a>
-                    <a href="#" onclick="showPage('orders')" class="text-gray-700 hover:text-purple-600 transition">Orders</a>
-                </div>
-
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-white shadow-lg">
+            <div class="max-w-7xl mx-auto px-4 py-6">
                 <div class="flex items-center space-x-4">
-                    <input type="text" id="searchInput" placeholder="Search products..." class="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" onkeyup="handleSearch(event)">
-                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                    
-                    <button onclick="showPage('cart')" class="relative bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span id="cartCount" class="cart-badge">0</span>
-                    </button>
-                    
-                    <div id="loginButton" class="flex items-center space-x-2 bg-gray-100 px-4 py-2 rounded-lg hover:bg-gray-200 transition cursor-pointer" onclick="showLoginModal()">
-                        <i class="fas fa-user text-gray-600"></i>
-                        <span class="text-gray-700">Sign In</span>
+                    <div class="p-3 bg-blue-100 rounded-full">
+                        <i class="fas fa-code-branch text-2xl text-blue-600"></i>
                     </div>
-                    
-                    <div id="userMenu" class="hidden flex items-center space-x-2 bg-purple-100 px-4 py-2 rounded-lg cursor-pointer">
-                        <span id="userName" class="text-purple-700 font-medium">User</span>
-                        <button onclick="handleLogout()" class="text-red-600 ml-2">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </button>
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900">E-commerce Monorepo</h1>
+                        <p class="text-gray-600">Complete full-stack project structure with Next.js 14, Node.js, PostgreSQL</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </nav>
+        </header>
 
-    <!-- Homepage -->
-    <div id="home" class="page-section active">
-        <section class="hero-bg text-white py-20">
-            <div class="max-w-7xl mx-auto px-4 text-center">
-                <h2 class="text-5xl font-bold mb-6">Create Personalized Gifts</h2>
-                <p class="text-xl mb-8 max-w-2xl mx-auto">
-                    Custom mugs, frames, t-shirts and more. Free shipping on orders over $35!
-                </p>
-                <button onclick="showPage('products')" class="bg-yellow-400 text-gray-900 px-8 py-4 rounded-lg font-bold text-lg hover:bg-yellow-300 transition">
-                    Shop Now
-                </button>
-            </div>
-        </section>
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-4 py-8">
+            <!-- Project Overview -->
+            <section class="mb-12 fade-in">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h2 class="text-2xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-folder-tree mr-3 text-blue-600"></i>
+                        Project Structure
+                    </h2>
+                    
+                    <div class="folder-tree mb-6">
+<pre>ecommerce-monorepo/
+├── <span class="folder">frontend/</span>                    # Next.js 14 + Tailwind CSS
+│   ├── <span class="folder">src/</span>
+│   │   ├── <span class="folder">app/</span>                 # App Router (Next.js 14)
+│   │   │   ├── <span class="folder">admin/</span>           # Protected admin routes
+│   │   │   ├── <span class="folder">api/</span>             # API routes (if needed)
+│   │   │   ├── <span class="folder">auth/</span>            # Login/Signup pages
+│   │   │   ├── <span class="folder">cart/</span>            # Cart page
+│   │   │   ├── <span class="folder">checkout/</span>        # Checkout flow
+│   │   │   ├── <span class="folder">product/</span>         # Product detail pages
+│   │   │   ├── <span class="folder">search/</span>          # Search results
+│   │   │   ├── <span class="file">layout.tsx</span>         # Root layout
+│   │   │   ├── <span class="file">page.tsx</span>           # Home page
+│   │   │   └── <span class="file">globals.css</span>        # Global styles
+│   │   ├── <span class="folder">components/</span>          # Reusable components
+│   │   │   ├── <span class="ts-file">Navbar.tsx</span>
+│   │   │   ├── <span class="ts-file">Footer.tsx</span>
+│   │   │   ├── <span class="ts-file">ProductCard.tsx</span>
+│   │   │   ├── <span class="ts-file">SearchBar.tsx</span>
+│   │   │   └── <span class="ts-file">CartSidebar.tsx</span>
+│   │   ├── <span class="folder">store/</span>               # Zustand store
+│   │   ├── <span class="folder">lib/</span>                 # Utilities
+│   │   └── <span class="folder">types/</span>               # TypeScript types
+│   ├── <span class="json-file">package.json</span>
+│   ├── <span class="config-file">tailwind.config.js</span>
+│   ├── <span class="config-file">tsconfig.json</span>
+│   └── <span class="config-file">next.config.js</span>
+├── <span class="folder">backend/</span>                     # Node.js + Express + PostgreSQL
+│   ├── <span class="folder">src/</span>
+│   │   ├── <span class="folder">controllers/</span>         # Route handlers
+│   │   ├── <span class="folder">middleware/</span>          # Auth, validation
+│   │   ├── <span class="folder">models/</span>              # Database models
+│   │   ├── <span class="folder">routes/</span>              # API routes
+│   │   ├── <span class="folder">migrations/</span>          # Database migrations
+│   │   ├── <span class="folder">config/</span>              # Database config
+│   │   └── <span class="js-file">server.js</span>           # Express server
+│   ├── <span class="json-file">package.json</span>
+│   ├── <span class="config-file">tsconfig.json</span>
+│   └── <span class="config-file">.env.example</span>
+├── <span class="folder">shared/</span>                      # Shared utilities & types
+│   ├── <span class="folder">types/</span>                   # Common TypeScript types
+│   ├── <span class="folder">utils/</span>                   # Shared utilities
+│   └── <span class="json-file">package.json</span>
+├── <span class="json-file">package.json</span>              # Root package.json
+├── <span class="config-file">turbo.json</span>              # Turborepo config
+└── <span class="file">README.md</span>                      # Project documentation</pre>
+                    </div>
 
-        <section class="py-16 bg-white">
-            <div class="max-w-7xl mx-auto px-4">
-                <h3 class="text-3xl font-bold text-center mb-12">Popular Products</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="featuredProducts">
-                    <!-- Featured products will load here -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-blue-50 rounded-lg p-6">
+                            <h3 class="font-bold text-blue-900 mb-2">
+                                <i class="fas fa-desktop mr-2"></i>Frontend
+                            </h3>
+                            <ul class="text-sm text-blue-800 space-y-1">
+                                <li>• Next.js 14 with App Router</li>
+                                <li>• Tailwind CSS styling</li>
+                                <li>• Zustand state management</li>
+                                <li>• Smart search with debounce</li>
+                                <li>• Protected admin routes</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-green-50 rounded-lg p-6">
+                            <h3 class="font-bold text-green-900 mb-2">
+                                <i class="fas fa-server mr-2"></i>Backend
+                            </h3>
+                            <ul class="text-sm text-green-800 space-y-1">
+                                <li>• Express.js REST API</li>
+                                <li>• PostgreSQL with Knex.js</li>
+                                <li>• JWT authentication</li>
+                                <li>• Fuzzy search with ILIKE</li>
+                                <li>• Order management</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-purple-50 rounded-lg p-6">
+                            <h3 class="font-bold text-purple-900 mb-2">
+                                <i class="fas fa-share-alt mr-2"></i>Shared
+                            </h3>
+                            <ul class="text-sm text-purple-800 space-y-1">
+                                <li>• Common TypeScript types</li>
+                                <li>• Shared utilities</li>
+                                <li>• Validation schemas</li>
+                                <li>• API response types</li>
+                                <li>• Constants & enums</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </section>
-    </div>
+            </section>
 
-    <!-- Products Page -->
-    <div id="products" class="page-section">
-        <div class="max-w-7xl mx-auto px-4 py-8">
-            <h1 class="text-3xl font-bold mb-8">All Products</h1>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="productsGrid">
-                <!-- Products will load here -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Cart Page -->
-    <div id="cart" class="page-section">
-        <div class="max-w-4xl mx-auto px-4 py-8">
-            <h2 class="text-3xl font-bold mb-8">Shopping Cart</h2>
-            <div id="cartItems" class="space-y-4">
-                <!-- Cart items will load here -->
-            </div>
-            <div id="cartEmpty" class="text-center py-16 hidden">
-                <i class="fas fa-shopping-cart text-gray-300 text-6xl mb-4"></i>
-                <h3 class="text-xl font-semibold text-gray-600 mb-2">Your cart is empty</h3>
-                <button onclick="showPage('products')" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition">
-                    Continue Shopping
-                </button>
-            </div>
-            <div id="cartSummary" class="mt-8 bg-white p-6 rounded-lg shadow-lg hidden">
-                <div class="flex justify-between items-center text-xl font-semibold mb-4">
-                    <span>Total:</span>
-                    <span id="cartTotal">$0.00</span>
-                </div>
-                <button onclick="checkout()" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition font-semibold">
-                    Checkout
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Orders Page -->
-    <div id="orders" class="page-section">
-        <div class="max-w-6xl mx-auto px-4 py-8">
-            <h2 class="text-3xl font-bold mb-8">My Orders</h2>
-            <div id="ordersContent">
-                <!-- Orders will load here -->
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Global variables
-        let currentUser = null;
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let orders = JSON.parse(localStorage.getItem('orders')) || [];
-        
-        const products = [
-            {
-                id: 1,
-                name: "Custom Photo Mug",
-                price: 24.99,
-                image: "https://via.placeholder.com/300x300/7c3aed/ffffff?text=Custom+Mug",
-                description: "Personalize with your favorite photo"
-            },
-            {
-                id: 2,
-                name: "Photo Frame",
-                price: 19.99,
-                image: "https://via.placeholder.com/300x300/10b981/ffffff?text=Photo+Frame",
-                description: "Beautiful wooden frame with custom engraving"
-            },
-            {
-                id: 3,
-                name: "Custom T-Shirt",
-                price: 29.99,
-                image: "https://via.placeholder.com/300x300/f59e0b/ffffff?text=Custom+Tee",
-                description: "High-quality cotton with your design"
-            },
-            {
-                id: 4,
-                name: "Keychain",
-                price: 12.99,
-                image: "https://via.placeholder.com/300x300/ef4444/ffffff?text=Keychain",
-                description: "Metal keychain with custom text"
-            }
-        ];
-
-        // Initialize
-        function init() {
-            updateCartCount();
-            loadFeaturedProducts();
-        }
-
-        // Show notification
-        function showNotification(message, type = 'success') {
-            const notification = document.getElementById('notification');
-            const notificationText = document.getElementById('notificationText');
-            
-            notificationText.textContent = message;
-            notification.className = `notification ${type === 'success' ? 'bg-green-500' : 'bg-red-500'} text-white px-6 py-3 rounded-lg shadow-lg show`;
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-
-        // Page navigation
-        function showPage(pageId) {
-            document.querySelectorAll('.page-section').forEach(page => {
-                page.classList.remove('active');
-            });
-            document.getElementById(pageId).classList.add('active');
-            
-            if (pageId === 'products') loadProducts();
-            if (pageId === 'cart') loadCart();
-            if (pageId === 'orders') loadOrders();
-        }
-
-        // Load featured products
-        function loadFeaturedProducts() {
-            const featuredProducts = document.getElementById('featuredProducts');
-            featuredProducts.innerHTML = products.slice(0, 4).map(product => createProductCard(product)).join('');
-        }
-
-        // Load all products
-        function loadProducts() {
-            const productsGrid = document.getElementById('productsGrid');
-            productsGrid.innerHTML = products.map(product => createProductCard(product)).join('');
-        }
-
-        // Create product card
-        function createProductCard(product) {
-            return `
-                <div class="product-card bg-white rounded-lg shadow-lg overflow-hidden">
-                    <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold mb-2">${product.name}</h3>
-                        <p class="text-gray-600 text-sm mb-3">${product.description}</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xl font-bold text-purple-600">$${product.price}</span>
-                            <button onclick="addToCart(${product.id})" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
-                                Add to Cart
+            <!-- Code Tabs -->
+            <section class="mb-12">
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <div class="border-b border-gray-200">
+                        <nav class="flex space-x-8 px-6">
+                            <button onclick="showTab('root')" class="tab-button active py-4 px-2 border-b-2 border-transparent hover:border-gray-300 font-medium text-sm">
+                                Root Config
                             </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Add to cart
-        function addToCart(productId) {
-            const product = products.find(p => p.id === productId);
-            if (!product) return;
-            
-            const existingItem = cart.find(item => item.id === productId);
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({
-                    id: productId,
-                    name: product.name,
-                    price: product.price,
-                    image: product.image,
-                    quantity: 1
-                });
-            }
-            
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCount();
-            showNotification(`${product.name} added to cart!`);
-        }
-
-        // Update cart count
-        function updateCartCount() {
-            const count = cart.reduce((total, item) => total + item.quantity, 0);
-            document.getElementById('cartCount').textContent = count;
-        }
-
-        // Load cart
-        function loadCart() {
-            const cartItems = document.getElementById('cartItems');
-            const cartEmpty = document.getElementById('cartEmpty');
-            const cartSummary = document.getElementById('cartSummary');
-            
-            if (cart.length === 0) {
-                cartItems.innerHTML = '';
-                cartEmpty.classList.remove('hidden');
-                cartSummary.classList.add('hidden');
-                return;
-            }
-            
-            cartEmpty.classList.add('hidden');
-            cartSummary.classList.remove('hidden');
-            
-            cartItems.innerHTML = cart.map(item => `
-                <div class="bg-white rounded-lg shadow-lg p-6 flex items-center space-x-4">
-                    <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <h3 class="text-lg font-semibold">${item.name}</h3>
-                        <p class="text-gray-600">$${item.price} each</p>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                        <button onclick="updateQuantity(${item.id}, ${item.quantity - 1})" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">-</button>
-                        <span class="font-semibold">${item.quantity}</span>
-                        <button onclick="updateQuantity(${item.id}, ${item.quantity + 1})" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">+</button>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-lg font-semibold">$${(item.price * item.quantity).toFixed(2)}</div>
-                        <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-700 text-sm">Remove</button>
-                    </div>
-                </div>
-            `).join('');
-            
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            document.getElementById('cartTotal').textContent = `$${total.toFixed(2)}`;
-        }
-
-        // Update quantity
-        function updateQuantity(productId, newQuantity) {
-            if (newQuantity <= 0) {
-                removeFromCart(productId);
-                return;
-            }
-            
-            const item = cart.find(item => item.id === productId);
-            if (item) {
-                item.quantity = newQuantity;
-                localStorage.setItem('cart', JSON.stringify(cart));
-                updateCartCount();
-                loadCart();
-            }
-        }
-
-        // Remove from cart
-        function removeFromCart(productId) {
-            cart = cart.filter(item => item.id !== productId);
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCount();
-            loadCart();
-            showNotification('Item removed from cart');
-        }
-
-        // Checkout
-        function checkout() {
-            if (cart.length === 0) return;
-            
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const newOrder = {
-                id: `ORD-${Date.now()}`,
-                date: new Date().toLocaleDateString(),
-                status: 'Processing',
-                total: total,
-                items: [...cart]
-            };
-            
-            orders.push(newOrder);
-            localStorage.setItem('orders', JSON.stringify(orders));
-            
-            cart = [];
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCount();
-            
-            showNotification('Order placed successfully!');
-            showPage('orders');
-        }
-
-        // Load orders
-        function loadOrders() {
-            const ordersContent = document.getElementById('ordersContent');
-            
-            if (orders.length === 0) {
-                ordersContent.innerHTML = '<p class="text-gray-500 text-center py-16">No orders found.</p>';
-                return;
-            }
-            
-            ordersContent.innerHTML = orders.map(order => `
-                <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
-                            <h3 class="text-lg font-semibold">Order ${order.id}</h3>
-                            <p class="text-gray-600">Date: ${order.date}</p>
-                            <p class="text-gray-600">Status: <span class="font-semibold text-blue-600">${order.status}</span></p>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-xl font-bold">$${order.total.toFixed(2)}</div>
-                        </div>
-                    </div>
-                    <div class="border-t pt-4">
-                        <h4 class="font-semibold mb-2">Items:</h4>
-                        ${order.items.map(item => `
-                            <div class="flex justify-between items-center py-2">
-                                <span>${item.name} x ${item.quantity}</span>
-                                <span>$${(item.price * item.quantity).toFixed(2)}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Search
-        function handleSearch(event) {
-            if (event.key === 'Enter') {
-                const query = event.target.value.toLowerCase();
-                const filteredProducts = products.filter(product => 
-                    product.name.toLowerCase().includes(query) || 
-                    product.description.toLowerCase().includes(query)
-                );
-                
-                showPage('products');
-                const productsGrid = document.getElementById('productsGrid');
-                productsGrid.innerHTML = filteredProducts.map(product => createProductCard(product)).join('');
-            }
-        }
-
-        // Login
-        function showLoginModal() {
-            document.getElementById('loginModal').classList.add('show');
-        }
-
-        function closeLoginModal() {
-            document.getElementById('loginModal').classList.remove('show');
-        }
-
-        function handleLogin() {
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            if (email && password) {
-                currentUser = { email: email, name: email.split('@')[0] };
-                
-                document.getElementById('loginButton').classList.add('hidden');
-                document.getElementById('userMenu').classList.remove('hidden');
-                document.getElementById('userName').textContent = currentUser.name;
-                
-                closeLoginModal();
-                showNotification('Login successful!');
-            } else {
-                showNotification('Please enter email and password', 'error');
-            }
-        }
-
-        function handleLogout() {
-            currentUser = null;
-            document.getElementById('loginButton').classList.remove('hidden');
-            document.getElementById('userMenu').classList.add('hidden');
-            showNotification('Logged out successfully');
-        }
-
-        // Initialize on page load
-        init();
-    </script>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CraftyWorth - Custom Products</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
-    <style>
-        .page-section {
-            display: none;
-        }
-        .page-section.active {
-            display: block;
-        }
-        
-        .product-card {
-            transition: transform 0.3s ease;
-        }
-        .product-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-        }
-        .modal.show {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            transform: translateX(400px);
-            transition: transform 0.3s ease;
-        }
-        .notification.show {
-            transform: translateX(0);
-        }
-        
-        .hero-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .cart-badge {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #ef4444;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-    </style>
-</head>
-<body class="bg-gray-50">
-    <!-- Notification -->
-    <div id="notification" class="notification bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg">
-        <span id="notificationText">Success!</span>
-    </div>
-
-    <!-- Login Modal -->
-    <div id="loginModal" class="modal">
-        <div class="bg-white rounded-lg shadow-xl p-8 max-w-md w-full mx-4">
-            <div class="text-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-800">Sign In</h2>
-                <p class="text-gray-600 mt-2">Welcome back!</p>
-            </div>
-            
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium mb-2">Email</label>
-                    <input type="email" id="loginEmail" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter your email">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">Password</label>
-                    <input type="password" id="loginPassword" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter your password">
-                </div>
-                <button onclick="handleLogin()" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition font-semibold">
-                    Sign In
-                </button>
-            </div>
-            
-            <div class="mt-6 flex justify-end">
-                <button onclick="closeLoginModal()" class="text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Navigation -->
-    <nav class="bg-white shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
-                <h1 class="text-2xl font-bold text-purple-600 cursor-pointer" onclick="showPage('home')">
-                    🎨 CraftyWorth
-                </h1>
-                
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#" onclick="showPage('home')" class="text-gray-700 hover:text-purple-600 transition">Home</a>
-                    <a href="#" onclick="showPage('products')" class="text-gray-700 hover:text-purple-600 transition">Products</a>
-                    <a href="#" onclick="showPage('orders')" class="text-gray-700 hover:text-purple-600 transition">Orders</a>
-                    <a href="#" onclick="showPage('admin')" class="text-gray-700 hover:text-purple-600 transition">Admin</a>
-                </div>
-
-                <div class="flex items-center space-x-4">
-                    <input type="text" id="searchInput" placeholder="Search products..." class="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" onkeyup="handleSearch(event)">
-                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                    
-                    <button onclick="showPage('cart')" class="relative bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span id="cartCount" class="cart-badge">0</span>
-                    </button>
-                    
-                    <div id="loginButton" class="flex items-center space-x-2 bg-gray-100 px-4 py-2 rounded-lg hover:bg-gray-200 transition cursor-pointer" onclick="showLoginModal()">
-                        <i class="fas fa-user text-gray-600"></i>
-                        <span class="text-gray-700">Sign In</span>
-                    </div>
-                    
-                    <div id="userMenu" class="hidden flex items-center space-x-2 bg-purple-100 px-4 py-2 rounded-lg cursor-pointer">
-                        <span id="userName" class="text-purple-700 font-medium">User</span>
-                        <button onclick="handleLogout()" class="text-red-600 ml-2">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Homepage -->
-    <div id="home" class="page-section active">
-        <section class="hero-bg text-white py-20">
-            <div class="max-w-7xl mx-auto px-4 text-center">
-                <h2 class="text-5xl font-bold mb-6">Create Personalized Gifts</h2>
-                <p class="text-xl mb-8 max-w-2xl mx-auto">
-                    Custom mugs, frames, t-shirts and more. Free shipping on orders over $35!
-                </p>
-                <button onclick="showPage('products')" class="bg-yellow-400 text-gray-900 px-8 py-4 rounded-lg font-bold text-lg hover:bg-yellow-300 transition">
-                    Shop Now
-                </button>
-            </div>
-        </section>
-
-        <section class="py-16 bg-white">
-            <div class="max-w-7xl mx-auto px-4">
-                <h3 class="text-3xl font-bold text-center mb-12">Popular Products</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="featuredProducts">
-                    <!-- Featured products will load here -->
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- Products Page -->
-    <div id="products" class="page-section">
-        <div class="max-w-7xl mx-auto px-4 py-8">
-            <h1 class="text-3xl font-bold mb-8">All Products</h1>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="productsGrid">
-                <!-- Products will load here -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Cart Page -->
-    <div id="cart" class="page-section">
-        <div class="max-w-4xl mx-auto px-4 py-8">
-            <h2 class="text-3xl font-bold mb-8">Shopping Cart</h2>
-            <div id="cartItems" class="space-y-4">
-                <!-- Cart items will load here -->
-            </div>
-            <div id="cartEmpty" class="text-center py-16 hidden">
-                <i class="fas fa-shopping-cart text-gray-300 text-6xl mb-4"></i>
-                <h3 class="text-xl font-semibold text-gray-600 mb-2">Your cart is empty</h3>
-                <button onclick="showPage('products')" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition">
-                    Continue Shopping
-                </button>
-            </div>
-            <div id="cartSummary" class="mt-8 bg-white p-6 rounded-lg shadow-lg hidden">
-                <div class="flex justify-between items-center text-xl font-semibold mb-4">
-                    <span>Total:</span>
-                    <span id="cartTotal">$0.00</span>
-                </div>
-                <button onclick="checkout()" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition font-semibold">
-                    Checkout
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Orders Page -->
-    <div id="orders" class="page-section">
-        <div class="max-w-6xl mx-auto px-4 py-8">
-            <h2 class="text-3xl font-bold mb-8">My Orders</h2>
-            <div id="ordersContent">
-                <!-- Orders will load here -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Admin Panel -->
-    <div id="admin" class="page-section">
-        <div class="min-h-screen bg-gray-900 text-white">
-            <!-- Admin Login -->
-            <div id="adminLogin" class="flex items-center justify-center min-h-screen">
-                <div class="bg-white text-gray-800 rounded-lg shadow-xl p-8 max-w-md w-full mx-4">
-                    <div class="text-center mb-6">
-                        <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-shield-alt text-white text-2xl"></i>
-                        </div>
-                        <h2 class="text-2xl font-bold">Admin Login</h2>
-                        <p class="text-gray-600 mt-2">Secure access required</p>
-                    </div>
-                    
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Username</label>
-                            <input type="text" id="adminUsername" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter admin username">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Password</label>
-                            <input type="password" id="adminPassword" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter admin password">
-                        </div>
-                        <button onclick="handleAdminLogin()" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition font-semibold">
-                            Login to Admin Panel
-                        </button>
-                    </div>
-                    
-                    <div class="mt-4 text-center text-sm text-gray-500">
-                        <p>Demo: admin / admin123</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Admin Dashboard -->
-            <div id="adminDashboard" class="hidden">
-                <div class="p-8">
-                    <div class="flex justify-between items-center mb-8">
-                        <h1 class="text-3xl font-bold">🎛️ Admin Dashboard</h1>
-                        <button onclick="handleAdminLogout()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">
-                            <i class="fas fa-sign-out-alt mr-2"></i>Logout
-                        </button>
-                    </div>
-                    
-                    <!-- Stats Cards -->
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                        <div class="bg-blue-600 rounded-lg p-6">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-blue-100">Total Orders</p>
-                                    <p class="text-3xl font-bold" id="totalOrders">0</p>
-                                </div>
-                                <i class="fas fa-shopping-cart text-4xl text-blue-200"></i>
-                            </div>
-                        </div>
-                        <div class="bg-green-600 rounded-lg p-6">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-green-100">Total Revenue</p>
-                                    <p class="text-3xl font-bold" id="totalRevenue">$0</p>
-                                </div>
-                                <i class="fas fa-dollar-sign text-4xl text-green-200"></i>
-                            </div>
-                        </div>
-                        <div class="bg-purple-600 rounded-lg p-6">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-purple-100">Products</p>
-                                    <p class="text-3xl font-bold" id="totalProducts">4</p>
-                                </div>
-                                <i class="fas fa-box text-4xl text-purple-200"></i>
-                            </div>
-                        </div>
-                        <div class="bg-yellow-600 rounded-lg p-6">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-yellow-100">Users</p>
-                                    <p class="text-3xl font-bold" id="totalUsers">1</p>
-                                </div>
-                                <i class="fas fa-users text-4xl text-yellow-200"></i>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Admin Tabs -->
-                    <div class="bg-gray-800 rounded-lg p-6">
-                        <div class="flex space-x-4 mb-6">
-                            <button onclick="showAdminTab('orders')" class="admin-tab-btn bg-purple-600 text-white px-4 py-2 rounded-lg">Orders</button>
-                            <button onclick="showAdminTab('products')" class="admin-tab-btn bg-gray-600 text-white px-4 py-2 rounded-lg">Products</button>
-                            <button onclick="showAdminTab('users')" class="admin-tab-btn bg-gray-600 text-white px-4 py-2 rounded-lg">Users</button>
-                        </div>
-                        
-                        <!-- Orders Tab -->
-                        <div id="adminOrdersTab" class="admin-tab-content">
-                            <h3 class="text-xl font-semibold mb-4">All Orders</h3>
-                            <div id="adminOrdersList">
-                                <!-- Orders will load here -->
-                            </div>
-                        </div>
-                        
-                        <!-- Products Tab -->
-                        <div id="adminProductsTab" class="admin-tab-content hidden">
-                            <div class="flex justify-between items-center mb-4">
-                                <h3 class="text-xl font-semibold">Manage Products</h3>
-                                <button onclick="showAddProductForm()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
-                                    <i class="fas fa-plus mr-2"></i>Add Product
-                                </button>
-                            </div>
-                            <div id="adminProductsList">
-                                <!-- Products will load here -->
-                            </div>
-                        </div>
-                        
-                        <!-- Users Tab -->
-                        <div id="adminUsersTab" class="admin-tab-content hidden">
-                            <h3 class="text-xl font-semibold mb-4">Registered Users</h3>
-                            <div id="adminUsersList">
-                                <!-- Users will load here -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add Product Modal -->
-    <div id="addProductModal" class="modal">
-        <div class="bg-white rounded-lg shadow-xl p-8 max-w-md w-full mx-4">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-800">Add New Product</h2>
-                <button onclick="closeAddProductModal()" class="text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium mb-2">Product Name</label>
-                    <input type="text" id="newProductName" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter product name">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">Price</label>
-                    <input type="number" id="newProductPrice" step="0.01" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="0.00">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">Description</label>
-                    <textarea id="newProductDescription" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter product description"></textarea>
-                </div>
-                <button onclick="addNewProduct()" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition font-semibold">
-                    Add Product
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Global variables
-        let currentUser = null;
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let orders = JSON.parse(localStorage.getItem('orders')) || [];
-        
-        const products = [
-            {
-                id: 1,
-                name: "Custom Photo Mug",
-                price: 24.99,
-                image: "https://via.placeholder.com/300x300/7c3aed/ffffff?text=Custom+Mug",
-                description: "Personalize with your favorite photo"
-            },
-            {
-                id: 2,
-                name: "Photo Frame",
-                price: 19.99,
-                image: "https://via.placeholder.com/300x300/10b981/ffffff?text=Photo+Frame",
-                description: "Beautiful wooden frame with custom engraving"
-            },
-            {
-                id: 3,
-                name: "Custom T-Shirt",
-                price: 29.99,
-                image: "https://via.placeholder.com/300x300/f59e0b/ffffff?text=Custom+Tee",
-                description: "High-quality cotton with your design"
-            },
-            {
-                id: 4,
-                name: "Keychain",
-                price: 12.99,
-                image: "https://via.placeholder.com/300x300/ef4444/ffffff?text=Keychain",
-                description: "Metal keychain with custom text"
-            }
-        ];
-
-        // Initialize
-        function init() {
-            updateCartCount();
-            loadFeaturedProducts();
-        }
-
-        // Show notification
-        function showNotification(message, type = 'success') {
-            const notification = document.getElementById('notification');
-            const notificationText = document.getElementById('notificationText');
-            
-            notificationText.textContent = message;
-            notification.className = `notification ${type === 'success' ? 'bg-green-500' : 'bg-red-500'} text-white px-6 py-3 rounded-lg shadow-lg show`;
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-
-        // Page navigation
-        function showPage(pageId) {
-            document.querySelectorAll('.page-section').forEach(page => {
-                page.classList.remove('active');
-            });
-            document.getElementById(pageId).classList.add('active');
-            
-            if (pageId === 'products') loadProducts();
-            if (pageId === 'cart') loadCart();
-            if (pageId === 'orders') loadOrders();
-        }
-
-        // Load featured products
-        function loadFeaturedProducts() {
-            const featuredProducts = document.getElementById('featuredProducts');
-            featuredProducts.innerHTML = products.slice(0, 4).map(product => createProductCard(product)).join('');
-        }
-
-        // Load all products
-        function loadProducts() {
-            const productsGrid = document.getElementById('productsGrid');
-            productsGrid.innerHTML = products.map(product => createProductCard(product)).join('');
-        }
-
-        // Create product card
-        function createProductCard(product) {
-            return `
-                <div class="product-card bg-white rounded-lg shadow-lg overflow-hidden">
-                    <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold mb-2">${product.name}</h3>
-                        <p class="text-gray-600 text-sm mb-3">${product.description}</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xl font-bold text-purple-600">$${product.price}</span>
-                            <button onclick="addToCart(${product.id})" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
-                                Add to Cart
+                            <button onclick="showTab('backend')" class="tab-button py-4 px-2 border-b-2 border-transparent hover:border-gray-300 font-medium text-sm">
+                                Backend
                             </button>
-                        </div>
+                            <button onclick="showTab('frontend')" class="tab-button py-4 px-2 border-b-2 border-transparent hover:border-gray-300 font-medium text-sm">
+                                Frontend
+                            </button>
+                            <button onclick="showTab('shared')" class="tab-button py-4 px-2 border-b-2 border-transparent hover:border-gray-300 font-medium text-sm">
+                                Shared
+                            </button>
+                            <button onclick="showTab('database')" class="tab-button py-4 px-2 border-b-2 border-transparent hover:border-gray-300 font-medium text-sm">
+                                Database
+                            </button>
+                        </nav>
                     </div>
-                </div>
-            `;
-        }
 
-        // Add to cart
-        function addToCart(productId) {
-            const product = products.find(p => p.id === productId);
-            if (!product) return;
-            
-            const existingItem = cart.find(item => item.id === productId);
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({
-                    id: productId,
-                    name: product.name,
-                    price: product.price,
-                    image: product.image,
-                    quantity: 1
-                });
-            }
-            
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCount();
-            showNotification(`${product.name} added to cart!`);
-        }
-
-        // Update cart count
-        function updateCartCount() {
-            const count = cart.reduce((total, item) => total + item.quantity, 0);
-            document.getElementById('cartCount').textContent = count;
-        }
-
-        // Load cart
-        function loadCart() {
-            const cartItems = document.getElementById('cartItems');
-            const cartEmpty = document.getElementById('cartEmpty');
-            const cartSummary = document.getElementById('cartSummary');
-            
-            if (cart.length === 0) {
-                cartItems.innerHTML = '';
-                cartEmpty.classList.remove('hidden');
-                cartSummary.classList.add('hidden');
-                return;
-            }
-            
-            cartEmpty.classList.add('hidden');
-            cartSummary.classList.remove('hidden');
-            
-            cartItems.innerHTML = cart.map(item => `
-                <div class="bg-white rounded-lg shadow-lg p-6 flex items-center space-x-4">
-                    <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <h3 class="text-lg font-semibold">${item.name}</h3>
-                        <p class="text-gray-600">$${item.price} each</p>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                        <button onclick="updateQuantity(${item.id}, ${item.quantity - 1})" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">-</button>
-                        <span class="font-semibold">${item.quantity}</span>
-                        <button onclick="updateQuantity(${item.id}, ${item.quantity + 1})" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">+</button>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-lg font-semibold">$${(item.price * item.quantity).toFixed(2)}</div>
-                        <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-700 text-sm">Remove</button>
-                    </div>
-                </div>
-            `).join('');
-            
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            document.getElementById('cartTotal').textContent = `$${total.toFixed(2)}`;
-        }
-
-        // Update quantity
-        function updateQuantity(productId, newQuantity) {
-            if (newQuantity <= 0) {
-                removeFromCart(productId);
-                return;
-            }
-            
-            const item = cart.find(item => item.id === productId);
-            if (item) {
-                item.quantity = newQuantity;
-                localStorage.setItem('cart', JSON.stringify(cart));
-                updateCartCount();
-                loadCart();
-            }
-        }
-
-        // Remove from cart
-        function removeFromCart(productId) {
-            cart = cart.filter(item => item.id !== productId);
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCount();
-            loadCart();
-            showNotification('Item removed from cart');
-        }
-
-        // Checkout
-        function checkout() {
-            if (cart.length === 0) return;
-            
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const newOrder = {
-                id: `ORD-${Date.now()}`,
-                date: new Date().toLocaleDateString(),
-                status: 'Processing',
-                total: total,
-                items: [...cart]
-            };
-            
-            orders.push(newOrder);
-            localStorage.setItem('orders', JSON.stringify(orders));
-            
-            cart = [];
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCount();
-            
-            showNotification('Order placed successfully!');
-            showPage('orders');
-        }
-
-        // Load orders
-        function loadOrders() {
-            const ordersContent = document.getElementById('ordersContent');
-            
-            if (orders.length === 0) {
-                ordersContent.innerHTML = '<p class="text-gray-500 text-center py-16">No orders found.</p>';
-                return;
-            }
-            
-            ordersContent.innerHTML = orders.map(order => `
-                <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
-                            <h3 class="text-lg font-semibold">Order ${order.id}</h3>
-                            <p class="text-gray-600">Date: ${order.date}</p>
-                            <p class="text-gray-600">Status: <span class="font-semibold text-blue-600">${order.status}</span></p>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-xl font-bold">$${order.total.toFixed(2)}</div>
-                        </div>
-                    </div>
-                    <div class="border-t pt-4">
-                        <h4 class="font-semibold mb-2">Items:</h4>
-                        ${order.items.map(item => `
-                            <div class="flex justify-between items-center py-2">
-                                <span>${item.name} x ${item.quantity}</span>
-                                <span>$${(item.price * item.quantity).toFixed(2)}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Search
-        function handleSearch(event) {
-            if (event.key === 'Enter') {
-                const query = event.target.value.toLowerCase();
-                const filteredProducts = products.filter(product => 
-                    product.name.toLowerCase().includes(query) || 
-                    product.description.toLowerCase().includes(query)
-                );
-                
-                showPage('products');
-                const productsGrid = document.getElementById('productsGrid');
-                productsGrid.innerHTML = filteredProducts.map(product => createProductCard(product)).join('');
-            }
-        }
-
-        // Login
-        function showLoginModal() {
-            document.getElementById('loginModal').classList.add('show');
-        }
-
-        function closeLoginModal() {
-            document.getElementById('loginModal').classList.remove('show');
-        }
-
-        function handleLogin() {
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            if (email && password) {
-                currentUser = { email: email, name: email.split('@')[0] };
-                
-                document.getElementById('loginButton').classList.add('hidden');
-                document.getElementById('userMenu').classList.remove('hidden');
-                document.getElementById('userName').textContent = currentUser.name;
-                
-                closeLoginModal();
-                showNotification('Login successful!');
-            } else {
-                showNotification('Please enter email and password', 'error');
-            }
-        }
-
-        function handleLogout() {
-            currentUser = null;
-            document.getElementById('loginButton').classList.remove('hidden');
-            document.getElementById('userMenu').classList.add('hidden');
-            showNotification('Logged out successfully');
-        }
-
-        // Admin Panel Functions
-        let isAdmin = false;
-        let adminUsers = [
-            { id: 1, name: 'John Doe', email: 'john@example.com', joinDate: '2024-01-15' }
-        ];
-
-        function handleAdminLogin() {
-            const username = document.getElementById('adminUsername').value;
-            const password = document.getElementById('adminPassword').value;
-            
-            if (username === 'admin' && password === 'admin123') {
-                isAdmin = true;
-                document.getElementById('adminLogin').classList.add('hidden');
-                document.getElementById('adminDashboard').classList.remove('hidden');
-                loadAdminStats();
-                loadAdminOrders();
-                showNotification('Admin login successful!');
-            } else {
-                showNotification('Invalid admin credentials!', 'error');
-            }
-        }
-
-        function handleAdminLogout() {
-            isAdmin = false;
-            document.getElementById('adminLogin').classList.remove('hidden');
-            document.getElementById('adminDashboard').classList.add('hidden');
-            showNotification('Admin logged out');
-        }
-
-        function loadAdminStats() {
-            const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
-            document.getElementById('totalOrders').textContent = orders.length;
-            document.getElementById('totalRevenue').textContent = `$${totalRevenue.toFixed(2)}`;
-            document.getElementById('totalProducts').textContent = products.length;
-            document.getElementById('totalUsers').textContent = adminUsers.length;
-        }
-
-        function showAdminTab(tabName) {
-            // Hide all tabs
-            document.querySelectorAll('.admin-tab-content').forEach(tab => {
-                tab.classList.add('hidden');
-            });
-            
-            // Reset all tab buttons
-            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
-                btn.classList.remove('bg-purple-600');
-                btn.classList.add('bg-gray-600');
-            });
-            
-            // Show selected tab
-            document.getElementById(`admin${tabName.charAt(0).toUpperCase() + tabName.slice(1)}Tab`).classList.remove('hidden');
-            
-            // Highlight active tab button
-            event.target.classList.remove('bg-gray-600');
-            event.target.classList.add('bg-purple-600');
-            
-            // Load tab content
-            if (tabName === 'orders') loadAdminOrders();
-            if (tabName === 'products') loadAdminProducts();
-            if (tabName === 'users') loadAdminUsers();
-        }
-
-        function loadAdminOrders() {
-            const adminOrdersList = document.getElementById('adminOrdersList');
-            
-            if (orders.length === 0) {
-                adminOrdersList.innerHTML = '<p class="text-gray-400">No orders found.</p>';
-                return;
-            }
-            
-            adminOrdersList.innerHTML = orders.map(order => `
-                <div class="bg-gray-700 rounded-lg p-4 mb-4">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h4 class="font-semibold">${order.id}</h4>
-                            <p class="text-gray-300 text-sm">Date: ${order.date}</p>
-                            <p class="text-gray-300 text-sm">Items: ${order.items.length}</p>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-lg font-bold text-green-400">$${order.total.toFixed(2)}</div>
-                            <span class="px-2 py-1 bg-blue-600 text-white text-xs rounded">${order.status}</span>
-                        </div>
-                    </div>
-                    <div class="mt-2">
-                        <select onchange="updateOrderStatus('${order.id}', this.value)" class="bg-gray-600 text-white px-3 py-1 rounded text-sm">
-                            <option value="Processing" ${order.status === 'Processing' ? 'selected' : ''}>Processing</option>
-                            <option value="Shipped" ${order.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
-                            <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
-                            <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
-                        </select>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function loadAdminProducts() {
-            const adminProductsList = document.getElementById('adminProductsList');
-            
-            adminProductsList.innerHTML = products.map(product => `
-                <div class="bg-gray-700 rounded-lg p-4 mb-4">
-                    <div class="flex justify-between items-start">
-                        <div class="flex items-center space-x-4">
-                            <img src="${product.image}" alt="${product.name}" class="w-16 h-16 object-cover rounded-lg">
+                    <!-- Root Configuration Tab -->
+                    <div id="root" class="tab-content active p-6">
+                        <h3 class="text-xl font-bold mb-4">Root Configuration Files</h3>
+                        
+                        <div class="space-y-6">
                             <div>
-                                <h4 class="font-semibold">${product.name}</h4>
-                                <p class="text-gray-300 text-sm">${product.description}</p>
-                                <p class="text-green-400 font-bold">$${product.price}</p>
+                                <h4 class="font-semibold mb-2 text-gray-700">📄 package.json (Root)</h4>
+                                <div class="code-block">
+<pre>{
+  "name": "ecommerce-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "turbo run start",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean",
+    "db:migrate": "cd backend && npm run db:migrate",
+    "db:seed": "cd backend && npm run db:seed"
+  },
+  "devDependencies": {
+    "turbo": "^1.10.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "workspaces": [
+    "frontend",
+    "backend",
+    "shared"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}</pre>
+                                </div>
                             </div>
-                        </div>
-                        <div class="flex space-x-2">
-                            <button onclick="editProduct(${product.id})" class="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700">
-                                Edit
-                            </button>
-                            <button onclick="deleteProduct(${product.id})" class="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700">
-                                Delete
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
 
-        function loadAdminUsers() {
-            const adminUsersList = document.getElementById('adminUsersList');
-            
-            adminUsersList.innerHTML = adminUsers.map(user => `
-                <div class="bg-gray-700 rounded-lg p-4 mb-4">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h4 class="font-semibold">${user.name}</h4>
-                            <p class="text-gray-300 text-sm">${user.email}</p>
-                            <p class="text-gray-400 text-xs">Joined: ${user.joinDate}</p>
-                        </div>
-                        <div class="flex space-x-2">
-                            <button class="bg-blue-600 text-white px-3 py-1 rounded text-sm">View Orders</button>
-                            <button class="bg-red-600 text-white px-3 py-1 rounded text-sm">Block User</button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
+                            <div>
+                                <h4 class="font-semibold mb-2 text-gray-700">⚡ turbo.json</h4>
+                                <div class="code-block">
+<pre>{
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "outputs": []
+    },
+    "clean": {
+      "cache": false
+    }
+  }
+}</pre>
+                                </div>
+                            </div>
 
-        function updateOrderStatus(orderId, newStatus) {
-            const order = orders.find(o => o.id === orderId);
-            if (order) {
-                order.status = newStatus;
-                localStorage.setItem('orders', JSON.stringify(orders));
-                showNotification(`Order ${orderId} status updated to ${newStatus}`);
-                loadAdminOrders();
-            }
-        }
+                            <div>
+                                <h4 class="font-semibold mb-2 text-gray-700">📖 README.md</h4>
+                                <div class="code-block">
+<pre># E-commerce Monorepo
 
-        function showAddProductForm() {
-            document.getElementById('addProductModal').classList.add('show');
-        }
+A full-stack e-commerce application built with Next.js 14, Node.js, Express, and PostgreSQL.
 
-        function closeAddProductModal() {
-            document.getElementById('addProductModal').classList.remove('show');
-        }
+## 🚀 Quick Start
 
-        function addNewProduct() {
-            const name = document.getElementById('newProductName').value;
-            const price = parseFloat(document.getElementById('newProductPrice').value);
-            const description = document.getElementById('newProductDescription').value;
-            
-            if (!name || !price || !description) {
-                showNotification('Please fill all fields!', 'error');
-                return;
-            }
-            
-            const newProduct = {
-                id: products.length + 1,
-                name: name,
-                price: price,
-                image: `https://via.placeholder.com/300x300/7c3aed/ffffff?text=${encodeURIComponent(name)}`,
-                description: description
-            };
-            
-            products.push(newProduct);
-            
-            // Clear form
-            document.getElementById('newProductName').value = '';
-            document.getElementById('newProductPrice').value = '';
-            document.getElementById('newProductDescription').value = '';
-            
-            closeAddProductModal();
-            loadAdminProducts();
-            loadAdminStats();
-            showNotification('Product added successfully!');
-        }
+### Prerequisites
+- Node.js 18+
+- PostgreSQL 14+
+- npm or yarn
 
-        function editProduct(productId) {
-            const product = products.find(p => p.id === productId);
-            if (product) {
-                const newName = prompt('Enter new product name:', product.name);
-                const newPrice = prompt('Enter new price:', product.price);
-                const newDescription = prompt('Enter new description:', product.description);
-                
-                if (newName && newPrice && newDescription) {
-                    product.name = newName;
-                    product.price = parseFloat(newPrice);
-                    product.description = newDescription;
-                    
-                    loadAdminProducts();
-                    showNotification('Product updated successfully!');
-                }
-            }
-        }
+### Installation
 
-        function deleteProduct(productId) {
-            if (confirm('Are you sure you want to delete this product?')) {
-                const index = products.findIndex(p => p.id === productId);
-                if (index > -1) {
-                    products.splice(index, 1);
-                    loadAdminProducts();
-                    loadAdminStats();
-                    showNotification('Product deleted successfully!');
-                }
-            }
-        }
-
-        // Initialize on page load
-        init();
-    </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'976d184ff5b7899d',t:'MTc1NjQ4MTQ4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
-</html>
-
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'976d17909136899d',t:'MTc1NjQ4MTQ1Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
-</html>
+1. **Clone the repository**
+   <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97729b4942046068',t:'MTc1NjUzOTI3Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>

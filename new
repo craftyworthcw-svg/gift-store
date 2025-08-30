@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Monorepo Structure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+        .folder-tree {
+            font-family: 'Courier New', monospace;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+        .folder { color: #3b82f6; font-weight: bold; }
+        .file { color: #64748b; }
+        .config-file { color: #f59e0b; }
+        .js-file { color: #10b981; }
+        .ts-file { color: #8b5cf6; }
+        .json-file { color: #ef4444; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .tab-button.active { background: #3b82f6; color: white; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-white shadow-lg">
+            <div class="max-w-7xl mx-auto px-4 py-6">
+                <div class="flex items-center space-x-4">
+                    <div class="p-3 bg-blue-100 rounded-full">
+                        <i class="fas fa-code-branch text-2xl text-blue-600"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900">E-commerce Monorepo</h1>
+                        <p class="text-gray-600">Complete full-stack project structure with Next.js 14, Node.js, PostgreSQL</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-4 py-8">
+            <!-- Project Overview -->
+            <section class="mb-12 fade-in">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h2 class="text-2xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-folder-tree mr-3 text-blue-600"></i>
+                        Project Structure
+                    </h2>
+                    
+                    <div class="folder-tree mb-6">
+<pre>ecommerce-monorepo/
+├── <span class="folder">frontend/</span>                    # Next.js 14 + Tailwind CSS
+│   ├── <span class="folder">src/</span>
+│   │   ├── <span class="folder">app/</span>                 # App Router (Next.js 14)
+│   │   │   ├── <span class="folder">admin/</span>           # Protected admin routes
+│   │   │   ├── <span class="folder">api/</span>             # API routes (if needed)
+│   │   │   ├── <span class="folder">auth/</span>            # Login/Signup pages
+│   │   │   ├── <span class="folder">cart/</span>            # Cart page
+│   │   │   ├── <span class="folder">checkout/</span>        # Checkout flow
+│   │   │   ├── <span class="folder">product/</span>         # Product detail pages
+│   │   │   ├── <span class="folder">search/</span>          # Search results
+│   │   │   ├── <span class="file">layout.tsx</span>         # Root layout
+│   │   │   ├── <span class="file">page.tsx</span>           # Home page
+│   │   │   └── <span class="file">globals.css</span>        # Global styles
+│   │   ├── <span class="folder">components/</span>          # Reusable components
+│   │   │   ├── <span class="ts-file">Navbar.tsx</span>
+│   │   │   ├── <span class="ts-file">Footer.tsx</span>
+│   │   │   ├── <span class="ts-file">ProductCard.tsx</span>
+│   │   │   ├── <span class="ts-file">SearchBar.tsx</span>
+│   │   │   └── <span class="ts-file">CartSidebar.tsx</span>
+│   │   ├── <span class="folder">store/</span>               # Zustand store
+│   │   ├── <span class="folder">lib/</span>                 # Utilities
+│   │   └── <span class="folder">types/</span>               # TypeScript types
+│   ├── <span class="json-file">package.json</span>
+│   ├── <span class="config-file">tailwind.config.js</span>
+│   ├── <span class="config-file">tsconfig.json</span>
+│   └── <span class="config-file">next.config.js</span>
+├── <span class="folder">backend/</span>                     # Node.js + Express + PostgreSQL
+│   ├── <span class="folder">src/</span>
+│   │   ├── <span class="folder">controllers/</span>         # Route handlers
+│   │   ├── <span class="folder">middleware/</span>          # Auth, validation
+│   │   ├── <span class="folder">models/</span>              # Database models
+│   │   ├── <span class="folder">routes/</span>              # API routes
+│   │   ├── <span class="folder">migrations/</span>          # Database migrations
+│   │   ├── <span class="folder">config/</span>              # Database config
+│   │   └── <span class="js-file">server.js</span>           # Express server
+│   ├── <span class="json-file">package.json</span>
+│   ├── <span class="config-file">tsconfig.json</span>
+│   └── <span class="config-file">.env.example</span>
+├── <span class="folder">shared/</span>                      # Shared utilities & types
+│   ├── <span class="folder">types/</span>                   # Common TypeScript types
+│   ├── <span class="folder">utils/</span>                   # Shared utilities
+│   └── <span class="json-file">package.json</span>
+├── <span class="json-file">package.json</span>              # Root package.json
+├── <span class="config-file">turbo.json</span>              # Turborepo config
+└── <span class="file">README.md</span>                      # Project documentation</pre>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-blue-50 rounded-lg p-6">
+                            <h3 class="font-bold text-blue-900 mb-2">
+                                <i class="fas fa-desktop mr-2"></i>Frontend
+                            </h3>
+                            <ul class="text-sm text-blue-800 space-y-1">
+                                <li>• Next.js 14 with App Router</li>
+                                <li>• Tailwind CSS styling</li>
+                                <li>• Zustand state management</li>
+                                <li>• Smart search with debounce</li>
+                                <li>• Protected admin routes</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-green-50 rounded-lg p-6">
+                            <h3 class="font-bold text-green-900 mb-2">
+                                <i class="fas fa-server mr-2"></i>Backend
+                            </h3>
+                            <ul class="text-sm text-green-800 space-y-1">
+                                <li>• Express.js REST API</li>
+                                <li>• PostgreSQL with Knex.js</li>
+                                <li>• JWT authentication</li>
+                                <li>• Fuzzy search with ILIKE</li>
+                                <li>• Order management</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-purple-50 rounded-lg p-6">
+                            <h3 class="font-bold text-purple-900 mb-2">
+                                <i class="fas fa-share-alt mr-2"></i>Shared
+                            </h3>
+                            <ul class="text-sm text-purple-800 space-y-1">
+                                <li>• Common TypeScript types</li>
+                                <li>• Shared utilities</li>
+                                <li>• Validation schemas</li>
+                                <li>• API response types</li>
+                                <li>• Constants & enums</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Code Tabs -->
+            <section class="mb-12">
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <div class="border-b border-gray-200">
+                        <nav class="flex space-x-8 px-6">
+                            <button onclick="showTab('root')" class="tab-button active py-4 px-2 border-b-2 border-transparent hover:border-gray-300 font-medium text-sm">
+                                Root Config
+                            </button>
+                            <button onclick="showTab('backend')" class="tab-button py-4 px-2 border-b-2 border-transparent hover:border-gray-300 font-medium text-sm">
+                                Backend
+                            </button>
+                            <button onclick="showTab('frontend')" class="tab-button py-4 px-2 border-b-2 border-transparent hover:border-gray-300 font-medium text-sm">
+                                Frontend
+                            </button>
+                            <button onclick="showTab('shared')" class="tab-button py-4 px-2 border-b-2 border-transparent hover:border-gray-300 font-medium text-sm">
+                                Shared
+                            </button>
+                            <button onclick="showTab('database')" class="tab-button py-4 px-2 border-b-2 border-transparent hover:border-gray-300 font-medium text-sm">
+                                Database
+                            </button>
+                        </nav>
+                    </div>
+
+                    <!-- Root Configuration Tab -->
+                    <div id="root" class="tab-content active p-6">
+                        <h3 class="text-xl font-bold mb-4">Root Configuration Files</h3>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <h4 class="font-semibold mb-2 text-gray-700">📄 package.json (Root)</h4>
+                                <div class="code-block">
+<pre>{
+  "name": "ecommerce-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "turbo run start",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean",
+    "db:migrate": "cd backend && npm run db:migrate",
+    "db:seed": "cd backend && npm run db:seed"
+  },
+  "devDependencies": {
+    "turbo": "^1.10.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "workspaces": [
+    "frontend",
+    "backend",
+    "shared"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="font-semibold mb-2 text-gray-700">⚡ turbo.json</h4>
+                                <div class="code-block">
+<pre>{
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "outputs": []
+    },
+    "clean": {
+      "cache": false
+    }
+  }
+}</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="font-semibold mb-2 text-gray-700">📖 README.md</h4>
+                                <div class="code-block">
+<pre># E-commerce Monorepo
+
+A full-stack e-commerce application built with Next.js 14, Node.js, Express, and PostgreSQL.
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js 18+
+- PostgreSQL 14+
+- npm or yarn
+
+### Installation
+
+1. **Clone the repository**
+   <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97729b4942046068',t:'MTc1NjUzOTI3Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
